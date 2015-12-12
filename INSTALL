@@ -1,0 +1,280 @@
+Building DMS
+================
+
+These instructions pertain to building DMS.
+
+Quick and dirty installation
+============================
+
+1.  Get the latest version of your C and C++ compilers.
+2.  Check that you have CMake version 2.8.8 or later.
+3.  Get and unpack the latest version of the DMS tarball.
+4.  Make a separate build directory and change to it.
+5.  Run cmake with the path to the source as an argument
+6.  Run make and make install
+
+Or, as a sequence of commands to execute:
+
+    tar xfz DMS.tar.gz
+    cd DMS
+    mkdir build
+    cd build
+    cmake .. -DGMX_BUILD_OWN_FFTW=ON
+    make
+    sudo make install
+    source /usr/local/dms/bin/GMXRC
+
+This will download and build first the prerequisite FFT library followed
+by DMS. If you already have FFTW installed, you can remove that
+argument to cmake. Overall, this build of DMS will be correct and
+reasonably fast on the machine upon which DMS ran. If you want to get
+the maximum value for your hardware with DMS, you will have to read
+further. Sadly, the interactions of hardware, libraries, and compilers
+are only going to continue to get more complex.
+
+Typical DMS installation
+============================
+
+As above, and with further details below, but you should consider using
+the following CMake options with the appropriate value instead of xxx :
+
+-   -DCMAKE_C_COMPILER=xxx equal to the name of the C99 compiler you
+    wish to use (or the environment variable CC)
+-   -DCMAKE_CXX_COMPILER=xxx equal to the name of the C++98 compiler you
+    wish to use (or the environment variable CXX)
+-   -DGMX_MPI=on to build using an MPI wrapper compiler
+-   -DGMX_GPU=on to build using nvcc to run with an NVIDIA GPU
+-   -DGMX_SIMD=xxx to specify the level of SIMD support of the node on
+    which mdrun will run
+-   -DGMX_BUILD_MDRUN_ONLY=on to build only the mdrun binary, e.g. for
+    compute cluster back-end nodes
+-   -DGMX_DOUBLE=on to run DMS in double precision (slower, and not
+    normally useful)
+-   -DCMAKE_PREFIX_PATH=xxx to add a non-standard location for CMake to
+    search for libraries
+-   -DCMAKE_INSTALL_PREFIX=xxx to install DMS to a non-standard
+    location (default /usr/local/dms)
+-   -DBUILD_SHARED_LIBS=off to turn off the building of shared libraries
+-   -DGMX_FFT_LIBRARY=xxx to select whether to use fftw, mkl or fftpack
+    libraries for FFT support
+-   -DCMAKE_BUILD_TYPE=Debug to build DMS in debug mode
+
+Prerequisites
+=============
+
+Platform
+--------
+
+DMS can be compiled for many operating systems and architectures.
+These include any distribution of Linux, Mac OS X or Windows, and
+architectures including x86, AMD64/x86-64, PPC, ARM v7 and SPARC VIII.
+
+Compiler
+--------
+
+Technically, DMS can be compiled on any platform with an ANSI C99
+and C++0x compiler, and their respective standard C/C++ libraries.
+Getting good performance on an OS and architecture requires choosing a
+good compiler. In practice, many compilers struggle to do a good job
+optimizing the DMS architecture-optimized SIMD kernels.
+
+For best performance, the DMS team strongly recommends you get the
+most recent version of your preferred compiler for your platform. There
+is a large amount of DMS code that depends on effective compiler
+optimization to get high performance. This makes DMS performance
+sensitive to the compiler used, and the binary will often only work on
+the hardware for which it is compiled.
+
+-   In particular, DMS includes a lot of explicit SIMD (single
+    instruction, multiple data) optimization that can use assembly
+    instructions available on most modern processors. This can have a
+    substantial effect on performance, but for recent processors you
+    also need a similarly recent compiler that includes support for the
+    corresponding SIMD instruction set to get this benefit. The
+    configuration does a good job at detecting this, and you will
+    usually get warnings if DMS and your hardware support a more
+    recent instruction set than your compiler.
+
+-   On Intel-based x86 hardware, we recommend you to use the GNU
+    compilers version 4.7 or later or Intel compilers version 12 or
+    later for best performance. The Intel compiler has historically been
+    better at instruction scheduling, but recent gcc versions have
+    proved to be as fast or sometimes faster than Intel.
+
+-   The Intel and GNU compilers produce much faster DMS executables
+    than the PGI and Cray compilers.
+
+-   On AMD-based x86 hardware up through the "K10" microarchitecture
+    ("Family 10h") Thuban/Magny-Cours architecture (e.g. Opteron
+    6100-series processors), it is worth using the Intel compiler for
+    better performance, but gcc version 4.7 and later are also
+    reasonable.
+
+-   On the AMD Bulldozer architecture (Opteron 6200), AMD introduced
+    fused multiply-add instructions and an "FMA4" instruction format not
+    available on Intel x86 processors. Thus, on the most recent AMD
+    processors you want to use gcc version 4.7 or later for best
+    performance! The Intel compiler will only generate code for the
+    subset also supported by Intel processors, and that is significantly
+    slower.
+
+-   If you are running on Mac OS X, the best option is the Intel
+    compiler. Both clang and gcc will work, but they produce lower
+    performance and each have some shortcomings. Current Clang does not
+    support OpenMP. This may change when clang 3.5 becomes available.
+
+-   For all non-x86 platforms, your best option is typically to use the
+    vendor's default or recommended compiler, and check for specialized
+    information below.
+
+Compiling with parallelization options
+--------------------------------------
+
+DMS can run in parallel on multiple cores of a single workstation
+using its built-in thread-MPI. No user action is required in order to
+enable this.
+
+GPU support
+
+If you wish to use the excellent native GPU support in DMS, NVIDIA's
+CUDA version 4.0 software development kit is required, and the latest
+version is strongly encouraged. NVIDIA GPUs with at least NVIDIA compute
+capability 2.0 are required, e.g. Fermi or Kepler cards. You are
+strongly recommended to get the latest CUDA version and driver supported
+by your hardware, but beware of possible performance regressions in
+newer CUDA versions on older hardware. Note that while some CUDA
+compilers (nvcc) might not officially support recent versions of gcc as
+the back-end compiler, we still recommend that you at least use a gcc
+version recent enough to get the best SIMD support for your CPU, since
+DMS always runs some code on the CPU. It is most reliable to use the
+same C++ compiler version for DMS code as used as the back-end
+compiler for nvcc, but it could be faster to mix compiler versions to
+suit particular contexts.
+
+MPI support
+
+If you wish to run in parallel on multiple machines across a network,
+you will need to have
+
+-   an MPI library installed that supports the MPI 1.3 standard, and
+-   wrapper compilers that will compile code using that library.
+
+The DMS team recommends OpenMPI version 1.6 (or higher), MPICH
+version 1.4.1 (or higher), or your hardware vendor's MPI installation.
+The most recent version of either of these is likely to be the best.
+More specialized networks might depend on accelerations only available
+in the vendor's library. LAMMPI might work, but since it has been
+deprecated for years, it is not supported.
+
+Often OpenMP parallelism is an advantage for DMS, but support for
+this is generally built into your compiler and detected automatically.
+
+In summary, for maximum performance you will need to examine how you
+will use DMS, what hardware you plan to run on, and whether you can
+afford a non-free compiler for slightly better performance.
+Unfortunately, the only way to find out is to test different options and
+parallelization schemes for the actual simulations you want to run. You
+will still get good, performance with the default build and runtime
+options, but if you truly want to push your hardware to the performance
+limit, the days of just blindly starting programs with mdrun are gone.
+
+CMake
+-----
+
+DMS uses the CMake build system, and requires version 2.8.8 or
+higher. Lower versions will not work. You can check whether CMake is
+installed, and what version it is, with cmake --version. If you need to
+install CMake, then first check whether your platform's package
+management system provides a suitable version, or visit
+http://www.cmake.org/cmake/help/install.html for pre-compiled binaries,
+source code and installation instructions. The DMS team recommends
+you install the most recent version of CMake you can.
+
+Fast Fourier Transform library
+------------------------------
+
+Many simulations in DMS make extensive use of fast Fourier
+transforms, and a software library to perform these is always required.
+We recommend FFTW (version 3 or higher only) or Intel MKL. The choice of
+library can be set with cmake -DGMX_FFT_LIBRARY=<name>, where <name> is
+one of fftw, mkl, or fftpack. FFTPACK is bundled with DMS as a
+fallback, and is acceptable if mdrun performance is not a priority.
+
+FFTW
+
+FFTW is likely to be available for your platform via its package
+management system, but there can be compatibility and significant
+performance issues associated with these packages. In particular,
+DMS simulations are normally run in "mixed" floating-point
+precision, which is suited for the use of single precision in FFTW. The
+default FFTW package is normally in double precision, and good compiler
+options to use for FFTW when linked to DMS may not have been used.
+Accordingly, the DMS team recommends either
+
+-   that you permit the DMS installation to download and build FFTW
+    from source automatically for you (use
+    cmake -DGMX_BUILD_OWN_FFTW=ON), or
+-   that you build FFTW from the source code.
+
+Note that the DMS-managed download of the FFTW tarball has a slight
+chance of posing a security risk. If you use this option, you will see a
+warning that advises how you can eliminate this risk (before the
+opportunity has arisen).
+
+If you build FFTW from source yourself, get the most recent version and
+follow its installation guide. Choose the precision for FFTW (i.e.
+single or float vs. double) to match whether you will later use mixed or
+double precision for DMS. There is no need to compile FFTW with
+threading or MPI support, but it does no harm. On x86 hardware, compile
+only with --enable-sse2 (regardless of precision) even if your
+processors can take advantage of AVX extensions. Since DMS uses
+fairly short transform lengths we do not benefit from the FFTW AVX
+acceleration, and because of memory system performance limitations, it
+can even degrade DMS performance by around 20%. There is no way for
+DMS to limit the use to SSE2 SIMD at run time if AVX support has
+been compiled into FFTW, so you need to set this at compile time.
+
+MKL
+
+Using MKL with the Intel Compilers version 11 or higher is very simple.
+Set up your compiler environment correctly, perhaps with a command like
+source /path/to/compilervars.sh intel64 (or consult your local
+documentation). Then set -DGMX_FFT_LIBRARY=mkl when you run cmake. In
+this case, DMS will also use MKL for BLAS and LAPACK (see linear
+algebra libraries). Generally, there is no advantage in using MKL with
+DMS, and FFTW is often faster.
+
+Otherwise, you can get your hands dirty and configure MKL by setting
+
+    -DGMX_FFT_LIBRARY=mkl
+    -DMKL_LIBRARIES="/full/path/to/libone.so;/full/path/to/libtwo.so"
+    -DMKL_INCLUDE_DIR="/full/path/to/mkl/include"
+
+where the full list (and order!) of libraries you require are found in
+Intel's MKL documentation for your system.
+
+Optional build components
+-------------------------
+
+-   Compiling to run on NVIDIA GPUs requires CUDA
+-   An external Boost library can be used to provide better
+    implementation support for smart pointers and exception handling,
+    but the DMS source bundles a subset of Boost 1.55.0 as a
+    fallback
+-   Hardware-optimized BLAS and LAPACK libraries are useful for a few of
+    the DMS utilities focused on normal modes and matrix
+    manipulation, but they do not provide any benefits for normal
+    simulations. Configuring these are discussed at linear algebra
+    libraries.
+-   The built-in DMS trajectory viewer gmx view requires X11 and
+    Motif/Lesstif libraries and header files. You may prefer to use
+    third-party software for visualization, such as VMD or PyMOL.
+-   An external TNG library for trajectory-file handling can be used,
+    but TNG 1.6 is bundled in the DMS source already
+-   zlib is used by TNG for compressing some kinds of trajectory data
+-   Running the DMS test suite requires libxml2
+-   Building the DMS documentation requires ImageMagick, pdflatex,
+    bibtex, doxygen and pandoc.
+-   The DMS utility programs often write data files in formats
+    suitable for the Grace plotting tool, but it is straightforward to
+    use these files in other plotting programs, too.

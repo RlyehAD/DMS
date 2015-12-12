@@ -1,0 +1,274 @@
+#include "swm.h"
+
+/* The SWM class is created in serial on all processors, so the communicator is naturally
+ * MPI_COMM_SELF. The reason is SWM uses a small number of CG variables to capture the overall
+ * global changes of a given macromolecule.
+ *
+ * TODO: Support subsystem decomposition
+ */
+
+SpaceWarping::SpaceWarping(const t_state* state, const t_mdatoms* tmdatoms,
+		const gmx_mtop_t* top, const t_inputrec* ir, const gmx_int64_t dim, const gmx_int64_t max_order,
+		const gmx_int64_t CGDim, const gmx_int64_t freq, const real dt, const int nrelax):
+		DMS_Base(state, tmdatoms, top, ir, dim, CGDim, freq, dt, PETSC_COMM_SELF, nrelax, false)
+{
+	PetscFunctionBegin;
+
+	if(!MPI_Rank) {
+		Microscopic = new Micro_state(state, tmdatoms, top, ir, Dim, COMM, &FineGrain_handle, nrelax);
+
+		kmax = max_order;
+		std::cout << "Setting up SpaceWarping subsystem ..." << std::endl;
+
+		indices = computeIndices();
+		NCG = indices.size();
+
+		Mesoscopic  = new Meso_state(NCG, Dim, COMM, &CoarseGrain_handle, &Construct_Coords,
+									 &Construct_Velocities);
+
+		ierr = Setup_Basis(Natoms, NCG);
+		ierr = ConstructBasis(Microscopic->Get_Coords());
+
+		std::cout << "Success! Number of CG variables per subsystem is " << NCG << std::endl;
+	}
+}
+
+std::vector< std::vector<PetscInt> > SpaceWarping::computeIndices() {
+	PetscFunctionBegin;
+        std::cout << "Computing indices for k1+k2+k3 <= " << kmax << std::endl;
+
+	std::vector< std::vector<PetscInt> > indices_tmp;
+
+	for (int n = 0; n < kmax + 1; n++)
+	        for (int i = 0; i < n + 1; i++)
+	            for (int j = 0; j < n + 1-  i; j++) {
+	            		PetscInt tmp[] = {n - i -j, j, i};
+	            		std::vector<PetscInt> tmpv(tmp, tmp + sizeof(tmp) / sizeof(tmp[0]));
+
+				if(!(n == 0 && i == 0 && j == 0))
+	            			indices_tmp.push_back(tmpv);
+	            	}
+
+	return indices_tmp;
+}
+
+PetscErrorCode SpaceWarping::Setup_Basis(const PetscInt Natoms, const PetscInt NCG) {
+	PetscFunctionBegin;
+	std::cout << "Setting up orthogonal polynomials for " << NCG << " variables" << std::endl;
+
+	ierr = MatCreateSeqDense(COMM, Natoms, NCG, NULL, &meso_micro_map);
+	CHKERRQ(ierr);
+
+	ierr = MatCreateSeqDense(COMM, Natoms, NCG, NULL, &basis_weighted);
+	CHKERRQ(ierr);
+
+	ierr = MatCreateSeqDense(COMM, NCG, NCG, NULL, &micro_meso_map);
+	CHKERRQ(ierr);
+
+	MatGetOwnershipRange(meso_micro_map, &istart, &iend);
+	
+	PetscFunctionReturn(ierr);
+}
+
+PetscErrorCode SpaceWarping::updateRef() {
+
+	if(!(TimeStep % FreqUpdate)) {
+        	// Microscopic->Ref_Coords is updated here only
+                std::cout << "Updating reference structure ..." << std::endl;
+                ierr = ConstructBasis(Microscopic->Get_Coords());
+                CHKERRQ(ierr);
+	}
+
+	PetscFunctionReturn(ierr);
+}
+
+int SpaceWarping::CG_Step() {
+	/*
+	 * Whenever this function is called, the one thing that *must* be always done is gather the Coords
+	 * Vec in order to initiate computations.
+	 * If the ref structure is to be updated, then coarse-graining must be performed again.
+	 *
+	 * This function calls three methods:
+	 * CoarseGraing -> dimensionality reduction
+	 * Integrate    -> advance the CG state in time
+	 * FineGraining -> recover the atomistic state
+	 */
+
+	PetscFunctionBegin;
+
+	// Do serial computations for SWM
+	if(!MPI_Rank) {
+		std::cout << "Performing a single CG time step ..." << std::endl;
+		TimeStep++;
+		CHKERRQ(ierr);
+
+		// Coarse-grain before MD phase (initial CGs) should have already been called during halfMD stage
+
+		for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
+			ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_pCoords()[dim]);
+			CHKERRQ(ierr);
+		}
+
+		for(int dim = 0; dim < Microscopic->Get_Dim(); dim++) {
+                        ierr = VecCopy(Microscopic->Get_Coords()[dim], Microscopic->Get_pCoords()[dim]);
+                        CHKERRQ(ierr);
+                }
+
+		// This function syncs the coords, velocitis, etc. with the GROMACS t_state
+		std::cout << "Syncing DMS with GROMACS ..." << std::endl;
+		ierr = Microscopic->Sync_DMS_fromMD();
+		CHKERRQ(ierr);
+
+		// Coarse-grain after MD phase (final CGs)
+		ierr = Mesoscopic->Construct_Coords(Microscopic->Get_Coords(), Microscopic->Get_pCoords(),
+				this);
+		CHKERRQ(ierr);
+
+		// Construct CG velocities
+		ierr = Mesoscopic->Construct_Velocities(this);
+		CHKERRQ(ierr);
+
+		for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
+			ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_pCoords()[dim]);
+			CHKERRQ(ierr);
+		}
+
+		ierr = Integrator->Integrate(Mesoscopic->Get_Coords(), Mesoscopic->Get_Velocities());
+
+		// Fine-grain (recover atomistic configuration)
+		for(int dim = 0; dim < Microscopic->Get_Dim(); dim++) {
+
+				ierr = VecCopy(Microscopic->Get_Coords()[dim], Microscopic->Get_pCoords()[dim]);
+				CHKERRQ(ierr);
+
+				ierr = (Microscopic->mapping)(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_pCoords()[dim], 
+								dim, this);
+				CHKERRQ(ierr);
+
+				// save CG state
+				ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_pCoords()[dim]);
+				CHKERRQ(ierr);
+			}
+
+		std::cout << "Done with DMS computations! Now syncing GROMACS with DMS ..." << std::endl;
+
+		// Done with DMS computations! Now update the GROMACS t_state to re-initiate the MD phase
+		Microscopic->Sync_MD_fromDMS();
+	}
+
+	PetscFunctionReturn(ierr);
+}
+
+PetscErrorCode SpaceWarping::Construct_Coords(const CVec& Vars, const CVec& pVars, void *swm) {
+	/* This function constructs SWM coords, velocities, and forces, depending on the arguments
+	 * supplied. The three CG-construction function pointers in Mesoscopic should all point to
+	 * this function.
+	 */
+	PetscFunctionBegin;
+	std::cout << "Constructing CG coordinates ..." << std::endl;
+
+	SpaceWarping* swm_cast = static_cast<SpaceWarping*>(swm);
+	CHKERRQ(swm_cast->ierr);
+
+	for(int dim = 0; dim < swm_cast->Mesoscopic->Get_Dim(); dim++) {
+
+		swm_cast->ierr = (swm_cast->Mesoscopic->mapping)(Vars[dim], pVars[dim], dim, swm_cast);
+		CHKERRQ(swm_cast->ierr);
+	}
+
+	PetscFunctionReturn(swm_cast->ierr);
+}
+
+PetscErrorCode SpaceWarping::Construct_Velocities(void *swm) {
+        PetscFunctionBegin;
+        std::cout << "Constructing CG velocities ..." << std::endl;
+
+        SpaceWarping* swm_cast = static_cast<SpaceWarping*>(swm);
+        CHKERRQ(swm_cast->ierr);
+
+        for(int dim = 0; dim < swm_cast->Mesoscopic->Get_Dim(); dim++) {
+		for(int CG = 0; CG < swm_cast->Mesoscopic->Get_DOF(); CG++)
+
+                	median[CG] = computeMedian(swm_cast->Mesoscopic->getVeloMat()[CG][dim]);
+
+		VecSetValues(swm_cast->Mesoscopic->Get_Velocities()[dim])
+}
+
+PetscErrorCode SpaceWarping::Construct_Velocities(void *swm) {
+	PetscFunctionBegin;
+	std::cout << "Constructing CG velocities ..." << std::endl;
+
+	SpaceWarping* swm_cast = static_cast<SpaceWarping*>(swm);
+	CHKERRQ(swm_cast->ierr);
+
+	for(int dim = 0; dim < swm_cast->Mesoscopic->Get_Dim(); dim++) {
+
+		swm_cast->ierr = VecCopy(swm_cast->Mesoscopic->Get_Coords()[dim],
+								  swm_cast->Mesoscopic->Get_Velocities()[dim]);
+		CHKERRQ(swm_cast->ierr);
+
+		swm_cast->ierr = VecAXPY(swm_cast->Mesoscopic->Get_Velocities()[dim], -1.0,
+								  swm_cast->Mesoscopic->Get_pCoords()[dim]);
+		CHKERRQ(swm_cast->ierr);
+
+		swm_cast->ierr = VecScale( swm_cast->Mesoscopic->Get_Velocities()[dim], swm_cast->Microscopic->getRelax() / 
+				 swm_cast->Microscopic->getLength() );
+
+		CHKERRQ(swm_cast->ierr);
+	}
+
+	PetscFunctionReturn(swm_cast->ierr);
+}
+
+SpaceWarping::~SpaceWarping() {
+	PetscFunctionBegin;
+
+	if(!MPI_Rank) {
+		ierr = MatDestroy(&basis_weighted);
+		DMS_CHKERRQ(ierr);
+	}
+}
+
+dmsBasePtr newDmsBase(const t_state* state, const t_mdatoms* mdatoms,
+		      const gmx_mtop_t* top, const t_inputrec* ir, gmx_int64_t natoms,
+		      gmx_int64_t NCG, gmx_int64_t CGDim, gmx_int64_t freq, const real dt, 
+		      const int nrelax) {
+
+    return reinterpret_cast<void*>(new SpaceWarping(state, mdatoms, top, ir, natoms, NCG, CGDim, freq, dt, nrelax));
+}
+
+void delDmsBase(dmsBasePtr swm) {
+    delete reinterpret_cast<SpaceWarping*>(swm);
+}
+
+int dmsCGStep(dmsBasePtr swm) {
+    return reinterpret_cast<SpaceWarping*>(swm)->CG_Step();
+}
+
+int constructDmsCoords(dmsBasePtr swm) {
+        PetscFunctionBegin;
+	PetscErrorCode ierr;
+
+	if(!reinterpret_cast<SpaceWarping*>(swm)->getRank()) {	
+		// clean-up the ridiculously redundant reinterpret_cast ....
+
+		std::cout << "Syncing DMS with GROMACS ..." << std::endl;
+        	ierr = reinterpret_cast<SpaceWarping*>(swm)->Microscopic->Sync_DMS_fromMD(state);
+        	CHKERRQ(ierr);
+
+		ierr = reinterpret_cast<SpaceWarping*>(swm)->updateRef();
+		CHKERRQ(ierr);
+
+        	ierr =  (reinterpret_cast<SpaceWarping*>(swm))->Mesoscopic->Construct_Coords
+			(
+			(reinterpret_cast<SpaceWarping*>(swm))->Microscopic->Get_Coords(), 
+			(reinterpret_cast<SpaceWarping*>(swm))->Microscopic->Get_pCoords(),
+                	reinterpret_cast<SpaceWarping*>(swm)
+			);
+
+        	CHKERRQ(ierr);
+	}
+
+        PetscFunctionReturn(ierr);
+}
+
