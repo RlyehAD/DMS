@@ -1,2 +1,2 @@
-This installer will place the Gromacs command line tools in the default location, which is typically /usr/local/gromacs for Unix, Mac, and Linux, and a location like C:\Program Files\gromacs on Windows.
+This installer will place the DMS command line tools in the default location, which is typically /usr/local/dms for Unix, Mac, and Linux, and a location like C:\Program Files\dms on Windows.
 
