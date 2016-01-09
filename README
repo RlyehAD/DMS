@@ -12,7 +12,7 @@ http://www.gromacs.org/Documentation/Installation_Instructions.
 
                                * * * * *
 
-DMS is free software, distributed under the GNU Lesser General
+DMS is free software, distributed under the GNU General
 Public License, version 2.1. DMS uses a substantial portion of the source
 code of the molecular dynamics package GROMACS. If you want to distribute 
 a modified version or use part of DMS in your own program, remember that 
