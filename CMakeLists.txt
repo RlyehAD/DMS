@@ -915,15 +915,3 @@ ADD_CUSTOM_TARGET(uninstall
 ###########################
 set_directory_properties(PROPERTIES
             ADDITIONAL_MAKE_CLEAN_FILES "install_manifest.txt")
-
-########################################################################
-# Manual                                                               #
-########################################################################
-
-option(GMX_BUILD_MANUAL "Whether to try to configure to build the PDF manual" OFF)
-mark_as_advanced(GMX_BUILD_MANUAL)
-if(GMX_BUILD_MANUAL)
-    # Make sure we only do detection of manual-building dependencies
-    # when the user opted in for that.
-    add_subdirectory(manual)
-endif()

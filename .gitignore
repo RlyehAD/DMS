@@ -17,3 +17,4 @@ CMakeLists.txt.user
 Testing
 build
 build_karst
+*.save
