@@ -2108,6 +2108,11 @@ void do_force(FILE *fplog, t_commrec *cr,
 		f[i][2] += mdatoms->chargeA[i] * elecField;
      }
 
+    // add external force here along the z-direction
+    for(i = 0; i < mdatoms->nr; i++)
+                f[i][2] += 0.1; // ~ roughly 1 atm
+
+
     for(i = 0; i < mdatoms->homenr; i++) {
  	for(dim = 0; dim < 3; dim++)
 

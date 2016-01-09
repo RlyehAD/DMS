@@ -23,6 +23,10 @@ PetscErrorCode swm::fineGrain(CVec Coords, CVec coordsPrev, DmsBase& Dbase, std:
 	PetscInt nrows, ncols;
 	MatGetSize(*mesoMicroMap, &nrows, &ncols);
 
+	Vec tmpVec;
+	ierr = VecCreateSeq(Dbase.getComm(), Dbase.Microscopic->Get_DOF(), &tmpVec);
+	CHKERRQ(ierr);
+
 	for(auto dim = 0; dim < Dbase.Microscopic->Get_Dim(); dim++) {
 
 		ierr = VecCopy(Coords[dim], deltaPhi);
@@ -31,6 +35,18 @@ PetscErrorCode swm::fineGrain(CVec Coords, CVec coordsPrev, DmsBase& Dbase, std:
 		ierr = VecAXPY(deltaPhi, -1.0, coordsPrev[dim]);
 		CHKERRQ(ierr);
 
+		ierr = MatMult(*mesoMicroMap, deltaPhi, tmpVec);
+		CHKERRQ(ierr);
+
+		PetscScalar maxChange;
+                VecMax(tmpVec, NULL, &maxChange);
+
+		std::cout << "max coordinates change in dim " << dim << " is " << maxChange << std::endl;
+
+                PetscScalar minChange;
+                VecMin(tmpVec, NULL, &minChange);
+                std::cout << "min coordinates change in dim " << dim << " is " << minChange << std::endl;
+
 		ierr = MatMultAdd(*mesoMicroMap, deltaPhi, Dbase.Microscopic->Get_pCoords()[dim], 
 				  Dbase.Microscopic->Get_Coords()[dim]);
 		CHKERRQ(ierr);
@@ -38,6 +54,9 @@ PetscErrorCode swm::fineGrain(CVec Coords, CVec coordsPrev, DmsBase& Dbase, std:
 	}
 
 	ierr = VecDestroy(&deltaPhi);
+	CHKERRQ(ierr);
+
+	ierr = VecDestroy(&tmpVec);
 	CHKERRQ(ierr);
 
 	PetscFunctionReturn(ierr);

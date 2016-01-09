@@ -204,11 +204,11 @@ PetscErrorCode swm::coarseGrain(CVec Coords, CVec pCoords, DmsBase& Dbase, std::
 		ierr = VecCopy(Coords[dim], deltaCoords);
 		CHKERRQ(ierr);
 
-		ierr = VecShift(deltaCoords, - com[dim]);
-		CHKERRQ(ierr);
-
-		//ierr = VecAXPBY(deltaCoords, -1.0, 1.0, Dbase.Microscopic->Get_RefCoords()[dim]);
+		//ierr = VecShift(deltaCoords, - com[dim]);
 		//CHKERRQ(ierr);
+
+		ierr = VecAXPBY(deltaCoords, -1.0, 1.0, Dbase.Microscopic->Get_pCoords()[dim]);
+		CHKERRQ(ierr);
 
 		ierr = MatMultTranspose(*kernel, deltaCoords, RHS);
 		CHKERRQ(ierr);
@@ -216,8 +216,8 @@ PetscErrorCode swm::coarseGrain(CVec Coords, CVec pCoords, DmsBase& Dbase, std::
 		ierr = KSPSolve(ksp, RHS, Dbase.Mesoscopic->Get_Coords()[dim]);
 		CHKERRQ(ierr);
 
-		//ierr = VecAXPY(Dbase.Mesoscopic->Get_Coords()[dim], 1.0, Dbase.Mesoscopic->Get_pCoords()[dim]);
-                //CHKERRQ(ierr);
+		ierr = VecAXPY(Dbase.Mesoscopic->Get_Coords()[dim], 1.0, Dbase.Mesoscopic->Get_pCoords()[dim]);
+                CHKERRQ(ierr);
 
 		ierr = VecDestroy(&RHS);
 		CHKERRQ(ierr);
