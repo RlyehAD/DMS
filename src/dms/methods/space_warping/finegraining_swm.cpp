@@ -3,7 +3,7 @@
 
 PetscErrorCode swm::fineGrain(CVec Coords, CVec coordsPrev, DmsBase& Dbase, std::fstream& fpLog)
 {
-	/* Finegraining method: r = r_prev + U * (\phi - \phi_prev) + \sigma
+	/* Finegraining method: r = r_prev + U * (\phi - \phi_prev) + \Delta * \sigma
 	 * \sigma is just the residuals vector, which we can compute iteratively but
 	 * for simplicity is taken to be zero here.
 	 */
@@ -14,8 +14,6 @@ PetscErrorCode swm::fineGrain(CVec Coords, CVec coordsPrev, DmsBase& Dbase, std:
 
 	Mat* mesoMicroMap = Dbase.getMesoMicro();
 
-	std::vector<PetscScalar> com = Dbase.compCentOfMass(Dbase.Microscopic->Get_Coords());
-
 	Vec deltaPhi;
 	ierr = VecCreateSeq(Dbase.getComm(), Dbase.Mesoscopic->Get_DOF(), &deltaPhi);
 	CHKERRQ(ierr);
@@ -24,8 +22,8 @@ PetscErrorCode swm::fineGrain(CVec Coords, CVec coordsPrev, DmsBase& Dbase, std:
 	MatGetSize(*mesoMicroMap, &nrows, &ncols);
 
 	Vec tmpVec;
-	ierr = VecCreateSeq(Dbase.getComm(), Dbase.Microscopic->Get_DOF(), &tmpVec);
-	CHKERRQ(ierr);
+        ierr = VecCreateSeq(Dbase.getComm(), Dbase.Microscopic->Get_DOF_local(), &tmpVec);
+        CHKERRQ(ierr);
 
 	for(auto dim = 0; dim < Dbase.Microscopic->Get_Dim(); dim++) {
 
@@ -36,7 +34,7 @@ PetscErrorCode swm::fineGrain(CVec Coords, CVec coordsPrev, DmsBase& Dbase, std:
 		CHKERRQ(ierr);
 
 		ierr = MatMult(*mesoMicroMap, deltaPhi, tmpVec);
-		CHKERRQ(ierr);
+                CHKERRQ(ierr);
 
 		PetscScalar maxChange;
                 VecMax(tmpVec, NULL, &maxChange);
@@ -49,7 +47,7 @@ PetscErrorCode swm::fineGrain(CVec Coords, CVec coordsPrev, DmsBase& Dbase, std:
 
 		ierr = MatMultAdd(*mesoMicroMap, deltaPhi, Dbase.Microscopic->Get_pCoords()[dim], 
 				  Dbase.Microscopic->Get_Coords()[dim]);
-		CHKERRQ(ierr);
+                CHKERRQ(ierr);
 		
 	}
 

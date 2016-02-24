@@ -41,6 +41,53 @@ bool subsystemDecomp(const gmx_mtop_t* mdTop) {
     }
 }
 
+std::fstream& GotoLine(std::fstream& file, unsigned int num){
+    file.seekg(std::ios::beg);
+    for(int i=0; i < num - 1; ++i){
+        file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+    }
+    return file;
+}
+
+PetscErrorCode Micro_state::setupSubsystem(char* selFname) {
+
+    PetscFunctionBegin;
+    PetscErrorCode ierr;
+
+    if (!selFname) {
+
+	DOF_local = DOF;
+	ssIndices = NULL;
+
+    }
+    else {
+
+	std::cout << "Reading subsystem indices from " << selFname << " for subsystem " << ssIndex << std::endl;
+
+	PetscInt count = 0;
+    	std::fstream fp;
+    	fp.open(selFname, std::ios::in);
+
+	GotoLine(fp, ssIndex + 1);
+
+	PetscInt index1, index2;
+
+	fp >> index1 >> index2;
+
+	DOF_local = index2 - index1 + 1;
+    	ssIndices = new PetscInt[DOF_local];
+
+	for(auto j = index1; j <= index2; j++)	    
+		ssIndices[count++] = j - 1; // the *-1* is because the user supplies the indices starting from 1 and not 0.
+
+    	fp.close();
+    }
+
+    PetscFunctionReturn(ierr);
+
+}
+
+
 PetscErrorCode Micro_state::setupRefTop(char* topFname, DmsBase* Dbase) {
 
     PetscFunctionBegin;
@@ -53,13 +100,13 @@ PetscErrorCode Micro_state::setupRefTop(char* topFname, DmsBase* Dbase) {
 
     for(int dim = 0; dim < Dim; dim++) {
 
-			ierr = VecCopy(Get_Coords()[dim], Get_RefCoords()[dim]);
-			DMS_CHKERRQ(ierr);
+		ierr = VecCopy(Get_Coords()[dim], Get_RefCoords()[dim]);
+		DMS_CHKERRQ(ierr);
 
-			ierr = VecAssemblyBegin(Get_RefCoords()[dim]);
-			DMS_CHKERRQ(ierr);
-			ierr = VecAssemblyEnd(Get_RefCoords()[dim]);
-			DMS_CHKERRQ(ierr);
+		ierr = VecAssemblyBegin(Get_RefCoords()[dim]);
+		DMS_CHKERRQ(ierr);
+		ierr = VecAssemblyEnd(Get_RefCoords()[dim]);
+		DMS_CHKERRQ(ierr);
      }
 
 	if(topFname) {
@@ -115,7 +162,8 @@ PetscErrorCode Micro_state::setupRefTop(char* topFname, DmsBase* Dbase) {
 
 Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 		const gmx_mtop_t* top, const t_inputrec* ir, PetscInt Dim, MPI_Comm Comm, 
-		ptrMap ptr_func, int microSteps, const real dt, DmsBase* Dbase, char* topFname) : Dim(Dim) {
+		ptrMap ptr_func, int microSteps, const real dt, 
+		PetscInt nSS, PetscInt ssI, DmsBase* Dbase, char* topFname, char* selFname) : Dim(Dim) {
 
 	// TODO: atomic forces must be included
 	// TODO: destroy vec/mat PETSC objects before allocating new ones for copy const and operator=
@@ -126,6 +174,7 @@ Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 	pCoords.resize(Dim);
 	Ref_Coords.resize(Dim);
 	Velocities.resize(Dim);
+	pVelocities.resize(Dim);
 	Forces.resize(Dim);
 
 	MD_state = state;
@@ -133,10 +182,9 @@ Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 	tmdatoms = mdatoms;
 	mapping = ptr_func;
 	DOF = compNumSolMol(top);
+	numSS = nSS;
+	ssIndex = ssI;
 
-	std::cout << "Found " << DOF << " number of atoms" << std::endl;
-
-	//fpLog << getTime() << ":INFO:Found" << DOF << " atoms" << std::endl;
 	atomIndices.resize(DOF);
 
 	mdLength = ir->delta_t * microSteps;
@@ -147,34 +195,39 @@ Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 
 	std::cout << "Preallocating memory for PETSc vector ..." << std::endl;
 
+	ierr = setupSubsystem(selFname);	
+	DMS_CHKERRQ(ierr);
+
+	std::cout << "Found a total of " << DOF << " atoms, with a local of " << DOF_local << " atoms per subsystem " << ssIndex << std::endl;
+
 	if(COMM == PETSC_COMM_WORLD)
 		for(int dim = 0; dim < Dim; dim++) {
-			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF, Coords.data() + dim);
-			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF, pCoords.data() + dim);
-			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF, Velocities.data() + dim);
-			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF, Forces.data() + dim);
-			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF, Ref_Coords.data() + dim);
+			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF_local, Coords.data() + dim);
+			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF_local, pCoords.data() + dim);
+			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF_local, Velocities.data() + dim);
+			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF_local, pVelocities.data() + dim);
+			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF_local, Forces.data() + dim);
+			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF_local, Ref_Coords.data() + dim);
 		}
 	else
     		for(int dim = 0; dim < Dim; dim++) {
-			ierr = VecCreateSeq(COMM, DOF, Coords.data() + dim);
-			ierr = VecCreateSeq(COMM, DOF, pCoords.data() + dim);
-			ierr = VecCreateSeq(COMM, DOF, Velocities.data() + dim);
-			ierr = VecCreateSeq(COMM, DOF, Forces.data() + dim);
-			ierr = VecCreateSeq(COMM, DOF, Ref_Coords.data() + dim);
+			ierr = VecCreateSeq(COMM, DOF_local, Coords.data() + dim);
+			ierr = VecCreateSeq(COMM, DOF_local, pCoords.data() + dim);
+			ierr = VecCreateSeq(COMM, DOF_local, Velocities.data() + dim);
+			ierr = VecCreateSeq(COMM, DOF_local, pVelocities.data() + dim);
+			ierr = VecCreateSeq(COMM, DOF_local, Forces.data() + dim);
+			ierr = VecCreateSeq(COMM, DOF_local, Ref_Coords.data() + dim);
 		}
 
-	VecGetOwnershipRange(Coords[0], &istart, &iend);
-	DOF_local = iend - istart;
 
 	if(COMM == MPI_COMM_WORLD)
-		ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF, &Mass);
+		ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF_local, &Mass);
 	else
-		ierr = VecCreateSeq(COMM, DOF, &Mass);
+		ierr = VecCreateSeq(COMM, DOF_local, &Mass);
 
 	DMS_CHKERRQ(ierr);
 
-	std::cout << "Reading atomic masses for selected subsystem" << std::endl;
+	std::cout << "Reading atomic masses for selected subsystem " << ssIndex << std::endl;
 
 	// TODO: not quite efficient (block assembly is better ...) but it's done only once so it's OK fo now
 	if(!MPI_Rank) {
@@ -193,12 +246,24 @@ Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 			gmx_mtop_atomloop_all_names(aloop, &atomname, &resnum, &resname);
 			//gmx_mtop_atomnr_to_atom(alook, ai, &atom);
 
-			if(strncmp(resname, "SOL", 3) && strncmp(resname, "NA", 2) && strncmp(resname, "CL", 2) && strncmp(resname, "GRA", 3)) { 
-				mass = static_cast<PetscScalar>(atom->m);
-		    		ierr = VecSetValues(Mass, 1, &count, &mass, INSERT_VALUES);
-				atomIndices[count] = count;
-				count++;
+			if(numSS > 1) {
+ 
+				if(atomindex >= ssIndices[0] && atomindex <= ssIndices[DOF_local-1]) {
+
+					mass = static_cast<PetscScalar>(atom->m);
+                                	ierr = VecSetValues(Mass, 1, &count, &mass, INSERT_VALUES);
+                                	atomIndices[count] = count;
+                                	count++;
+				}
+		
 			}
+			else
+				if(strncmp(resname, "SOL", 3) && strncmp(resname, "NA", 2) && strncmp(resname, "CL", 2) && strncmp(resname, "GRA", 3)) { 
+					mass = static_cast<PetscScalar>(atom->m);
+		    			ierr = VecSetValues(Mass, 1, &count, &mass, INSERT_VALUES);
+					atomIndices[count] = count;
+					count++;
+				}
 		}
 
 		//gmx_mtop_atomloop_all_destroy(aloop);
@@ -210,8 +275,10 @@ Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 	ierr = VecAssemblyEnd(Mass);
 	DMS_CHKERRQ(ierr);
 
-	if(!MPI_Rank)
+	if(!MPI_Rank) {
 		ierr = setupRefTop(topFname, Dbase);
+		DMS_CHKERRQ(ierr);
+	}
 
     DMS_CHKERRQ(ierr);
 }
@@ -232,7 +299,7 @@ Micro_state::Micro_state(const Micro_state& micro_class) : COMM(micro_class.COMM
 
 	for(int dim = 0; dim < Dim; dim++)
 		if(COMM == PETSC_COMM_WORLD) {
-			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF, Coords.data() + dim);
+			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF_local, Coords.data() + dim);
 			DMS_CHKERRQ(ierr);
 			ierr = VecCopy(micro_class.Get_Coords()[dim], Get_Coords()[dim]);
 			DMS_CHKERRQ(ierr);
@@ -241,7 +308,7 @@ Micro_state::Micro_state(const Micro_state& micro_class) : COMM(micro_class.COMM
 			ierr = VecAssemblyEnd(Get_Coords()[dim]);
 			DMS_CHKERRQ(ierr);
 
-			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF, pCoords.data() + dim);
+			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF_local, pCoords.data() + dim);
 			DMS_CHKERRQ(ierr);
 			ierr = VecCopy(micro_class.Get_pCoords()[dim], Get_pCoords()[dim]);
 			DMS_CHKERRQ(ierr);
@@ -250,7 +317,7 @@ Micro_state::Micro_state(const Micro_state& micro_class) : COMM(micro_class.COMM
 			ierr = VecAssemblyEnd(Get_pCoords()[dim]);
 			DMS_CHKERRQ(ierr);
 
-			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF, Velocities.data() + dim);
+			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF_local, Velocities.data() + dim);
 			DMS_CHKERRQ(ierr);
 			ierr = VecCopy(micro_class.Get_Velocities()[dim], Get_Velocities()[dim]);
 			DMS_CHKERRQ(ierr);
@@ -259,7 +326,7 @@ Micro_state::Micro_state(const Micro_state& micro_class) : COMM(micro_class.COMM
 			ierr = VecAssemblyEnd(Get_Velocities()[dim]);
 			DMS_CHKERRQ(ierr);
 
-			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF, Forces.data() + dim);
+			ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF_local, Forces.data() + dim);
 			DMS_CHKERRQ(ierr);
 			ierr = VecCopy(micro_class.Get_Forces()[dim], Get_Forces()[dim]);
 			DMS_CHKERRQ(ierr);
@@ -269,22 +336,22 @@ Micro_state::Micro_state(const Micro_state& micro_class) : COMM(micro_class.COMM
 			DMS_CHKERRQ(ierr);
 		}
 		else {
-			ierr = VecCreateSeq(COMM, DOF, Coords.data() + dim);
+			ierr = VecCreateSeq(COMM, DOF_local, Coords.data() + dim);
 			DMS_CHKERRQ(ierr);
 			ierr = VecCopy(micro_class.Get_Coords()[dim], Get_Coords()[dim]);
 			DMS_CHKERRQ(ierr);
 
-			ierr = VecCreateSeq(COMM, DOF, pCoords.data() + dim);
+			ierr = VecCreateSeq(COMM, DOF_local, pCoords.data() + dim);
 			DMS_CHKERRQ(ierr);
 			ierr = VecCopy(micro_class.Get_pCoords()[dim], Get_pCoords()[dim]);
 			DMS_CHKERRQ(ierr);
 
-			ierr = VecCreateSeq(COMM, DOF, Velocities.data() + dim);
+			ierr = VecCreateSeq(COMM, DOF_local, Velocities.data() + dim);
 			DMS_CHKERRQ(ierr);
 			ierr = VecCopy(micro_class.Get_Velocities()[dim], Get_Velocities()[dim]);
 			DMS_CHKERRQ(ierr);
 
-			ierr = VecCreateSeq(COMM, DOF, Forces.data() + dim);
+			ierr = VecCreateSeq(COMM, DOF_local, Forces.data() + dim);
 			DMS_CHKERRQ(ierr);
 			ierr = VecCopy(micro_class.Get_Forces()[dim], Get_Forces()[dim]);
 			DMS_CHKERRQ(ierr);
@@ -306,17 +373,17 @@ Micro_state &Micro_state::operator=(const Micro_state& micro_class) {
 	Forces.resize(Dim);
 
 	for(int dim = 0; dim < micro_class.Dim; dim++) {
-		ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF, Coords.data() + dim);
+		ierr = VecCreateMPI(COMM, PETSC_DECIDE, DOF_local, Coords.data() + dim);
 		ierr = VecCopy(micro_class.Get_Coords()[dim], Get_Coords()[dim]);
 		ierr = VecAssemblyBegin(Get_Coords()[dim]);
 		ierr = VecAssemblyEnd(Get_Coords()[dim]);
 
-		VecCreateMPI(COMM, PETSC_DECIDE, DOF, Velocities.data() + dim);
+		VecCreateMPI(COMM, PETSC_DECIDE, DOF_local, Velocities.data() + dim);
 		VecCopy(micro_class.Get_Velocities()[dim], Get_Velocities()[dim]);
 		VecAssemblyBegin(Get_Velocities()[dim]);
 		VecAssemblyEnd(Get_Velocities()[dim]);
 
-		VecCreateMPI(COMM, PETSC_DECIDE, DOF, Forces.data() + dim);
+		VecCreateMPI(COMM, PETSC_DECIDE, DOF_local, Forces.data() + dim);
 		VecCopy(micro_class.Get_Forces()[dim], Get_Forces()[dim]);
 		VecAssemblyBegin(Get_Forces()[dim]);
 		VecAssemblyEnd(Get_Forces()[dim]);
@@ -332,11 +399,11 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
 
 	// TODO: This can be made more efficient i.e. Values allocated once and Indices is constant
 	std::vector< std::vector<PetscScalar> > Values(Dim), ValuesV(Dim);
-	std::vector<PetscInt> Indices(DOF);
+	std::vector<PetscInt> Indices(DOF_local);
 
 	for(int dim = 0; dim < Dim; dim++) {
-		Values[dim].resize(DOF);
-		ValuesV[dim].resize(DOF);
+		Values[dim].resize(DOF_local);
+		ValuesV[dim].resize(DOF_local);
 	}
 
 	for(int dim = 0; dim < Dim; dim++) {
@@ -345,27 +412,37 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
 
 			t_atom         *atom;
                         char* resname, *atomname;
-                        int resnum, atomindex, count = 0, ai;
+                        int resnum, atomindex, count = 0;
 
                         gmx_mtop_atomloop_all_t aloop = gmx_mtop_atomloop_all_init(MD_top);
-			int nSS = 1, nSSglob = 1; //Dbase->getNumSS(), nSSglob = Dbase->getNumSSglob();
 
-			while(count < DOF / nSSglob)
-                        	while (gmx_mtop_atomloop_all_next(aloop, &atomindex, &atom)) {
+			while(count < DOF_local) {
 
-                               	gmx_mtop_atomloop_all_names(aloop, &atomname, &resnum, &resname);
-
-                        	if(strncmp(resname, "SOL", 3) && strncmp(resname, "NA", 2) && strncmp(resname, "CL", 2) && strncmp(resname, "GRA", 3)) { 
-                                	  Values[dim][count] = MD_state->x[atomindex - (nSS-1) * DOF / nSSglob][dim];
+				if(numSS > 1) {
+                                          Values[dim][count] = MD_state->x[ssIndices[count]][dim];
 					  Indices[count] = count++;
 				}
+                                else
+
+                        		while (gmx_mtop_atomloop_all_next(aloop, &atomindex, &atom)) {
+
+                               			gmx_mtop_atomloop_all_names(aloop, &atomname, &resnum, &resname);
+
+                        			if(strncmp(resname, "SOL", 3) && strncmp(resname, "NA", 2) && strncmp(resname, "CL", 2) && strncmp(resname, "GRA", 3)) {
+
+                                	  		Values[dim][count] = MD_state->x[atomindex][dim];
+							ValuesV[dim][count] = MD_state->v[atomindex][dim];
+							Indices[count] = count++;
+
+						}
+					}
 			}
 
-			ierr = VecSetValues(Get_Coords()[dim], DOF, Indices.data(), Values[dim].data(),
+			ierr = VecSetValues(Get_Coords()[dim], DOF_local, Indices.data(), Values[dim].data(),
 								 INSERT_VALUES);
 			CHKERRQ(ierr);
 
-			ierr = VecSetValues(Get_Velocities()[dim], DOF, Indices.data(), ValuesV[dim].data(),
+			ierr = VecSetValues(Get_Velocities()[dim], DOF_local, Indices.data(), ValuesV[dim].data(),
 							  	 INSERT_VALUES);
 			CHKERRQ(ierr);
 		}
@@ -402,21 +479,32 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 
 				t_atom         *atom;
 		                char* resname, *atomname;
-                		int resnum, atomindex, count = 0, ai;
-				int nSS = 1, nSSglob = 1; //Dbase->getNumSS(), nSSglob = Dbase->getNumSSglob();
+                		int resnum, atomindex, count = 0;
 
                 		gmx_mtop_atomloop_all_t aloop = gmx_mtop_atomloop_all_init(MD_top);
+				//PetscScalar velocity = .0;
 
-				while(count < DOF / nSSglob)
-                			while (gmx_mtop_atomloop_all_next(aloop, &atomindex, &atom)) {
+				while(count < DOF_local) {
 
-                        			gmx_mtop_atomloop_all_names(aloop, &atomname, &resnum, &resname);
+					if (numSS > 1)
+                                        		MD_state->x[ssIndices[count]][dim] = Coords_ptr[count++];
+					else 
+                				while (gmx_mtop_atomloop_all_next(aloop, &atomindex, &atom)) {
 
-                        			if(strncmp(resname, "SOL", 3) && strncmp(resname, "NA", 2) && strncmp(resname, "CL", 2) && strncmp(resname, "GRA", 3))
-                                			MD_state->x[atomindex + (nSS-1) * DOF / nSSglob][dim] = Coords_ptr[count++];
-							//MD_state->x[count + (nSS-1) * DOF / nSSglob][dim] = 1000.0 * (Coords_ptr[count++] - MD_state->x[count + (nSS-1) * DOF / nSSglob][dim]) / (cgLength + mdLength);
-							// the 1000.0 is a conversion factor from fs to ps because the velicities in gromacs are always in nm/ps 
-                			}
+                        				gmx_mtop_atomloop_all_names(aloop, &atomname, &resnum, &resname);
+
+                        				if(strncmp(resname, "SOL", 3) && strncmp(resname, "NA", 2) && strncmp(resname, "CL", 2) && strncmp(resname, "GRA", 3)) {
+								//velocity = Coords_ptr[count] - MD_state->x[atomindex][dim];
+                                				MD_state->x[atomindex][dim] = Coords_ptr[count++];
+							}
+							//else
+								//if (!strncmp(resname, "SOL", 3) || !strncmp(resname, "NA", 2) || !strncmp(resname, "CL", 2))
+								//	MD_state->x[atomindex][dim] += velocity;
+
+                				}
+				}
+
+				// std::cout << "translated the system by " << velocity << std::endl;
 
 				ierr = VecRestoreArray(Coords[dim], &Coords_ptr);
 				CHKERRQ(ierr);
@@ -443,7 +531,12 @@ Micro_state::~Micro_state() {
 			ierr = VecDestroy(Velocities.data() + dim);
 			DMS_CHKERRQ(ierr);
 
+			ierr = VecDestroy(pVelocities.data() + dim);
+                        DMS_CHKERRQ(ierr);
+
 			ierr = VecDestroy(Forces.data() + dim);
 			DMS_CHKERRQ(ierr);
 		}
+
+	delete[] ssIndices;
 }

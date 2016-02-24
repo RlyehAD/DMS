@@ -498,7 +498,7 @@ int gmx_mdrun(int argc, char *argv[])
 
     real dmsScale = 1.0;
     char const *cgMethod = "SpaceWarping";
-    char *userRef = NULL, *topFname = NULL, *dmsElecMulti = NULL;
+    char *dmsUserRef = NULL, *dmsTopFname = NULL, *dmsElecMulti = NULL, *dmsSelFname = NULL;
 
     t_pargs         pa[] = {
     	{ "-dms_kmax", FALSE, etINT, {&dmsKmax},
@@ -523,14 +523,16 @@ int gmx_mdrun(int argc, char *argv[])
 	  "name of the file to be read for applying multi-freq electric field along the z-axis" },
 	{ "-dms_method",   FALSE, etSTR, {&cgMethod},
           "coarse-graining method of choice for DMS" },
-	{ "-dms_ref",   FALSE, etSTR, {&userRef},
+	{ "-dms_ref",   FALSE, etSTR, {&dmsUserRef},
           "name of a structure (.gro) file to be used for constructing the reference configuration" },
-        { "-dms_top",   FALSE, etSTR, {&topFname},
+        { "-dms_top",   FALSE, etSTR, {&dmsTopFname},
           "name of the topology file used when reconstructing the microstate subject to length constraints" },
 	{ "-dms_nchains",   FALSE, etINT, {&dmsChains},
           "number of chains the system (macromolecule) consists of" },
         { "-dms_nss",   FALSE, etINT, {&dmsSSn},
           "number of subsystems" },
+	{ "-dms_sel",   FALSE, etSTR, {&dmsSelFname},
+          "file that contains atomic indices for subsystem decomposition. The indices must start from *1* and not *0*." },
 	{ "-dms_scale",   FALSE, etREAL, {&dmsScale},
           "scaling parameter for tuning microstate reconstruction" },
 	{ "-dd",      FALSE, etRVEC, {&realddxyz},
@@ -827,11 +829,12 @@ int gmx_mdrun(int argc, char *argv[])
     dArgs.relax = dmsRelax;
     dArgs.micro = dmsMicro;
     dArgs.cgMethod = cgMethod;
-    dArgs.userRef = userRef;
-    dArgs.topFname = topFname;
+    dArgs.userRef = dmsUserRef;
+    dArgs.topFname = dmsTopFname;
     dArgs.scale	   = dmsScale;
     dArgs.nss	   = dmsSSn;
     dArgs.nHist	   = dmsHist;
+    dArgs.selFname = dmsSelFname;
 
     if(dmsElecMulti) {
 

@@ -17,7 +17,7 @@ PetscErrorCode swm::initialize(DmsBase& Dbase) {
 
 	Dbase.setNcg(indices.size());
 
-	ierr = setupBasis(Dbase.getNatoms(), Dbase.getNcg(), Dbase);
+	ierr = setupBasis(Dbase.getLocalNatoms(), Dbase.getNcg(), Dbase);
 	CHKERRQ(ierr);
 
 	ierr = constructBasis(Dbase.Microscopic->Get_RefCoords(), Dbase);
@@ -96,23 +96,6 @@ PetscErrorCode swm::constructCoords(CVec Vars, CVec pVars, DmsBase& Dbase, std::
 
 	PetscFunctionReturn(ierr);
 }
-
-PetscErrorCode computeVelocs(int step, DmsBase& Dbase) {
-        	/* This function constructs SWM coords, velocities, and forces, depending on the arguments
-         	* supplied. The three CG-construction function pointers in Mesoscopic should all point to
-         	* this function.
-         	*/
-        	PetscFunctionBegin;
-		PetscErrorCode ierr;
-
-        	for(int dim = 0; dim < Dbase.Mesoscopic->Get_Dim(); dim++) {
-
-                	ierr = (Dbase.Mesoscopic->mappingVelo)(Dbase.Microscopic->Get_Velocities()[dim], step, dim, Dbase);
-                	CHKERRQ(ierr);
-        	}
-
-        	PetscFunctionReturn(ierr);
-	}
 
 PetscErrorCode swm::constructVelocities(DmsBase& Dbase) {
 	PetscFunctionBegin;

@@ -51,6 +51,7 @@ namespace swm {
 	PetscErrorCode initialize(DmsBase& Dbase);	
 	PetscErrorCode updateRef(DmsBase& Dbase);
 	PetscErrorCode coarseGrain(CVec Coords, CVec pCoords, DmsBase& Dbase, std::fstream&);
+	PetscErrorCode coarseGrainVelo(CVec Coords, DmsBase& Dbase, std::fstream&);
 	PetscErrorCode fineGrain(CVec Coords, CVec Coords_prev, DmsBase& Dbase, std::fstream&);
 	PetscErrorCode constructVelocities(DmsBase& Dbase);
 	PetscErrorCode constructCoords(CVec Vars, CVec pVars, DmsBase& Dbase, std::fstream&);

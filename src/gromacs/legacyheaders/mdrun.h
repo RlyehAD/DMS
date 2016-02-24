@@ -98,6 +98,7 @@ typedef struct dmsArgs {
 	char const *cgMethod;
 	char *userRef;
 	char *topFname;
+	char *selFname;
 } dmsArgs;
 
 typedef double gmx_integrator_t (FILE *log, t_commrec *cr,

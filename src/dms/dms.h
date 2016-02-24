@@ -45,10 +45,7 @@
  *The atomistic and CG states must also persist throughout the simulation. Both are updated via the class methods.
  *Therefore, all three methods need not return anything.
 
- *TODO: logging (maybe PETSc?)
  */
-
-// CC=mpicc CXX=mpiCC cmake -DCMAKE_INSTALL_PREFIX=/home/levnon/.local/ -DGMX_MPI=ON ../
 
 #ifndef DMS_H
 #define DMS_H

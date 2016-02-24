@@ -11,6 +11,7 @@ PetscErrorCode DmsPade::computeInvMat(PetscScalar Coords[]) {
      a1, a1/2, and b1. See ref.
   */
         PetscFunctionBegin;
+/*
 	PetscScalar coefsRaw[nHist*nHist] = { 
 	  delta, pow(delta, 0.5), - Coords[0] * delta, 
 	  Delta, pow(Delta, 0.5), - Coords[1] * Delta, 
@@ -19,6 +20,9 @@ PetscErrorCode DmsPade::computeInvMat(PetscScalar Coords[]) {
 
 	ierr = MatCreateSeqDense(comm, nHist, nHist, coefsRaw, &invMat);
 	CHKERRQ(ierr);
+
+	I commented this block because gcc/4.9.2 was complaining about uninitialized coefsRaw. WTF??
+*/
 
 	PetscFunctionReturn(ierr);
 }

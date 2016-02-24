@@ -2104,29 +2104,21 @@ void do_force(FILE *fplog, t_commrec *cr,
 
     // elec field applied only along the z-axis
     if(elecField) {
-	for(i = 0; i < mdatoms->nr; i++)
+	for(i = 0; i < mdatoms->homenr; i++)
 		f[i][2] += mdatoms->chargeA[i] * elecField;
      }
-
-    // add external force here along the z-direction
-    for(i = 0; i < mdatoms->nr; i++)
-                f[i][2] += 0.1; // ~ roughly 1 atm
-
 
     for(i = 0; i < mdatoms->homenr; i++) {
  	for(dim = 0; dim < 3; dim++)
 
-                if(f[i][dim] > force_threshold) {
-                           //printf("force high = %f on atom %d\n", f[i][dim], i);
+                if(f[i][dim] > force_threshold)
                            f[i][dim] = force_threshold;
-                }
                 else
-                     if(f[i][dim] < -force_threshold) {
-                            //printf("force high = %f on atom %d\n", f[i][dim], i);
+                     if(f[i][dim] < -force_threshold)
                             f[i][dim] = - force_threshold;
-                     }
 
         }
+
 }
 
 void do_constrain_first(FILE *fplog, gmx_constr_t constr,

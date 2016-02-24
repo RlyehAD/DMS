@@ -27,7 +27,7 @@ PetscErrorCode readRef(char* fname, DmsBase& Dbase) {
         	std::string::size_type sz;
        	 	int numAtoms = std::stoi (numAtomsStr, &sz);
 
-        	int resNum, atomNum, c;
+        	int resNum, atomNum;
         	char resID[1000], atomID[1000];
 
         	for(int i = 0; i < numAtoms; i++) {
@@ -135,10 +135,11 @@ void DmsBase::registerMethods() {
 	PetscFunctionBegin;
 
 	std::string SpaceWarping = "SpaceWarping",
-                    FieldVariables = "FieldVariables";
+        FieldVariables = "FieldVariables";
 
     	fineGrainHash[SpaceWarping] = swm::fineGrain;
     	coarseGrainHash[SpaceWarping] = swm::coarseGrain;
+	coarseGrainVeloHash[SpaceWarping] = swm::coarseGrainVelo;
     	initializeHash[SpaceWarping] = swm::initialize;
     	updateRefHash[SpaceWarping] = swm::updateRef;
 
@@ -200,7 +201,7 @@ DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
 
             	fpLog << getTime() << ":INFO:Setting up " << cgMethod << " subsystem" << std::endl;
 
-            	Mesoscopic  = new Meso_state(nCG, cgDim, nHist, comm, coarseGrainHash[cgMethod]);
+            	Mesoscopic  = new Meso_state(nCG, cgDim, nHist, comm, coarseGrainHash[cgMethod], coarseGrainVeloHash[cgMethod]);
             	fpLog << getTime() << ":INFO:Success! Number of CG variables per subsystem is " << nCG << std::endl;
     	}   
 }
@@ -274,7 +275,7 @@ DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
 
                 fpLog << getTime() << ":INFO:Setting up " << cgMethod << " subsystem ..." << std::endl;
 
-                Mesoscopic  = new Meso_state(nCG, cgDim, nHist, comm, coarseGrainHash[cgMethod]);
+                Mesoscopic  = new Meso_state(nCG, cgDim, nHist, comm, coarseGrainHash[cgMethod], coarseGrainVeloHash[cgMethod]);
                 fpLog << getTime() << ":INFO:Success! Number of CG variables per subsystem is " << nCG << std::endl;
 		fpLog << getTime() << ":INFO:Reference structure will be updated every " << freqUpdate <<  " ps" << std::endl;
         }
@@ -334,14 +335,15 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
                         	CHKERRQ(ierr);		
                 	}
 
+		// save current coords to be potentially used for fine-graining
 		for(int dim = 0; dim < Microscopic->Get_Dim(); dim++) {
                         ierr = VecCopy(Microscopic->Get_Coords()[dim], Microscopic->Get_pCoords()[dim]);
                         CHKERRQ(ierr);
                 }
 
-		// This function syncs the coords, velocities, etc. with the GROMACS t_state
 		fpLog << getTime() << ":INFO:Syncing DMS with Gromacs" << std::endl;
 
+		// This function syncs the coords, velocities, etc. with the GROMACS t_state
 		ierr = Microscopic->Sync_DMS_fromMD(this);
 		CHKERRQ(ierr);
 
@@ -353,10 +355,13 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 		ierr = constructCoords();
 		CHKERRQ(ierr);
 
-		ierr = constructVelocities();
-		CHKERRQ(ierr);
+		for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++)
+                        ierr = VecCopy(Mesoscopic->Get_Velocities()[dim], Mesoscopic->Get_pVelocities()[dim]);
 
-		ierr = constructForces();
+		ierr = computeVelocs();
+		CHKERRQ(ierr);
+		
+		ierr = computeForces();
                 CHKERRQ(ierr);
 
 		// Pade: save CG state at t = -	Delta + delta
@@ -382,38 +387,12 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 		if(nHistory > 1)
 			ierr = Integrator->integrate(Mesoscopic->Get_Coords(), Mesoscopic->Get_Velocities()); // call Pade->integrate method
 		else {
-
-
-			if(timeStep > 1) {
 				
-				CVec RHS;
-				RHS.resize(Mesoscopic->Get_Dim());
+			for(auto dim = 0; dim < Mesoscopic->Get_Dim(); dim++) 
+				ierr = VecAXPY(Mesoscopic->Get_Velocities()[dim], Delta, Mesoscopic->Get_Forces()[dim]);
 
-				for(auto dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
-			
-					ierr = VecCreateMPI(comm, PETSC_DECIDE, Mesoscopic->Get_DOF(), RHS.data() + dim); 
-					CHKERRQ(ierr);
-
-					ierr = VecCopy(Mesoscopic->Get_Velocities()[dim], RHS[dim]); 
-					CHKERRQ(ierr);
-
-					ierr = VecAXPY(RHS[dim], Delta * 0.5, Mesoscopic->Get_Forces()[dim]); 
-					CHKERRQ(ierr);
-				}
-
-				ierr = Integrator->integrate(Mesoscopic->Get_Coords(), RHS);
-				CHKERRQ(ierr);
-
-				for(auto dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
-				
-					ierr = VecDestroy(RHS.data() + dim);
-                                	CHKERRQ(ierr);
-				}
-			}
-			else {
-				ierr = Integrator->integrate(Mesoscopic->Get_Coords(), Mesoscopic->Get_Velocities());
-                                CHKERRQ(ierr);
-			}	
+			ierr = Integrator->integrate(Mesoscopic->Get_Coords(),  Mesoscopic->Get_Velocities());
+                        CHKERRQ(ierr);
 		}	
 
 		// Fine-grain (recover atomistic configuration)
@@ -537,6 +516,9 @@ int constructDmsCoords(dmsBasePtr swm) {
 
             ierr = dmsBase->constructCoords();
             CHKERRQ(ierr);
+
+	    ierr = dmsBase->computeVelocs();
+            CHKERRQ(ierr);
         }
 
         PetscFunctionReturn(ierr);
@@ -653,41 +635,18 @@ PetscErrorCode DmsBase::computeVelocs() {
          */
         PetscFunctionBegin;
 
-        for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
+	fpLog << getTime() << ":INFO:Computing CG velocities " << std::endl;
 
-                ierr = (Mesoscopic->mappingVelo)(Microscopic->Get_Velocities()[dim], timeStep, dim, *this);
-                CHKERRQ(ierr);
-        }
+        ierr = (Mesoscopic->mappingVelo)(Microscopic->Get_Velocities(), *this, DmsBase::fpLog);
+        CHKERRQ(ierr);
 
         PetscFunctionReturn(ierr);
 }
 
-PetscErrorCode DmsBase::constructVelocities() {
-	PetscFunctionBegin;
-
-	fpLog << getTime() << ":INFO:Constructing CG velocities " << std::endl;
-
-	for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
-
-		ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_Velocities()[dim]);
-		CHKERRQ(ierr);
-
-		ierr = VecAXPY(Mesoscopic->Get_Velocities()[dim], -1.0, Mesoscopic->Get_pCoords()[dim]);
-		CHKERRQ(ierr);
-
-		ierr = VecScale(Mesoscopic->Get_Velocities()[dim], 1.0 / Microscopic->getLength());
-		CHKERRQ(ierr);
-
-		CHKERRQ(ierr);
-	}
-
-	PetscFunctionReturn(ierr);
-}
-
-PetscErrorCode DmsBase::constructForces() {
+PetscErrorCode DmsBase::computeForces() {
         PetscFunctionBegin;
 
-        fpLog << getTime() << ":INFO:Constructing CG forces " << std::endl;
+        fpLog << getTime() << ":INFO:Computing CG forces " << std::endl;
 
         for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
 
@@ -697,7 +656,7 @@ PetscErrorCode DmsBase::constructForces() {
                 ierr = VecAXPY(Mesoscopic->Get_Forces()[dim], -1.0, Mesoscopic->Get_pVelocities()[dim]);
                 CHKERRQ(ierr);
 
-                ierr = VecScale(Mesoscopic->Get_Forces()[dim], 1.0 / (Delta - Microscopic->getLength()) );
+                ierr = VecScale(Mesoscopic->Get_Forces()[dim], 1.0 / Microscopic->getLength() );
                 CHKERRQ(ierr);
 
                 CHKERRQ(ierr);

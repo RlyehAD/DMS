@@ -10,7 +10,7 @@ class DmsBase;
 //int DmsBase::getNumSSglob();
 
 typedef PetscErrorCode (*ptrMap)(CVec, CVec, DmsBase& Dbase, std::fstream&);
-typedef PetscErrorCode (*ptrMapVelo)(const Vec, const PetscInt, const PetscInt, DmsBase&);
+typedef PetscErrorCode (*ptrMapVelo)(CVec, DmsBase&, std::fstream&);
 std::vector< std::vector<PetscInt> > dmsReadTop(char* fname);
 
 /* The micro_state modifies only atomistic properties whereas the meso_state class modified
@@ -22,7 +22,7 @@ class Micro_state {
 public:
 
 	Micro_state(const t_state* state, const t_mdatoms* tmdatoms, const gmx_mtop_t* top,
-		    const t_inputrec*, PetscInt Dim, MPI_Comm, ptrMap, const int, const real, DmsBase*, char*);
+		    const t_inputrec*, PetscInt Dim, MPI_Comm, ptrMap, const int, const real, PetscInt, PetscInt, DmsBase*, char*, char*);
 	Micro_state() {};
 
 	explicit Micro_state(const Micro_state&);
@@ -41,6 +41,7 @@ public:
 	CVec Get_RefCoords() const { return Ref_Coords; }
 
 	CVec Get_Velocities() const { return Velocities; }
+	CVec Get_pVelocities() const { return pVelocities; }
 	CVec Get_Forces() const { return Forces; }
 
 	MPI_Comm Get_COMM() const { return COMM; }
@@ -61,6 +62,7 @@ protected:
 	CVec Coords,
 	     pCoords,
 	     Velocities,
+	     pVelocities,
 	     Forces,
 	     Ref_Coords;
 
@@ -70,10 +72,10 @@ protected:
 
 	PetscInt DOF,
 		 Dim,
-		 DOF_local,
+		 DOF_local, // this used to represent number of atoms per proc, but now is being used per subsystem
 		 MPI_Size,
 		 MPI_Rank,
-		 istart, // to be set/used lated??
+		 istart, // to be set/used later??
 		 iend;
 
 private:
@@ -88,6 +90,11 @@ private:
 	std::vector< std::vector<PetscInt> > topIndices;
 
 	PetscErrorCode setupRefTop(char*, DmsBase*);
+	PetscErrorCode setupSubsystem(char*);
+
+	PetscInt *ssIndices;
+	PetscInt numSS;
+	PetscInt ssIndex;
 };
 
 
@@ -96,7 +103,7 @@ class Meso_state: public Micro_state {
 	PetscInt nHist;
 public:
 
-	Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt, MPI_Comm, ptrMap);
+	Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt, MPI_Comm, ptrMap, ptrMapVelo);
 
 	Meso_state() {};
 

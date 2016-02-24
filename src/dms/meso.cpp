@@ -1,6 +1,6 @@
 #include "classes.h"
 
-Meso_state::Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt nHistory, MPI_Comm Comm, ptrMap ptrFunc) {
+Meso_state::Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt nHistory, MPI_Comm Comm, ptrMap ptrFunc, ptrMapVelo ptrFuncVelo) {
 
 	PetscFunctionBegin;
 
@@ -8,6 +8,7 @@ Meso_state::Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt nHistory, MPI_Co
 	Dim = DimCG;
 	COMM = Comm;
 	mapping = ptrFunc;
+	mappingVelo = ptrFuncVelo;
 	nHist = nHistory;
 
 	/*
@@ -25,6 +26,7 @@ Meso_state::Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt nHistory, MPI_Co
 	Ref_Coords.resize(Dim);
 	pCoords.resize(Dim);
 	Velocities.resize(Dim);
+	pVelocities.resize(Dim);
 	Forces.resize(Dim);
 
 	for(int dim = 0; dim < Dim; dim++)
@@ -50,6 +52,11 @@ Meso_state::Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt nHistory, MPI_Co
 			VecAssemblyBegin(Get_Velocities()[dim]);
 			VecAssemblyEnd(Get_Velocities()[dim]);
 
+			VecCreateMPI(COMM, PETSC_DECIDE, NumCG, pVelocities.data() + dim);
+                        VecZeroEntries(Get_pVelocities()[dim]);
+                        VecAssemblyBegin(Get_pVelocities()[dim]);
+                        VecAssemblyEnd(Get_pVelocities()[dim]);
+
 			VecCreateMPI(COMM, PETSC_DECIDE, NumCG, Forces.data() + dim);
 			VecZeroEntries(Get_Forces()[dim]);
 			VecAssemblyBegin(Get_Forces()[dim]);
@@ -68,6 +75,9 @@ Meso_state::Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt nHistory, MPI_Co
 			VecCreateSeq(COMM, NumCG, Velocities.data() + dim);
 			VecZeroEntries(Get_Velocities()[dim]);
 
+			VecCreateSeq(COMM, NumCG, pVelocities.data() + dim);
+                        VecZeroEntries(Get_pVelocities()[dim]);
+
 			VecCreateSeq(COMM, NumCG, Forces.data() + dim);
 			VecZeroEntries(Get_Forces()[dim]);
 		}
@@ -85,6 +95,7 @@ Meso_state::Meso_state(const Meso_state& meso_class) {
 	Coords.resize(Dim);
 	pCoords.resize(Dim);
 	Velocities.resize(Dim);
+	pVelocities.resize(Dim);
 	Forces.resize(Dim);
 
 	for(int dim = 0; dim < Dim; dim++)
@@ -104,6 +115,11 @@ Meso_state::Meso_state(const Meso_state& meso_class) {
 			VecAssemblyBegin(Get_Velocities()[dim]);
 			VecAssemblyEnd(Get_Velocities()[dim]);
 
+			VecCreateMPI(COMM, PETSC_DECIDE, DOF, pVelocities.data() + dim);
+                        VecCopy(meso_class.Get_pVelocities()[dim], Get_pVelocities()[dim]);
+                        VecAssemblyBegin(Get_pVelocities()[dim]);
+                        VecAssemblyEnd(Get_pVelocities()[dim]);
+
 			VecCreateMPI(COMM, PETSC_DECIDE, DOF, Forces.data() + dim);
 			VecCopy(meso_class.Get_Forces()[dim], Get_Forces()[dim]);
 			VecAssemblyBegin(Get_Forces()[dim]);
@@ -118,6 +134,9 @@ Meso_state::Meso_state(const Meso_state& meso_class) {
 
 			VecCreateSeq(COMM, DOF, Velocities.data() + dim);
 			VecCopy(meso_class.Get_Velocities()[dim], Get_Velocities()[dim]);
+
+			VecCreateSeq(COMM, DOF, pVelocities.data() + dim);
+                        VecCopy(meso_class.Get_pVelocities()[dim], Get_pVelocities()[dim]);
 
 			VecCreateSeq(COMM, DOF, Forces.data() + dim);
 			VecCopy(meso_class.Get_Forces()[dim], Get_Forces()[dim]);

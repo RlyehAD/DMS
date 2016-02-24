@@ -62,14 +62,14 @@ class DmsBase {
 public:
 	DmsBase(const t_state* state, const t_mdatoms* mdatoms,
                 const gmx_mtop_t* top, const t_inputrec* ir, const gmx_int64_t aDim, const gmx_int64_t cDim, const int max_order,
-                const gmx_int64_t freq, const real dt, const gmx_int64_t t0, MPI_Comm comm, const int mSteps, const double optimScale, const int nss, 
-		const int nssGlob, const int, std::string = "SpaceWarping", char* readref = NULL, char* topFname = NULL);
+                const gmx_int64_t freq, const real dt, const gmx_int64_t t0, MPI_Comm comm, const int mSteps, const double optimScale, const PetscInt, 
+		const PetscInt, const PetscInt, std::string = "SpaceWarping", char* readref = NULL, char* topFname = NULL, char* subFname = NULL);
 
 	DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
 			const gmx_mtop_t* top, const t_inputrec* ir, const gmx_int64_t aDim, const gmx_int64_t cDim, const gmx_int64_t nCGx,
 			const gmx_int64_t nCGy, const gmx_int64_t nCGz, const gmx_int64_t freq, const gmx_int64_t assFreq, const real dt, MPI_Comm communic, 
-			const int mSteps, const real resol, const real scaling, const gmx_int64_t thresh, const int,
-			std::string cgType = "FieldVariables", bool deb = false, char* topFname = NULL);
+			const int mSteps, const real resol, const real scaling, const gmx_int64_t thresh, const int, const PetscInt,
+			const PetscInt ssIndex, std::string cgType = "FieldVariables", bool deb = false, char* topFname = NULL, char* subFname = NULL);
 
 	Micro_state *Microscopic;
     	Meso_state  *Mesoscopic;
@@ -85,14 +85,14 @@ public:
 	void registerMethods();
 	static std::string getTime();
 
-
 	PetscErrorCode constructRef();
 	PetscErrorCode computeVelocs(); // useless?
     	PetscErrorCode constructCoords();
-    	PetscErrorCode constructVelocities();
+	PetscErrorCode computeForces();
     
 	// Getters
 	gmx_int64_t getNatoms() const { return nAtoms; }
+	gmx_int64_t getLocalNatoms() const { return nLocalAtoms; }
 	gmx_int64_t getNcg() const { return nCG; }
 	gmx_int64_t getNcgAdj() const { return nCGAdj; }
 	gmx_int64_t getNcgX() const { return nCGx; }
@@ -137,9 +137,11 @@ public:
 protected:
     	gmx_int64_t freqUpdate,
     	timeStep,
+	Delta, // CG timestep in ps
     	dim,
 	cgDim,
 	nAtoms,
+	nLocalAtoms, // number of atoms per subsystem. TODO: change the identifier to "sub" versus "local"
 	nCG,
 	nCGx,
 	nCGy,
@@ -177,6 +179,8 @@ protected:
 	std::map<std::string, ptrMap> fineGrainHash,
 				      coarseGrainHash;
 
+	std::map<std::string, ptrMapVelo> coarseGrainVeloHash;
+
 	std::map<std::string, PetscErrorCode (*)(DmsBase&)> initializeHash,
 							    updateRefHash; 
 
@@ -207,8 +211,8 @@ int constructDmsVelo(dmsBasePtr swm, const int dmsStep);
 dmsBasePtr newDmsBase(const t_state* state, const t_mdatoms* mdatoms,
                       const gmx_mtop_t* top, const t_inputrec* ir, gmx_int64_t dim,
                       gmx_int64_t, int, gmx_int64_t freq, const real dt, const gmx_int64_t,
-                      MPI_Comm comm, const int, const float, const int, const int, const int, char 
-		      const*, char* readref, char*);
+                      MPI_Comm comm, const int, const float, const int, const PetscInt, const int, char 
+		      const*, char* readref, char*, char*);
 
 gmx_bool dmsInitialize(int argc, char* argv[]);
 

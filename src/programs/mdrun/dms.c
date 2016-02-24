@@ -270,6 +270,9 @@ double do_md(FILE *fplog, t_commrec *cr, int nfile, const t_filenm fnm[],
 	printf("Using kmax = %d \nThe ref conf will be updated every %d steps \nThe CG time step is %f ps\nMicro phase consists of %d steps\n", 
 		kmax, numFreq, dtDms, microSteps); 
 
+	if(dArgs->selFname)
+		printf("Subsystem decomposition is on. Reading selections from user-specified file %s\n", dArgs->selFname);  
+
 	if(dArgs->nElecHarmonics > 0) {
 		int i;
 		printf("Electric field (along the z-direction) is on with %d harmonics:\nAmplitude\tFrequency\Phase\n", dArgs->nElecHarmonics);	//Y
@@ -356,13 +359,20 @@ double do_md(FILE *fplog, t_commrec *cr, int nfile, const t_filenm fnm[],
             nfile, fnm, &outf, &mdebin,
             force_vir, shake_vir, mu_tot, &bSimAnn, &vcm, Flags);
 
-    /* Initialize DMS */
-    dmsBasePtr DmsBase[dArgs->nss];
+    /* Initialize DMS on the master processor
+
+       TODO: parallelize DMs initialization on all processors in a way that minimizes load imbalance
+    */
+
     int nss;
+    dmsBasePtr DmsBase[dArgs->nss];
+
+    if(MASTER(cr)) {
  
-    for(nss = 0; nss < dArgs->nss; nss++)
-	DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale, 
-				  nss, dArgs->nss, dArgs->nHist, dArgs->cgMethod, dArgs->userRef, dArgs->topFname);
+    	for(nss = 0; nss < dArgs->nss; nss++)
+		DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale, 
+					  dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname);
+    }
 
     clear_mat(total_vir);
     clear_mat(pres);
@@ -2031,7 +2041,7 @@ ir->nstcalcenergy);
 
 	if(bondEnergy >= 0.0) {
 		if(!bStartMS) {
-                	if( ( fabs(enerd->term[F_TEMP] - ir->opts.ref_t[0]) <= 1.0 ) && counter >= dmsRelax ) {
+                	if( ( fabs(enerd->term[F_TEMP] - ir->opts.ref_t[0]) <= 100.0 ) && counter >= dmsRelax ) {
                         	if(MASTER(cr)) {
 
 					printf("Successfully equilibriated the system based on bond energies %f kJ/nm*mol at temp %f K ...\n", enerd->term[F_BONDS], enerd->term[F_TEMP]);
@@ -2042,6 +2052,7 @@ ir->nstcalcenergy);
                         	}
 
                         	dd_collect_vec(cr->dd, state, state->x, state_global->x);
+				dd_collect_vec(cr->dd, state, state->v, state_global->v);
 
 				step -= counter + 1;
 		                step_rel -= counter + 1;
@@ -2053,8 +2064,9 @@ ir->nstcalcenergy);
                         	         bCPT, bRerunMD, bLastStep, (Flags & MD_CONFOUT),
                                 	 bSumEkinhOld);
 
-				for(nss = 0; nss < dArgs->nss; nss++)
-                        		constructDmsCoords(DmsBase[nss]);
+				if(MASTER(cr))
+					for(nss = 0; nss < dArgs->nss; nss++)
+                        			constructDmsCoords(DmsBase[nss]);
 
                         	bStartMS = TRUE;
                 	}
@@ -2073,12 +2085,14 @@ ir->nstcalcenergy);
                 }
 
 		dd_collect_vec(cr->dd, state, state->x, state_global->x);
+		dd_collect_vec(cr->dd, state, state->v, state_global->v);
 
                 step += dmsSteps - microSteps;
                 step_rel += dmsSteps - microSteps;
 
-		for(nss = 0; nss < dArgs->nss; nss++)
-                	dmsCGStep(DmsBase[nss], step);
+		if(MASTER(cr))
+			for(nss = 0; nss < dArgs->nss; nss++)
+                		dmsCGStep(DmsBase[nss], step);
 
 		if (DOMAINDECOMP(cr))
 			dmsDistributeCoords(cr->dd, state_global->x, state->x); 
@@ -2087,69 +2101,6 @@ ir->nstcalcenergy);
 		bStartMS = FALSE;
                 counter = 0;
 
-/*
-		if(MASTER(cr))
-			printf("STARTING CUSTOM SD ...\n");
-
-		int dms_sd, dms_sd_dim;
-
-		printf(":HOME atoms nr = %d, nr = %d\n", mdatoms->homenr, mdatoms->nr);
-
-		for(dms_sd = 0; dms_sd < 5; dms_sd++) {
-
-			do_force(fplog, cr, ir, step, nrnb, wcycle, top, groups,
-        	             state->box, state->x, &state->hist,
-                	     f, force_vir, mdatoms, enerd, fcd,
-                     	     state->lambda, graph,
-                     	     fr, vsite, mu_tot, t, mdoutf_get_fp_field(outf), ed, bBornRadii,
-                     	     (bNS ? GMX_FORCE_NS : 0) | force_flags, 0);
-
-
-			for(i = 0; i < mdatoms->homenr; i++)
-		        	for(dms_sd_dim = 0; dms_sd_dim < 3; dms_sd_dim++) {
-					state->x[i][dms_sd_dim] += 0.0001 * f[i][dms_sd_dim];
-
-					if(i < 5)
-						printf("Disp = %f\n", 0.0001 * f[i][dms_sd_dim]);
-				} 
-		}
-
-		if (DOMAINDECOMP(cr))
-			dd_collect_vec(cr->dd, state, state->x, state_global->x);
-
-	        ir->em_tol = 100.0;
-		ir->niter = 10;
-    		int dmsCons = ir->eConstrAlg;
-    		ir->eConstrAlg = -1;
-    		ir->em_tol = 1000.0;
-    		ir->em_stepsize = 0.01;
-		fr->bMolPBC = 1;
-
-		do_steep(fplog, cr,
-                	nfile, fnm,
-               		oenv, bVerbose, bCompact,
-                	nstglobalcomm,
-                	vsite, constr,
-                	stepout,
-                	ir,
-                	top_global, fcd,
-                	state_global,
-               		mdatoms,
-                	nrnb, wcycle,
-                	ed,
-                	fr,
-                	repl_ex_nst, 
-			repl_ex_nex, 
-			repl_ex_seed,
-                	membed,
-                	cpt_period, 
-			max_hours,
-                	deviceOptions,
-                	imdport,
-                	Flags,
-                	walltime_accounting,
-                	dArgs);
-*/
         }
 
     }
@@ -2217,8 +2168,9 @@ ir->nstcalcenergy);
 
     walltime_accounting_set_nsteps_done(walltime_accounting, step_rel);
 
-    for(nss = 0; nss < dArgs->nss; nss++)
-    	delDmsBase(DmsBase+nss);
+    if(MASTER(cr))
+    	for(nss = 0; nss < dArgs->nss; nss++)
+    		delDmsBase(DmsBase+nss);
 
     return 0;
 }

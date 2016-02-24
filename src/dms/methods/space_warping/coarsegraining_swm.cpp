@@ -50,7 +50,7 @@ PetscErrorCode swm::constructBasis(const std::vector<Vec>& Coords, DmsBase& Dbas
 	for(int dim = 0; dim < Dbase.Microscopic->Get_Dim(); dim++) {
 
 		// Compute U_{k1k2k3} s.t. k1 + k2 + k3 <= kmax
-		ierr = VecCreateSeq(Dbase.getComm(), Dbase.Microscopic->Get_DOF(), NCoords.data() + dim);
+		ierr = VecCreateSeq(Dbase.getComm(), Dbase.Microscopic->Get_DOF_local(), NCoords.data() + dim);
 		CHKERRQ(ierr);
 
 		ierr = VecCopy(Coords[dim], NCoords[dim]);
@@ -59,7 +59,7 @@ PetscErrorCode swm::constructBasis(const std::vector<Vec>& Coords, DmsBase& Dbas
 		// Subtract center of gravity from coords
 		PetscScalar COG;
 		VecSum(NCoords[dim], &COG);
-		COG /= Dbase.Microscopic->Get_DOF();
+		COG /= Dbase.Microscopic->Get_DOF_local();
 
 		ierr = VecShift(NCoords[dim], - COG);
 		CHKERRQ(ierr);
@@ -86,8 +86,7 @@ PetscErrorCode swm::constructBasis(const std::vector<Vec>& Coords, DmsBase& Dbas
 			CHKERRQ(ierr);
 
 			ierr = PetscDTLegendreEval(iend - istart, NCoords_ptr, 1,
-			       &indices[order][dim], polynomials[dim].data(),
-			       NULL, NULL);
+			       &indices[order][dim], polynomials[dim].data(), NULL, NULL);
 			CHKERRQ(ierr);
 
 			ierr = VecRestoreArray(NCoords[dim], &NCoords_ptr);
@@ -162,16 +161,70 @@ PetscErrorCode swm::scaleBasis(DmsBase& Dbase) {
 	PetscFunctionReturn(ierr);
 }
 
+PetscErrorCode swm::coarseGrainVelo(CVec Coords, DmsBase& Dbase, std::fstream&)
+{
+        /* Solve (MU)^t * U \phi = (MU)^t * r
+           i.e.  microMesoMap * Meso->Coords =  mesoMicroMap * Micro-Coords
+         */
+
+        PetscFunctionBegin;
+        PetscErrorCode ierr;
+
+        std::vector<PetscScalar> com = Dbase.compCentOfMass(Dbase.Microscopic->Get_RefCoords());
+
+        Mat *microMesoMap = Dbase.getMicroMeso(),
+            *mesoMicroMap = Dbase.getMesoMicro(),
+            *kernel       = Dbase.getKernel();
+
+        for(auto dim = 0; dim < Dbase.Mesoscopic->Get_Dim(); dim++) {
+                Vec RHS;
+                ierr = VecCreateSeq(Dbase.getComm(), Dbase.getNcg(), &RHS);
+                CHKERRQ(ierr);
+
+                KSP ksp;
+                ierr = KSPCreate(Dbase.getComm(), &ksp);
+                CHKERRQ(ierr);
+
+                ierr = KSPSetOperators(ksp, *microMesoMap, *microMesoMap);
+                CHKERRQ(ierr);
+
+                ierr = KSPSetType(ksp, KSPCG);
+                CHKERRQ(ierr);
+
+                ierr = KSPSetFromOptions(ksp);
+                CHKERRQ(ierr);
+
+                ierr = KSPSetUp(ksp);
+                CHKERRQ(ierr);
+
+                ierr = MatMultTranspose(*kernel, Coords[dim], RHS);
+                CHKERRQ(ierr);
+
+                ierr = KSPSolve(ksp, RHS, Dbase.Mesoscopic->Get_Velocities()[dim]);
+                CHKERRQ(ierr);
+
+                // Free memory
+                ierr = VecDestroy(&RHS);
+                CHKERRQ(ierr);
+
+                ierr = KSPDestroy(&ksp);
+                CHKERRQ(ierr);
+        }
+
+        PetscFunctionReturn(ierr);
+}
+
 PetscErrorCode swm::coarseGrain(CVec Coords, CVec pCoords, DmsBase& Dbase, std::fstream&)
 {
-	/* Solve (MU)^t * U \phi = (MU)^t * (r - r_c)
+	/* Solve (MU)^t * U \phi = (MU)^t * r
+	   i.e.  microMesoMap * Meso->Coords =  mesoMicroMap * Micro-Coords
 	 */
 
 	PetscFunctionBegin;
 	PetscErrorCode ierr;
 
 	std::vector<PetscScalar> com = Dbase.compCentOfMass(Dbase.Microscopic->Get_RefCoords());
-
+ 
 	Mat *microMesoMap = Dbase.getMicroMeso(),
 	    *mesoMicroMap = Dbase.getMesoMicro(),
 	    *kernel	  = Dbase.getKernel();
@@ -197,40 +250,20 @@ PetscErrorCode swm::coarseGrain(CVec Coords, CVec pCoords, DmsBase& Dbase, std::
 		ierr = KSPSetUp(ksp);
 		CHKERRQ(ierr);
 
-		Vec deltaCoords;
-	    	ierr = VecCreateSeq(Dbase.getComm(), Dbase.Microscopic->Get_DOF(), &deltaCoords);
-	    	CHKERRQ(ierr);
-
-		ierr = VecCopy(Coords[dim], deltaCoords);
-		CHKERRQ(ierr);
-
-		//ierr = VecShift(deltaCoords, - com[dim]);
-		//CHKERRQ(ierr);
-
-		ierr = VecAXPBY(deltaCoords, -1.0, 1.0, Dbase.Microscopic->Get_pCoords()[dim]);
-		CHKERRQ(ierr);
-
-		ierr = MatMultTranspose(*kernel, deltaCoords, RHS);
+		ierr = MatMultTranspose(*kernel, Coords[dim], RHS);
 		CHKERRQ(ierr);
 
 		ierr = KSPSolve(ksp, RHS, Dbase.Mesoscopic->Get_Coords()[dim]);
 		CHKERRQ(ierr);
 
-		ierr = VecAXPY(Dbase.Mesoscopic->Get_Coords()[dim], 1.0, Dbase.Mesoscopic->Get_pCoords()[dim]);
-                CHKERRQ(ierr);
+		//VecView(Dbase.Mesoscopic->Get_Coords()[dim], PETSC_VIEWER_STDOUT_SELF);
 
+		// Free memory
 		ierr = VecDestroy(&RHS);
-		CHKERRQ(ierr);
-
-		ierr = VecDestroy(&deltaCoords);
 		CHKERRQ(ierr);
 
 		ierr = KSPDestroy(&ksp);
 		CHKERRQ(ierr);
-
-		//VecView(Dbase.Mesoscopic->Get_Coords()[dim], PETSC_VIEWER_STDOUT_SELF);
-
-		//MatView(Dbase.getMicroMeso(), PETSC_VIEWER_STDOUT_SELF);
 	}
 
 	PetscFunctionReturn(ierr);
