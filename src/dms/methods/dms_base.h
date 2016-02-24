@@ -86,9 +86,9 @@ public:
 	static std::string getTime();
 
 	PetscErrorCode constructRef();
-	PetscErrorCode computeVelocs(); // useless?
+	PetscErrorCode constructVelocities(); // useless?
     	PetscErrorCode constructCoords();
-	PetscErrorCode computeForces();
+	PetscErrorCode constructForces();
     
 	// Getters
 	gmx_int64_t getNatoms() const { return nAtoms; }
