@@ -388,9 +388,6 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 			ierr = Integrator->integrate(Mesoscopic->Get_Coords(), Mesoscopic->Get_Velocities()); // call Pade->integrate method
 		else {
 				
-			for(auto dim = 0; dim < Mesoscopic->Get_Dim(); dim++) 
-				ierr = VecAXPY(Mesoscopic->Get_Velocities()[dim], Delta, Mesoscopic->Get_Forces()[dim]);
-
 			ierr = Integrator->integrate(Mesoscopic->Get_Coords(),  Mesoscopic->Get_Velocities());
                         CHKERRQ(ierr);
 		}	
@@ -637,8 +634,19 @@ PetscErrorCode DmsBase::constructVelocities() {
 
 	fpLog << getTime() << ":INFO:Computing CG velocities " << std::endl;
 
-        ierr = (Mesoscopic->mappingVelo)(Microscopic->Get_Velocities(), *this, DmsBase::fpLog);
-        CHKERRQ(ierr);
+        for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
+
+                ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_Velocities()[dim]);
+                CHKERRQ(ierr);
+
+                ierr = VecAXPY(Mesoscopic->Get_Velocities()[dim], -1.0, Mesoscopic->Get_pCoords()[dim]);
+                CHKERRQ(ierr);
+
+                ierr = VecScale(Mesoscopic->Get_Velocities()[dim], 1.0 / Microscopic->getLength() );
+                CHKERRQ(ierr);
+
+                CHKERRQ(ierr);
+        }
 
         PetscFunctionReturn(ierr);
 }

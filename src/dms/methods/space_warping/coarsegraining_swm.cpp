@@ -250,6 +250,9 @@ PetscErrorCode swm::coarseGrain(CVec Coords, CVec pCoords, DmsBase& Dbase, std::
 		ierr = KSPSetUp(ksp);
 		CHKERRQ(ierr);
 
+		ierr = Vecshift(Coords[dim], -com[dim]);
+		CHKERRQ(ierr);
+
 		ierr = MatMultTranspose(*kernel, Coords[dim], RHS);
 		CHKERRQ(ierr);
 
@@ -257,6 +260,9 @@ PetscErrorCode swm::coarseGrain(CVec Coords, CVec pCoords, DmsBase& Dbase, std::
 		CHKERRQ(ierr);
 
 		//VecView(Dbase.Mesoscopic->Get_Coords()[dim], PETSC_VIEWER_STDOUT_SELF);
+
+		ierr = Vecshift(Coords[dim], com[dim]);
+                CHKERRQ(ierr);
 
 		// Free memory
 		ierr = VecDestroy(&RHS);

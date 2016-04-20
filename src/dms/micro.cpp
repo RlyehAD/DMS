@@ -246,7 +246,7 @@ Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 			gmx_mtop_atomloop_all_names(aloop, &atomname, &resnum, &resname);
 			//gmx_mtop_atomnr_to_atom(alook, ai, &atom);
 
-			if(numSS >= 1) {
+			if(selFname) {
  
 				if(atomindex >= ssIndices[0] && atomindex <= ssIndices[DOF_local-1]) {
 
@@ -418,7 +418,7 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
 
 			while(count < DOF_local) {
 
-				if(numSS >= 1) {
+				if(selFname) {
                                           Values[dim][count] = MD_state->x[ssIndices[count]][dim];
 					  Indices[count] = count++;
 				}
@@ -486,7 +486,7 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 
 				while(count < DOF_local) {
 
-					if (numSS >= 1)
+					if (selFname)
                                         		MD_state->x[ssIndices[count]][dim] = Coords_ptr[count++];
 					else 
                 				while (gmx_mtop_atomloop_all_next(aloop, &atomindex, &atom)) {
