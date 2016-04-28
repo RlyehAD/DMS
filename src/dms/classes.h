@@ -95,6 +95,7 @@ private:
 	PetscInt *ssIndices;
 	PetscInt numSS;
 	PetscInt ssIndex;
+	char* selFname;
 };
 
 

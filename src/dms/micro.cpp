@@ -163,7 +163,7 @@ PetscErrorCode Micro_state::setupRefTop(char* topFname, DmsBase* Dbase) {
 Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 		const gmx_mtop_t* top, const t_inputrec* ir, PetscInt Dim, MPI_Comm Comm, 
 		ptrMap ptr_func, int microSteps, const real dt, 
-		PetscInt nSS, PetscInt ssI, DmsBase* Dbase, char* topFname, char* selFname) : Dim(Dim) {
+		PetscInt nSS, PetscInt ssI, DmsBase* Dbase, char* topFname, char* sFname) : Dim(Dim) {
 
 	// TODO: atomic forces must be included
 	// TODO: destroy vec/mat PETSC objects before allocating new ones for copy const and operator=
@@ -184,6 +184,7 @@ Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 	DOF = compNumSolMol(top);
 	numSS = nSS;
 	ssIndex = ssI;
+	selFname = sFname;
 
 	atomIndices.resize(DOF);
 
