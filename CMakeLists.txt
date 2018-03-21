@@ -1,36 +1,36 @@
 #
-# This file is part of the DMS molecular simulation package.
+# This file is part of the GROMACS molecular simulation package. It has been modified for DMS installation.
 #
-# Copyright (c) 2009,2010,2011,2012,2013,2014, by the DMS development team, led by
+# Copyright (c) 2009,2010,2011,2012,2013,2014, by the GROMACS development team, led by
 # Mark Abraham, David van der Spoel, Berk Hess, and Erik Lindahl,
 # and including many others, as listed in the AUTHORS file in the
-# top-level source directory and at http://www.DMS.org.
+# top-level source directory and at http://www.gromacs.org
 #
-# DMS is free software; you can redistribute it and/or
+# GROMACS is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation; either version 2.1
 # of the License, or (at your option) any later version.
 #
-# DMS is distributed in the hope that it will be useful,
+# GROMACS is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser General Public
-# License along with DMS; if not, see
+# License along with GROMACS; if not, see
 # http://www.gnu.org/licenses, or write to the Free Software Foundation,
 # Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA.
 #
-# If you want to redistribute modifications to DMS, please
+# If you want to redistribute modifications to GROMACS, please
 # consider that scientific software is very special. Version
 # control is crucial - bugs must be traceable. We will be happy to
 # consider code for inclusion in the official distribution, but
-# derived work must not be called official DMS. Details are found
+# derived work must not be called official GROMACS. Details are found
 # in the README & COPYING files - if they are missing, get the
-# official version at http://www.DMS.org.
+# official version at http://www.gromacs.org.
 #
-# To help us fund DMS development, we humbly ask that you cite
-# the research papers on the package. Check out http://www.DMS.org.
+# To help us fund GROMACS development, we humbly ask that you cite
+# the research papers on the package. Check out http://www.gromacs.org.
 
 cmake_minimum_required(VERSION 2.8.8)
 # When we require cmake >= 2.8.12, it will provide
@@ -66,7 +66,7 @@ set(PROJECT_VERSION "5.0")
 set(REGRESSIONTEST_VERSION "5.0")
 # If this is not a released tarball, "-dev" will be present in
 # PROJECT_VERSION, and REGRESSIONTEST_BRANCH specifies the name of the
-# gerrit.DMS.org branch whose HEAD can test this code, *if* this
+# gerrit.gromacs.org branch whose HEAD can test this code, *if* this
 # code contains all recent fixes from the corresponding code branch.
 set(REGRESSIONTEST_BRANCH "refs/heads/release-5-0")
 
@@ -83,7 +83,7 @@ SET(CPACK_PACKAGE_VERSION_MAJOR "5")
 SET(CPACK_PACKAGE_VERSION_MINOR "0")
 #SET(CPACK_PACKAGE_VERSION_PATCH "0")
 
-# The numerical DMS version. It is 40600 for 4.6.0.
+# The numerical GROMACS version. It is 40600 for 4.6.0.
 # The #define GMX_VERSION in DMS/version.h is set to this value.
 math(EXPR NUM_VERSION
     "${CPACK_PACKAGE_VERSION_MAJOR}*10000 + ${CPACK_PACKAGE_VERSION_MINOR}*100")
@@ -92,11 +92,11 @@ if(CPACK_PACKAGE_VERSION_PATCH)
          "${NUM_VERSION} + ${CPACK_PACKAGE_VERSION_PATCH}")
 endif()
 
-# The API version tracks the numerical DMS version (for now).
-# It is potentially different from the DMS version in the future, if
+# The API version tracks the numerical GROMACS version (for now).
+# It is potentially different from the GROMACS version in the future, if
 # the programs/libraries diverge from the presumably more stable API.
 # The #define GMX_API_VERSION in version.h is set to this value to
-# provide backward compatibility of software written against the DMS API.
+# provide backward compatibility of software written against the GROMACS API.
 set(API_VERSION ${NUM_VERSION})
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT AND UNIX)
@@ -134,7 +134,7 @@ enable_language(C)
 enable_language(CXX)
 
 set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
-set(CPACK_PACKAGE_VENDOR "DMS.org")
+set(CPACK_PACKAGE_VENDOR "gromacs.org")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DMS - a multiscale simulator for high-performance molecular simulation")
 set(CPACK_RESOURCE_FILE_WELCOME "${CMAKE_SOURCE_DIR}/admin/InstallWelcome.txt")
 # Its GPL/LGPL, so they do not have to agree to a license for mere usage, but some installers require this...
@@ -143,7 +143,6 @@ set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/admin/InstallInfo.txt")
 set(CPACK_SOURCE_IGNORE_FILES "\\\\.isreposource$;\\\\.git/;\\\\.gitignore$")
 set(CPACK_PROJECT_CONFIG_FILE "${CMAKE_SOURCE_DIR}/CPackInit.cmake")
 set(CPACK_SOURCE_INSTALLED_DIRECTORIES "${CMAKE_SOURCE_DIR};/;${CMAKE_BINARY_DIR}/src/programs/completion;src/programs/completion;${CMAKE_BINARY_DIR}/share/man/man1;share/man/man1;${CMAKE_BINARY_DIR}/share/man/man7;share/man/man7;${CMAKE_BINARY_DIR}/share/html/final;share/html/final")
-set(CPACK_PACKAGE_CONTACT "gmx-users@DMS.org")
 
 #must come after all cpack settings!
 include(CPack)
@@ -317,8 +316,8 @@ include(gmxManageOpenMP)
 # These need to be done early (before further tests).
 #####################################################################
 
-# The cmake/Check{C,CXX}CompilerFlag.cmake files in the DMS distribution
-# are used with permission from CMake v2.8.9 so that DMS can detect
+# The cmake/Check{C,CXX}CompilerFlag.cmake files in the GROMACS distribution
+# are used with permission from CMake v2.8.9 so that GROMACS can detect
 # invalid options with the Intel Compilers.
 # These files should be removed from the source tree when a CMake version that
 # includes the features in question becomes required for building DMS.
