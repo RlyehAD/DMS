@@ -1,0 +1,1325 @@
+The system is: Linux - 4.13.0-37-generic - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /usr/bin/cc 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is GNU, found in "/home/levnon/Downloads/DMS/CMakeFiles/3.5.1/CompilerIdC/a.out"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /usr/bin/c++ 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+
+The CXX compiler identification is GNU, found in "/home/levnon/Downloads/DMS/CMakeFiles/3.5.1/CompilerIdCXX/a.out"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0e8eb/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0e8eb.dir/build.make CMakeFiles/cmTC_0e8eb.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0e8eb.dir/testCCompiler.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_0e8eb.dir/testCCompiler.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_0e8eb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0e8eb.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_0e8eb.dir/testCCompiler.c.o  -o cmTC_0e8eb -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_56ddb/fast"
+/usr/bin/make -f CMakeFiles/cmTC_56ddb.dir/build.make CMakeFiles/cmTC_56ddb.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_56ddb.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_56ddb.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_56ddb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_56ddb.dir/link.txt --verbose=1
+/usr/bin/cc      -v CMakeFiles/cmTC_56ddb.dir/CMakeCCompilerABI.c.o  -o cmTC_56ddb -rdynamic  
+Using built-in specs.
+COLLECT_GCC=/usr/bin/cc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper
+Target: x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.9' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+Thread model: posix
+gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.9) 
+COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_56ddb' '-rdynamic' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccdsvm5j.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_56ddb /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_56ddb.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_56ddb/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_56ddb.dir/build.make CMakeFiles/cmTC_56ddb.dir/build]
+  ignore line: [make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_56ddb.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc     -o CMakeFiles/cmTC_56ddb.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_56ddb]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_56ddb.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc      -v CMakeFiles/cmTC_56ddb.dir/CMakeCCompilerABI.c.o  -o cmTC_56ddb -rdynamic  ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/usr/bin/cc]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper]
+  ignore line: [Target: x86_64-linux-gnu]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.9' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.9) ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_56ddb' '-rdynamic' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccdsvm5j.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_56ddb /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_56ddb.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/collect2] ==> ignore
+    arg [-plugin] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccdsvm5j.res] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [--sysroot=/] ==> ignore
+    arg [--build-id] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_x86_64] ==> ignore
+    arg [--hash-style=gnu] ==> ignore
+    arg [--as-needed] ==> ignore
+    arg [-export-dynamic] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_56ddb] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o] ==> ignore
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib]
+    arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+    arg [-L/lib/../lib] ==> dir [/lib/../lib]
+    arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+    arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..]
+    arg [CMakeFiles/cmTC_56ddb.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [-lc] ==> lib [c]
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtend.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o] ==> ignore
+  remove lib [gcc]
+  remove lib [gcc_s]
+  remove lib [gcc]
+  remove lib [gcc_s]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5] ==> [/usr/lib/gcc/x86_64-linux-gnu/5]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib] ==> [/usr/lib]
+  collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+  collapse library dir [/lib/../lib] ==> [/lib]
+  collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> [/usr/lib]
+  implicit libs: [c]
+  implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/5;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+  implicit fwks: []
+
+
+
+
+Detecting C [-std=c11] compiler features compiled with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9d969/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9d969.dir/build.make CMakeFiles/cmTC_9d969.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9d969.dir/feature_tests.c.o
+/usr/bin/cc    -std=c11 -o CMakeFiles/cmTC_9d969.dir/feature_tests.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/feature_tests.c
+Linking C executable cmTC_9d969
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9d969.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_9d969.dir/feature_tests.c.o  -o cmTC_9d969 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:1c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c99] compiler features compiled with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d2155/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d2155.dir/build.make CMakeFiles/cmTC_d2155.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d2155.dir/feature_tests.c.o
+/usr/bin/cc    -std=c99 -o CMakeFiles/cmTC_d2155.dir/feature_tests.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/feature_tests.c
+Linking C executable cmTC_d2155
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d2155.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_d2155.dir/feature_tests.c.o  -o cmTC_d2155 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c90] compiler features compiled with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_895b4/fast"
+/usr/bin/make -f CMakeFiles/cmTC_895b4.dir/build.make CMakeFiles/cmTC_895b4.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_895b4.dir/feature_tests.c.o
+/usr/bin/cc    -std=c90 -o CMakeFiles/cmTC_895b4.dir/feature_tests.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/feature_tests.c
+Linking C executable cmTC_895b4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_895b4.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_895b4.dir/feature_tests.c.o  -o cmTC_895b4 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:0c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:0c_variadic_macros
+Determining if the CXX compiler works passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8c81d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_8c81d.dir/build.make CMakeFiles/cmTC_8c81d.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_8c81d.dir/testCXXCompiler.cxx.o
+/usr/bin/c++      -o CMakeFiles/cmTC_8c81d.dir/testCXXCompiler.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_8c81d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8c81d.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_8c81d.dir/testCXXCompiler.cxx.o  -o cmTC_8c81d -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5ea13/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5ea13.dir/build.make CMakeFiles/cmTC_5ea13.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_5ea13.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/c++      -o CMakeFiles/cmTC_5ea13.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_5ea13
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5ea13.dir/link.txt --verbose=1
+/usr/bin/c++       -v CMakeFiles/cmTC_5ea13.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_5ea13 -rdynamic  
+Using built-in specs.
+COLLECT_GCC=/usr/bin/c++
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper
+Target: x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.9' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+Thread model: posix
+gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.9) 
+COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_5ea13' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccgpIp35.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_5ea13 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_5ea13.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_5ea13/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_5ea13.dir/build.make CMakeFiles/cmTC_5ea13.dir/build]
+  ignore line: [make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp']
+  ignore line: [Building CXX object CMakeFiles/cmTC_5ea13.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/c++      -o CMakeFiles/cmTC_5ea13.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTC_5ea13]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5ea13.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++       -v CMakeFiles/cmTC_5ea13.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_5ea13 -rdynamic  ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/usr/bin/c++]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper]
+  ignore line: [Target: x86_64-linux-gnu]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.9' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.9) ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_5ea13' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccgpIp35.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_5ea13 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_5ea13.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/collect2] ==> ignore
+    arg [-plugin] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccgpIp35.res] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [--sysroot=/] ==> ignore
+    arg [--build-id] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_x86_64] ==> ignore
+    arg [--hash-style=gnu] ==> ignore
+    arg [--as-needed] ==> ignore
+    arg [-export-dynamic] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_5ea13] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o] ==> ignore
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib]
+    arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+    arg [-L/lib/../lib] ==> dir [/lib/../lib]
+    arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+    arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..]
+    arg [CMakeFiles/cmTC_5ea13.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [-lstdc++] ==> lib [stdc++]
+    arg [-lm] ==> lib [m]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [-lc] ==> lib [c]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtend.o] ==> ignore
+    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o] ==> ignore
+  remove lib [gcc_s]
+  remove lib [gcc]
+  remove lib [gcc_s]
+  remove lib [gcc]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5] ==> [/usr/lib/gcc/x86_64-linux-gnu/5]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib] ==> [/usr/lib]
+  collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+  collapse library dir [/lib/../lib] ==> [/lib]
+  collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> [/usr/lib]
+  implicit libs: [stdc++;m;c]
+  implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/5;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+  implicit fwks: []
+
+
+
+
+Detecting CXX [-std=c++14] compiler features compiled with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5f3ba/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5f3ba.dir/build.make CMakeFiles/cmTC_5f3ba.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_5f3ba.dir/feature_tests.cxx.o
+/usr/bin/c++     -std=c++14 -o CMakeFiles/cmTC_5f3ba.dir/feature_tests.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_5f3ba
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5f3ba.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_5f3ba.dir/feature_tests.cxx.o  -o cmTC_5f3ba -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+    Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:1cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:1cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:1cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:1cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:1cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:1cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:1cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:1cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:1cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:1cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+
+
+Detecting CXX [-std=c++11] compiler features compiled with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_220fe/fast"
+/usr/bin/make -f CMakeFiles/cmTC_220fe.dir/build.make CMakeFiles/cmTC_220fe.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_220fe.dir/feature_tests.cxx.o
+/usr/bin/c++     -std=c++11 -o CMakeFiles/cmTC_220fe.dir/feature_tests.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_220fe
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_220fe.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_220fe.dir/feature_tests.cxx.o  -o cmTC_220fe -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+    Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:0cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:0cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:0cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:0cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:0cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:0cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:0cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:0cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:0cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:0cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+
+
+Detecting CXX [-std=c++98] compiler features compiled with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_02060/fast"
+/usr/bin/make -f CMakeFiles/cmTC_02060.dir/build.make CMakeFiles/cmTC_02060.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_02060.dir/feature_tests.cxx.o
+/usr/bin/c++     -std=c++98 -o CMakeFiles/cmTC_02060.dir/feature_tests.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_02060
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_02060.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_02060.dir/feature_tests.cxx.o  -o cmTC_02060 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+    Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:0cxx_alias_templates
+    Feature record: CXX_FEATURE:0cxx_alignas
+    Feature record: CXX_FEATURE:0cxx_alignof
+    Feature record: CXX_FEATURE:0cxx_attributes
+    Feature record: CXX_FEATURE:0cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:0cxx_auto_type
+    Feature record: CXX_FEATURE:0cxx_binary_literals
+    Feature record: CXX_FEATURE:0cxx_constexpr
+    Feature record: CXX_FEATURE:0cxx_contextual_conversions
+    Feature record: CXX_FEATURE:0cxx_decltype
+    Feature record: CXX_FEATURE:0cxx_decltype_auto
+    Feature record: CXX_FEATURE:0cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:0cxx_default_function_template_args
+    Feature record: CXX_FEATURE:0cxx_defaulted_functions
+    Feature record: CXX_FEATURE:0cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:0cxx_delegating_constructors
+    Feature record: CXX_FEATURE:0cxx_deleted_functions
+    Feature record: CXX_FEATURE:0cxx_digit_separators
+    Feature record: CXX_FEATURE:0cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:0cxx_explicit_conversions
+    Feature record: CXX_FEATURE:0cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:0cxx_extern_templates
+    Feature record: CXX_FEATURE:0cxx_final
+    Feature record: CXX_FEATURE:0cxx_func_identifier
+    Feature record: CXX_FEATURE:0cxx_generalized_initializers
+    Feature record: CXX_FEATURE:0cxx_generic_lambdas
+    Feature record: CXX_FEATURE:0cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:0cxx_inline_namespaces
+    Feature record: CXX_FEATURE:0cxx_lambdas
+    Feature record: CXX_FEATURE:0cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:0cxx_local_type_template_args
+    Feature record: CXX_FEATURE:0cxx_long_long_type
+    Feature record: CXX_FEATURE:0cxx_noexcept
+    Feature record: CXX_FEATURE:0cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:0cxx_nullptr
+    Feature record: CXX_FEATURE:0cxx_override
+    Feature record: CXX_FEATURE:0cxx_range_for
+    Feature record: CXX_FEATURE:0cxx_raw_string_literals
+    Feature record: CXX_FEATURE:0cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:0cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:0cxx_return_type_deduction
+    Feature record: CXX_FEATURE:0cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:0cxx_rvalue_references
+    Feature record: CXX_FEATURE:0cxx_sizeof_member
+    Feature record: CXX_FEATURE:0cxx_static_assert
+    Feature record: CXX_FEATURE:0cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:0cxx_thread_local
+    Feature record: CXX_FEATURE:0cxx_trailing_return_types
+    Feature record: CXX_FEATURE:0cxx_unicode_literals
+    Feature record: CXX_FEATURE:0cxx_uniform_initialization
+    Feature record: CXX_FEATURE:0cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:0cxx_user_literals
+    Feature record: CXX_FEATURE:0cxx_variable_templates
+    Feature record: CXX_FEATURE:0cxx_variadic_macros
+    Feature record: CXX_FEATURE:0cxx_variadic_templates
+Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_cbc38/fast"
+/usr/bin/make -f CMakeFiles/cmTC_cbc38.dir/build.make CMakeFiles/cmTC_cbc38.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_cbc38.dir/src.c.o
+/usr/bin/cc    -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles/cmTC_cbc38.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_cbc38
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cbc38.dir/link.txt --verbose=1
+/usr/bin/cc   -DOpenMP_FLAG_DETECTED -fopenmp    CMakeFiles/cmTC_cbc38.dir/src.c.o  -o cmTC_cbc38 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9f623/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9f623.dir/build.make CMakeFiles/cmTC_9f623.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_9f623.dir/src.cxx.o
+/usr/bin/c++     -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles/cmTC_9f623.dir/src.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_9f623
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9f623.dir/link.txt --verbose=1
+/usr/bin/c++    -DOpenMP_FLAG_DETECTED -fopenmp    CMakeFiles/cmTC_9f623.dir/src.cxx.o  -o cmTC_9f623 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C SOURCE FILE Test CFLAGS_WARN succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c0240/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c0240.dir/build.make CMakeFiles/cmTC_c0240.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c0240.dir/src.c.o
+/usr/bin/cc    -DCFLAGS_WARN   -Wall -Wno-unused -Wunused-value -Wunused-parameter -o CMakeFiles/cmTC_c0240.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_c0240
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c0240.dir/link.txt --verbose=1
+/usr/bin/cc   -DCFLAGS_WARN    CMakeFiles/cmTC_c0240.dir/src.c.o  -o cmTC_c0240 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test CFLAGS_WARN_EXTRA succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c0b2c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c0b2c.dir/build.make CMakeFiles/cmTC_c0b2c.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c0b2c.dir/src.c.o
+/usr/bin/cc    -DCFLAGS_WARN_EXTRA   -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -o CMakeFiles/cmTC_c0b2c.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_c0b2c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c0b2c.dir/link.txt --verbose=1
+/usr/bin/cc   -DCFLAGS_WARN_EXTRA    CMakeFiles/cmTC_c0b2c.dir/src.c.o  -o cmTC_c0b2c -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test CFLAGS_WARN_REL succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6f925/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6f925.dir/build.make CMakeFiles/cmTC_6f925.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6f925.dir/src.c.o
+/usr/bin/cc    -DCFLAGS_WARN_REL   -Wno-array-bounds -o CMakeFiles/cmTC_6f925.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_6f925
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6f925.dir/link.txt --verbose=1
+/usr/bin/cc   -DCFLAGS_WARN_REL    CMakeFiles/cmTC_6f925.dir/src.c.o  -o cmTC_6f925 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test CFLAGS_WARN_UNINIT succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b6121/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b6121.dir/build.make CMakeFiles/cmTC_b6121.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b6121.dir/src.c.o
+/usr/bin/cc    -DCFLAGS_WARN_UNINIT   -Wno-maybe-uninitialized -o CMakeFiles/cmTC_b6121.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_b6121
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b6121.dir/link.txt --verbose=1
+/usr/bin/cc   -DCFLAGS_WARN_UNINIT    CMakeFiles/cmTC_b6121.dir/src.c.o  -o cmTC_b6121 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test CFLAGS_EXCESS_PREC succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_aad12/fast"
+/usr/bin/make -f CMakeFiles/cmTC_aad12.dir/build.make CMakeFiles/cmTC_aad12.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_aad12.dir/src.c.o
+/usr/bin/cc    -DCFLAGS_EXCESS_PREC   -fexcess-precision=fast -o CMakeFiles/cmTC_aad12.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_aad12
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_aad12.dir/link.txt --verbose=1
+/usr/bin/cc   -DCFLAGS_EXCESS_PREC    CMakeFiles/cmTC_aad12.dir/src.c.o  -o cmTC_aad12 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test CFLAGS_COPT succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_87634/fast"
+/usr/bin/make -f CMakeFiles/cmTC_87634.dir/build.make CMakeFiles/cmTC_87634.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_87634.dir/src.c.o
+/usr/bin/cc    -DCFLAGS_COPT   -fomit-frame-pointer -funroll-all-loops -o CMakeFiles/cmTC_87634.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_87634
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_87634.dir/link.txt --verbose=1
+/usr/bin/cc   -DCFLAGS_COPT    CMakeFiles/cmTC_87634.dir/src.c.o  -o cmTC_87634 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test CFLAGS_NOINLINE succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_460d2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_460d2.dir/build.make CMakeFiles/cmTC_460d2.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_460d2.dir/src.c.o
+/usr/bin/cc    -DCFLAGS_NOINLINE   -fno-inline -o CMakeFiles/cmTC_460d2.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_460d2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_460d2.dir/link.txt --verbose=1
+/usr/bin/cc   -DCFLAGS_NOINLINE    CMakeFiles/cmTC_460d2.dir/src.c.o  -o cmTC_460d2 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C++ SOURCE FILE Test CXXFLAGS_WARN succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_821f7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_821f7.dir/build.make CMakeFiles/cmTC_821f7.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_821f7.dir/src.cxx.o
+/usr/bin/c++     -DCXXFLAGS_WARN   -Wall -Wno-unused-function -o CMakeFiles/cmTC_821f7.dir/src.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_821f7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_821f7.dir/link.txt --verbose=1
+/usr/bin/c++    -DCXXFLAGS_WARN    CMakeFiles/cmTC_821f7.dir/src.cxx.o  -o cmTC_821f7 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0;}
+Performing C++ SOURCE FILE Test CXXFLAGS_WARN_EXTRA succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_261ae/fast"
+/usr/bin/make -f CMakeFiles/cmTC_261ae.dir/build.make CMakeFiles/cmTC_261ae.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_261ae.dir/src.cxx.o
+/usr/bin/c++     -DCXXFLAGS_WARN_EXTRA   -Wextra -Wno-missing-field-initializers -Wpointer-arith -o CMakeFiles/cmTC_261ae.dir/src.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_261ae
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_261ae.dir/link.txt --verbose=1
+/usr/bin/c++    -DCXXFLAGS_WARN_EXTRA    CMakeFiles/cmTC_261ae.dir/src.cxx.o  -o cmTC_261ae -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0;}
+Performing C SOURCE FILE Test CXXFLAGS_WARN_REL succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9d3ad/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9d3ad.dir/build.make CMakeFiles/cmTC_9d3ad.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9d3ad.dir/src.c.o
+/usr/bin/cc    -DCXXFLAGS_WARN_REL   -Wno-array-bounds -o CMakeFiles/cmTC_9d3ad.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_9d3ad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9d3ad.dir/link.txt --verbose=1
+/usr/bin/cc   -DCXXFLAGS_WARN_REL    CMakeFiles/cmTC_9d3ad.dir/src.c.o  -o cmTC_9d3ad -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C++ SOURCE FILE Test CXXFLAGS_EXCESS_PREC succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d665c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d665c.dir/build.make CMakeFiles/cmTC_d665c.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_d665c.dir/src.cxx.o
+/usr/bin/c++     -DCXXFLAGS_EXCESS_PREC   -fexcess-precision=fast -o CMakeFiles/cmTC_d665c.dir/src.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_d665c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d665c.dir/link.txt --verbose=1
+/usr/bin/c++    -DCXXFLAGS_EXCESS_PREC    CMakeFiles/cmTC_d665c.dir/src.cxx.o  -o cmTC_d665c -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0;}
+Performing C++ SOURCE FILE Test CXXFLAGS_COPT succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5d5b4/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5d5b4.dir/build.make CMakeFiles/cmTC_5d5b4.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_5d5b4.dir/src.cxx.o
+/usr/bin/c++     -DCXXFLAGS_COPT   -fomit-frame-pointer -funroll-all-loops -o CMakeFiles/cmTC_5d5b4.dir/src.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_5d5b4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5d5b4.dir/link.txt --verbose=1
+/usr/bin/c++    -DCXXFLAGS_COPT    CMakeFiles/cmTC_5d5b4.dir/src.cxx.o  -o cmTC_5d5b4 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0;}
+Performing C++ SOURCE FILE Test CXXFLAGS_NOINLINE succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a4ff5/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a4ff5.dir/build.make CMakeFiles/cmTC_a4ff5.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_a4ff5.dir/src.cxx.o
+/usr/bin/c++     -DCXXFLAGS_NOINLINE   -fno-inline -o CMakeFiles/cmTC_a4ff5.dir/src.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_a4ff5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a4ff5.dir/link.txt --verbose=1
+/usr/bin/c++    -DCXXFLAGS_NOINLINE    CMakeFiles/cmTC_a4ff5.dir/src.cxx.o  -o cmTC_a4ff5 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0;}
+Determining if files unistd.h exist passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c4aa9/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c4aa9.dir/build.make CMakeFiles/cmTC_c4aa9.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c4aa9.dir/CheckIncludeFiles.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_c4aa9.dir/CheckIncludeFiles.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_c4aa9
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c4aa9.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_c4aa9.dir/CheckIncludeFiles.c.o  -o cmTC_c4aa9 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if files pwd.h exist passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_89d38/fast"
+/usr/bin/make -f CMakeFiles/cmTC_89d38.dir/build.make CMakeFiles/cmTC_89d38.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_89d38.dir/CheckIncludeFiles.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_89d38.dir/CheckIncludeFiles.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_89d38
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_89d38.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_89d38.dir/CheckIncludeFiles.c.o  -o cmTC_89d38 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if files dirent.h exist passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f7b2f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f7b2f.dir/build.make CMakeFiles/cmTC_f7b2f.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f7b2f.dir/CheckIncludeFiles.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_f7b2f.dir/CheckIncludeFiles.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_f7b2f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f7b2f.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_f7b2f.dir/CheckIncludeFiles.c.o  -o cmTC_f7b2f -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if files time.h exist passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0eca8/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0eca8.dir/build.make CMakeFiles/cmTC_0eca8.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0eca8.dir/CheckIncludeFiles.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_0eca8.dir/CheckIncludeFiles.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_0eca8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0eca8.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_0eca8.dir/CheckIncludeFiles.c.o  -o cmTC_0eca8 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if files sys/time.h exist passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b4996/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b4996.dir/build.make CMakeFiles/cmTC_b4996.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b4996.dir/CheckIncludeFiles.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_b4996.dir/CheckIncludeFiles.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_b4996
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b4996.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_b4996.dir/CheckIncludeFiles.c.o  -o cmTC_b4996 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if files sched.h exist passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b29ad/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b29ad.dir/build.make CMakeFiles/cmTC_b29ad.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b29ad.dir/CheckIncludeFiles.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_b29ad.dir/CheckIncludeFiles.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_b29ad
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b29ad.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_b29ad.dir/CheckIncludeFiles.c.o  -o cmTC_b29ad -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if files regex.h exist passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1d593/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1d593.dir/build.make CMakeFiles/cmTC_1d593.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1d593.dir/CheckIncludeFiles.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_1d593.dir/CheckIncludeFiles.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_1d593
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1d593.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_1d593.dir/CheckIncludeFiles.c.o  -o cmTC_1d593 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the function posix_memalign exists passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_30925/fast"
+/usr/bin/make -f CMakeFiles/cmTC_30925.dir/build.make CMakeFiles/cmTC_30925.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_30925.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=posix_memalign   -o CMakeFiles/cmTC_30925.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘posix_memalign’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_30925
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_30925.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=posix_memalign    CMakeFiles/cmTC_30925.dir/CheckFunctionExists.c.o  -o cmTC_30925 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the function memalign exists passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a7182/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a7182.dir/build.make CMakeFiles/cmTC_a7182.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a7182.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=memalign   -o CMakeFiles/cmTC_a7182.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_a7182
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a7182.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=memalign    CMakeFiles/cmTC_a7182.dir/CheckFunctionExists.c.o  -o cmTC_a7182 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the function gettimeofday exists passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_43ac4/fast"
+/usr/bin/make -f CMakeFiles/cmTC_43ac4.dir/build.make CMakeFiles/cmTC_43ac4.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_43ac4.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=gettimeofday   -o CMakeFiles/cmTC_43ac4.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_43ac4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_43ac4.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=gettimeofday    CMakeFiles/cmTC_43ac4.dir/CheckFunctionExists.c.o  -o cmTC_43ac4 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the function fsync exists passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_528fd/fast"
+/usr/bin/make -f CMakeFiles/cmTC_528fd.dir/build.make CMakeFiles/cmTC_528fd.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_528fd.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=fsync   -o CMakeFiles/cmTC_528fd.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_528fd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_528fd.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=fsync    CMakeFiles/cmTC_528fd.dir/CheckFunctionExists.c.o  -o cmTC_528fd -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the function fileno exists passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_303e9/fast"
+/usr/bin/make -f CMakeFiles/cmTC_303e9.dir/build.make CMakeFiles/cmTC_303e9.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_303e9.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=fileno   -o CMakeFiles/cmTC_303e9.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_303e9
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_303e9.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=fileno    CMakeFiles/cmTC_303e9.dir/CheckFunctionExists.c.o  -o cmTC_303e9 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the function sigaction exists passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3e436/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3e436.dir/build.make CMakeFiles/cmTC_3e436.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_3e436.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=sigaction   -o CMakeFiles/cmTC_3e436.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_3e436
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3e436.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=sigaction    CMakeFiles/cmTC_3e436.dir/CheckFunctionExists.c.o  -o cmTC_3e436 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the function sysconf exists passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8497f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_8497f.dir/build.make CMakeFiles/cmTC_8497f.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8497f.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=sysconf   -o CMakeFiles/cmTC_8497f.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_8497f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8497f.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=sysconf    CMakeFiles/cmTC_8497f.dir/CheckFunctionExists.c.o  -o cmTC_8497f -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the function sched_setaffinity exists passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_cdf6a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_cdf6a.dir/build.make CMakeFiles/cmTC_cdf6a.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_cdf6a.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=sched_setaffinity   -o CMakeFiles/cmTC_cdf6a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_cdf6a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cdf6a.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=sched_setaffinity    CMakeFiles/cmTC_cdf6a.dir/CheckFunctionExists.c.o  -o cmTC_cdf6a -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the function sched_getaffinity exists passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c2c8d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c2c8d.dir/build.make CMakeFiles/cmTC_c2c8d.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c2c8d.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=sched_getaffinity   -o CMakeFiles/cmTC_c2c8d.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_c2c8d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c2c8d.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=sched_getaffinity    CMakeFiles/cmTC_c2c8d.dir/CheckFunctionExists.c.o  -o cmTC_c2c8d -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the function sqrt exists in the m passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_2963c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_2963c.dir/build.make CMakeFiles/cmTC_2963c.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2963c.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=sqrt   -o CMakeFiles/cmTC_2963c.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘sqrt’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_2963c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2963c.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=sqrt    CMakeFiles/cmTC_2963c.dir/CheckFunctionExists.c.o  -o cmTC_2963c -rdynamic -lm 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the function clock_gettime exists in the rt passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_454ce/fast"
+/usr/bin/make -f CMakeFiles/cmTC_454ce.dir/build.make CMakeFiles/cmTC_454ce.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_454ce.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=clock_gettime   -o CMakeFiles/cmTC_454ce.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_454ce
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_454ce.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=clock_gettime    CMakeFiles/cmTC_454ce.dir/CheckFunctionExists.c.o  -o cmTC_454ce -rdynamic -lrt 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file sys/types.h exists passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c2ed7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c2ed7.dir/build.make CMakeFiles/cmTC_c2ed7.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c2ed7.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_c2ed7.dir/CheckIncludeFile.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_c2ed7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c2ed7.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_c2ed7.dir/CheckIncludeFile.c.o  -o cmTC_c2ed7 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file stdint.h exists passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_cea79/fast"
+/usr/bin/make -f CMakeFiles/cmTC_cea79.dir/build.make CMakeFiles/cmTC_cea79.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_cea79.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_cea79.dir/CheckIncludeFile.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_cea79
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cea79.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_cea79.dir/CheckIncludeFile.c.o  -o cmTC_cea79 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file stddef.h exists passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_e57b1/fast"
+/usr/bin/make -f CMakeFiles/cmTC_e57b1.dir/build.make CMakeFiles/cmTC_e57b1.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e57b1.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_e57b1.dir/CheckIncludeFile.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_e57b1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e57b1.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_e57b1.dir/CheckIncludeFile.c.o  -o cmTC_e57b1 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining size of unsigned short passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_400f1/fast"
+/usr/bin/make -f CMakeFiles/cmTC_400f1.dir/build.make CMakeFiles/cmTC_400f1.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_400f1.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_400f1.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CheckTypeSize/CMAKE_SIZEOF_UNSIGNED_SHORT.c
+Linking C executable cmTC_400f1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_400f1.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_400f1.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o  -o cmTC_400f1 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the function xmlTextWriterEndAttribute exists in the /usr/lib/x86_64-linux-gnu/libxml2.so passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_66320/fast"
+/usr/bin/make -f CMakeFiles/cmTC_66320.dir/build.make CMakeFiles/cmTC_66320.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_66320.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=xmlTextWriterEndAttribute   -o CMakeFiles/cmTC_66320.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_66320
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_66320.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=xmlTextWriterEndAttribute    CMakeFiles/cmTC_66320.dir/CheckFunctionExists.c.o  -o cmTC_66320 -rdynamic /usr/lib/x86_64-linux-gnu/libxml2.so 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0d369/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0d369.dir/build.make CMakeFiles/cmTC_0d369.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0d369.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_0d369.dir/CheckIncludeFile.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_0d369
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0d369.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_0d369.dir/CheckIncludeFile.c.o  -o cmTC_0d369 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9bdaa/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9bdaa.dir/build.make CMakeFiles/cmTC_9bdaa.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9bdaa.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_9bdaa.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_9bdaa
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9bdaa.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_9bdaa.dir/CheckFunctionExists.c.o  -o cmTC_9bdaa -rdynamic -lpthread 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Determining if files pthread.h exist passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_506d4/fast"
+/usr/bin/make -f CMakeFiles/cmTC_506d4.dir/build.make CMakeFiles/cmTC_506d4.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_506d4.dir/CheckIncludeFiles.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_506d4.dir/CheckIncludeFiles.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_506d4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_506d4.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_506d4.dir/CheckIncludeFiles.c.o  -o cmTC_506d4 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+
+Performing C SOURCE FILE Test PTHREAD_SETAFFINITY succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a8fd6/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a8fd6.dir/build.make CMakeFiles/cmTC_a8fd6.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a8fd6.dir/src.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DPTHREAD_SETAFFINITY   -o CMakeFiles/cmTC_a8fd6.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_a8fd6
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a8fd6.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DPTHREAD_SETAFFINITY    CMakeFiles/cmTC_a8fd6.dir/src.c.o  -o cmTC_a8fd6 -rdynamic -lpthread 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+#define _GNU_SOURCE
+#include <pthread.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>
+    int main(void) { cpu_set_t set;
+        CPU_ZERO(&set);
+        CPU_SET(0, &set);
+        pthread_setaffinity_np(pthread_self(), sizeof(set), &set);
+        return 0;
+    }
+Performing C SOURCE FILE Test isfinite_compile_ok succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4cedb/fast"
+/usr/bin/make -f CMakeFiles/cmTC_4cedb.dir/build.make CMakeFiles/cmTC_4cedb.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4cedb.dir/src.c.o
+/usr/bin/cc   -I/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/math.h  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -Disfinite_compile_ok   -o CMakeFiles/cmTC_4cedb.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_4cedb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4cedb.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -Disfinite_compile_ok    CMakeFiles/cmTC_4cedb.dir/src.c.o  -o cmTC_4cedb -rdynamic -lm 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+#include <math.h>
+int main(void) {
+  float f;
+  isfinite(f);
+}
+Performing C++ SOURCE FILE Test CXXFLAG_STD_CXX0X succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_bd03e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_bd03e.dir/build.make CMakeFiles/cmTC_bd03e.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_bd03e.dir/src.cxx.o
+/usr/bin/c++     -Wextra -Wno-missing-field-initializers -Wpointer-arith -Wall -Wno-unused-function   -DCXXFLAG_STD_CXX0X   -std=c++0x -o CMakeFiles/cmTC_bd03e.dir/src.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_bd03e
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bd03e.dir/link.txt --verbose=1
+/usr/bin/c++   -Wextra -Wno-missing-field-initializers -Wpointer-arith -Wall -Wno-unused-function   -DCXXFLAG_STD_CXX0X    CMakeFiles/cmTC_bd03e.dir/src.cxx.o  -o cmTC_bd03e -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0;}
+Performing C++ SOURCE FILE Test GMX_CXX11_SUPPORTED succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_87119/fast"
+/usr/bin/make -f CMakeFiles/cmTC_87119.dir/build.make CMakeFiles/cmTC_87119.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_87119.dir/src.cxx.o
+/usr/bin/c++     -Wextra -Wno-missing-field-initializers -Wpointer-arith -Wall -Wno-unused-function   -DGMX_CXX11_SUPPORTED   -std=c++0x -o CMakeFiles/cmTC_87119.dir/src.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_87119
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_87119.dir/link.txt --verbose=1
+/usr/bin/c++   -Wextra -Wno-missing-field-initializers -Wpointer-arith -Wall -Wno-unused-function   -DGMX_CXX11_SUPPORTED    CMakeFiles/cmTC_87119.dir/src.cxx.o  -o cmTC_87119 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+#include <vector>
+#include <memory>
+#include <utility>
+struct A {
+  A(int *i=NULL) : p(i) {} ;
+  std::unique_ptr<int> p;
+};
+template <typename Head, typename... Tail>
+struct VarList {
+  typedef VarList<Tail...> VarListTail;
+  typedef std::pair<Head, typename VarListTail::ListType> ListType;
+};
+int main() {
+  typedef std::unique_ptr<int> intPointer;
+  intPointer p(new int(10));
+  std::vector<intPointer> v;
+  v.push_back(std::move(p));
+  std::vector<A> v2;
+  v2.push_back(A());  //requires default move constructor
+  v2.push_back(A(new int(5))); //detects bug in ICC
+}
+Performing C SOURCE FILE Test C_FLAG_mavx succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_eefdd/fast"
+/usr/bin/make -f CMakeFiles/cmTC_eefdd.dir/build.make CMakeFiles/cmTC_eefdd.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_eefdd.dir/src.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DC_FLAG_mavx  -mavx   -mavx -o CMakeFiles/cmTC_eefdd.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_eefdd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_eefdd.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DC_FLAG_mavx  -mavx    CMakeFiles/cmTC_eefdd.dir/src.c.o  -o cmTC_eefdd -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test C_SIMD_COMPILES_FLAG_mavx succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_086c4/fast"
+/usr/bin/make -f CMakeFiles/cmTC_086c4.dir/build.make CMakeFiles/cmTC_086c4.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_086c4.dir/src.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DC_SIMD_COMPILES_FLAG_mavx  -mavx   -o CMakeFiles/cmTC_086c4.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_086c4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_086c4.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DC_SIMD_COMPILES_FLAG_mavx  -mavx    CMakeFiles/cmTC_086c4.dir/src.c.o  -o cmTC_086c4 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+#include<immintrin.h>
+                              int main(){__m256 x=_mm256_set1_ps(0.5);x=_mm256_add_ps(x,x);return _mm256_movemask_ps(x);}
+Performing C++ SOURCE FILE Test CXX_FLAG_mavx succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3c15b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3c15b.dir/build.make CMakeFiles/cmTC_3c15b.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_3c15b.dir/src.cxx.o
+/usr/bin/c++     -Wextra -Wno-missing-field-initializers -Wpointer-arith -Wall -Wno-unused-function   -DCXX_FLAG_mavx  -mavx   -mavx -o CMakeFiles/cmTC_3c15b.dir/src.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_3c15b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3c15b.dir/link.txt --verbose=1
+/usr/bin/c++   -Wextra -Wno-missing-field-initializers -Wpointer-arith -Wall -Wno-unused-function   -DCXX_FLAG_mavx  -mavx    CMakeFiles/cmTC_3c15b.dir/src.cxx.o  -o cmTC_3c15b -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0;}
+Performing C++ SOURCE FILE Test CXX_SIMD_COMPILES_FLAG_mavx succeeded with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8d395/fast"
+/usr/bin/make -f CMakeFiles/cmTC_8d395.dir/build.make CMakeFiles/cmTC_8d395.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_8d395.dir/src.cxx.o
+/usr/bin/c++     -Wextra -Wno-missing-field-initializers -Wpointer-arith -Wall -Wno-unused-function   -DCXX_SIMD_COMPILES_FLAG_mavx  -mavx   -o CMakeFiles/cmTC_8d395.dir/src.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_8d395
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8d395.dir/link.txt --verbose=1
+/usr/bin/c++   -Wextra -Wno-missing-field-initializers -Wpointer-arith -Wall -Wno-unused-function   -DCXX_SIMD_COMPILES_FLAG_mavx  -mavx    CMakeFiles/cmTC_8d395.dir/src.cxx.o  -o cmTC_8d395 -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+Source file was:
+#include<immintrin.h>
+                                int main(){__m256 x=_mm256_set1_ps(0.5);x=_mm256_add_ps(x,x);return _mm256_movemask_ps(x);}

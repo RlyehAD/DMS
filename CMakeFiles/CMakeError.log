@@ -1,0 +1,329 @@
+Determining if files io.h exist failed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a1bc8/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a1bc8.dir/build.make CMakeFiles/cmTC_a1bc8.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a1bc8.dir/CheckIncludeFiles.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_a1bc8.dir/CheckIncludeFiles.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFiles.c:2:16: fatal error: io.h: No such file or directory
+compilation terminated.
+CMakeFiles/cmTC_a1bc8.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_a1bc8.dir/CheckIncludeFiles.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_a1bc8.dir/CheckIncludeFiles.c.o] Error 1
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_a1bc8/fast' failed
+make: *** [cmTC_a1bc8/fast] Error 2
+
+Source:
+/* */
+#include <io.h>
+
+
+int main(void){return 0;}
+
+Determining if the include file regex exists failed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4094f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_4094f.dir/build.make CMakeFiles/cmTC_4094f.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_4094f.dir/CheckIncludeFile.cxx.o
+/usr/bin/c++     -Wextra -Wno-missing-field-initializers -Wpointer-arith -Wall -Wno-unused-function      -o CMakeFiles/cmTC_4094f.dir/CheckIncludeFile.cxx.o -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFile.cxx
+In file included from /usr/include/c++/5/regex:35:0,
+                 from /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckIncludeFile.cxx:1:
+/usr/include/c++/5/bits/c++0x_warning.h:32:2: error: #error This file requires compiler and library support for the ISO C++ 2011 standard. This support must be enabled with the -std=c++11 or -std=gnu++11 compiler options.
+ #error This file requires compiler and library support \
+  ^
+CMakeFiles/cmTC_4094f.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_4094f.dir/CheckIncludeFile.cxx.o' failed
+make[1]: *** [CMakeFiles/cmTC_4094f.dir/CheckIncludeFile.cxx.o] Error 1
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_4094f/fast' failed
+make: *** [cmTC_4094f/fast] Error 2
+
+
+Determining if the function _aligned_malloc exists failed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_17fc5/fast"
+/usr/bin/make -f CMakeFiles/cmTC_17fc5.dir/build.make CMakeFiles/cmTC_17fc5.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_17fc5.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=_aligned_malloc   -o CMakeFiles/cmTC_17fc5.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_17fc5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_17fc5.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=_aligned_malloc    CMakeFiles/cmTC_17fc5.dir/CheckFunctionExists.c.o  -o cmTC_17fc5 -rdynamic 
+CMakeFiles/cmTC_17fc5.dir/CheckFunctionExists.c.o: In function `main':
+CheckFunctionExists.c:(.text+0x15): undefined reference to `_aligned_malloc'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_17fc5.dir/build.make:97: recipe for target 'cmTC_17fc5' failed
+make[1]: *** [cmTC_17fc5] Error 1
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_17fc5/fast' failed
+make: *** [cmTC_17fc5/fast] Error 2
+
+
+Determining if the function _fileno exists failed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9bc3b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9bc3b.dir/build.make CMakeFiles/cmTC_9bc3b.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9bc3b.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=_fileno   -o CMakeFiles/cmTC_9bc3b.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_9bc3b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9bc3b.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=_fileno    CMakeFiles/cmTC_9bc3b.dir/CheckFunctionExists.c.o  -o cmTC_9bc3b -rdynamic 
+CMakeFiles/cmTC_9bc3b.dir/CheckFunctionExists.c.o: In function `main':
+CheckFunctionExists.c:(.text+0x15): undefined reference to `_fileno'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_9bc3b.dir/build.make:97: recipe for target 'cmTC_9bc3b' failed
+make[1]: *** [cmTC_9bc3b] Error 1
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_9bc3b/fast' failed
+make: *** [cmTC_9bc3b/fast] Error 2
+
+
+Determining if the function _commit exists failed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d8b58/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d8b58.dir/build.make CMakeFiles/cmTC_d8b58.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d8b58.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=_commit   -o CMakeFiles/cmTC_d8b58.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_d8b58
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d8b58.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=_commit    CMakeFiles/cmTC_d8b58.dir/CheckFunctionExists.c.o  -o cmTC_d8b58 -rdynamic 
+CMakeFiles/cmTC_d8b58.dir/CheckFunctionExists.c.o: In function `main':
+CheckFunctionExists.c:(.text+0x15): undefined reference to `_commit'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_d8b58.dir/build.make:97: recipe for target 'cmTC_d8b58' failed
+make[1]: *** [cmTC_d8b58] Error 1
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_d8b58/fast' failed
+make: *** [cmTC_d8b58/fast] Error 2
+
+
+Determining if the function rsqrt exists failed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ab934/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ab934.dir/build.make CMakeFiles/cmTC_ab934.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ab934.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=rsqrt   -o CMakeFiles/cmTC_ab934.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_ab934
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ab934.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=rsqrt    CMakeFiles/cmTC_ab934.dir/CheckFunctionExists.c.o  -o cmTC_ab934 -rdynamic 
+CMakeFiles/cmTC_ab934.dir/CheckFunctionExists.c.o: In function `main':
+CheckFunctionExists.c:(.text+0x15): undefined reference to `rsqrt'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_ab934.dir/build.make:97: recipe for target 'cmTC_ab934' failed
+make[1]: *** [cmTC_ab934] Error 1
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_ab934/fast' failed
+make: *** [cmTC_ab934/fast] Error 2
+
+
+Determining if the function rsqrtf exists failed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1f522/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1f522.dir/build.make CMakeFiles/cmTC_1f522.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1f522.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=rsqrtf   -o CMakeFiles/cmTC_1f522.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_1f522
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1f522.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=rsqrtf    CMakeFiles/cmTC_1f522.dir/CheckFunctionExists.c.o  -o cmTC_1f522 -rdynamic 
+CMakeFiles/cmTC_1f522.dir/CheckFunctionExists.c.o: In function `main':
+CheckFunctionExists.c:(.text+0x15): undefined reference to `rsqrtf'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_1f522.dir/build.make:97: recipe for target 'cmTC_1f522' failed
+make[1]: *** [cmTC_1f522] Error 1
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_1f522/fast' failed
+make: *** [cmTC_1f522/fast] Error 2
+
+
+Determining if the function sqrtf exists failed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a6134/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a6134.dir/build.make CMakeFiles/cmTC_a6134.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a6134.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=sqrtf   -o CMakeFiles/cmTC_a6134.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: warning: conflicting types for built-in function ‘sqrtf’
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+Linking C executable cmTC_a6134
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a6134.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=sqrtf    CMakeFiles/cmTC_a6134.dir/CheckFunctionExists.c.o  -o cmTC_a6134 -rdynamic 
+CMakeFiles/cmTC_a6134.dir/CheckFunctionExists.c.o: In function `main':
+CheckFunctionExists.c:(.text+0x15): undefined reference to `sqrtf'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_a6134.dir/build.make:97: recipe for target 'cmTC_a6134' failed
+make[1]: *** [cmTC_a6134] Error 1
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_a6134/fast' failed
+make: *** [cmTC_a6134/fast] Error 2
+
+
+Determining if the system is big endian passed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5e9ed/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5e9ed.dir/build.make CMakeFiles/cmTC_5e9ed.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5e9ed.dir/TestEndianess.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_5e9ed.dir/TestEndianess.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/TestEndianess.c
+Linking C executable cmTC_5e9ed
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5e9ed.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_5e9ed.dir/TestEndianess.c.o  -o cmTC_5e9ed -rdynamic 
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+
+TestEndianess.c:
+/* A 16 bit integer is required. */
+typedef unsigned short cmakeint16;
+
+/* On a little endian machine, these 16bit ints will give "THIS IS LITTLE ENDIAN."
+   On a big endian machine the characters will be exchanged pairwise. */
+const cmakeint16 info_little[] =  {0x4854, 0x5349, 0x4920, 0x2053, 0x494c, 0x5454, 0x454c, 0x4520, 0x444e, 0x4149, 0x2e4e, 0x0000};
+
+/* on a big endian machine, these 16bit ints will give "THIS IS BIG ENDIAN."
+   On a little endian machine the characters will be exchanged pairwise. */
+const cmakeint16 info_big[] =     {0x5448, 0x4953, 0x2049, 0x5320, 0x4249, 0x4720, 0x454e, 0x4449, 0x414e, 0x2e2e, 0x0000};
+
+#ifdef __CLASSIC_C__
+int main(argc, argv) int argc; char *argv[];
+#else
+int main(int argc, char *argv[])
+#endif
+{
+  int require = 0;
+  require += info_little[argc];
+  require += info_big[argc];
+  (void)argv;
+  return require;
+}
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c9b96/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c9b96.dir/build.make CMakeFiles/cmTC_c9b96.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c9b96.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter      -o CMakeFiles/cmTC_c9b96.dir/CheckSymbolExists.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_c9b96
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c9b96.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter       CMakeFiles/cmTC_c9b96.dir/CheckSymbolExists.c.o  -o cmTC_c9b96 -rdynamic 
+CMakeFiles/cmTC_c9b96.dir/CheckSymbolExists.c.o: In function `main':
+CheckSymbolExists.c:(.text+0x16): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_c9b96.dir/build.make:97: recipe for target 'cmTC_c9b96' failed
+make[1]: *** [cmTC_c9b96] Error 1
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_c9b96/fast' failed
+make: *** [cmTC_c9b96/fast] Error 2
+
+File /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_eeeee/fast"
+/usr/bin/make -f CMakeFiles/cmTC_eeeee.dir/build.make CMakeFiles/cmTC_eeeee.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_eeeee.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_eeeee.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_eeeee
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_eeeee.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_eeeee.dir/CheckFunctionExists.c.o  -o cmTC_eeeee -rdynamic -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_eeeee.dir/build.make:97: recipe for target 'cmTC_eeeee' failed
+make[1]: *** [cmTC_eeeee] Error 1
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_eeeee/fast' failed
+make: *** [cmTC_eeeee/fast] Error 2
+
+
+Performing C SOURCE FILE Test _isfinite_compile_ok failed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_207eb/fast"
+/usr/bin/make -f CMakeFiles/cmTC_207eb.dir/build.make CMakeFiles/cmTC_207eb.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_207eb.dir/src.c.o
+/usr/bin/cc   -I/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/math.h  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -D_isfinite_compile_ok   -o CMakeFiles/cmTC_207eb.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
+/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c:4:3: warning: implicit declaration of function ‘_isfinite’ [-Wimplicit-function-declaration]
+   _isfinite(f);
+   ^
+/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c:4:3: warning: ‘f’ is used uninitialized in this function [-Wuninitialized]
+Linking C executable cmTC_207eb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_207eb.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -D_isfinite_compile_ok    CMakeFiles/cmTC_207eb.dir/src.c.o  -o cmTC_207eb -rdynamic -lm 
+CMakeFiles/cmTC_207eb.dir/src.c.o: In function `main':
+src.c:(.text+0x13): undefined reference to `_isfinite'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_207eb.dir/build.make:97: recipe for target 'cmTC_207eb' failed
+make[1]: *** [cmTC_207eb] Error 1
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_207eb/fast' failed
+make: *** [cmTC_207eb/fast] Error 2
+
+Source file was:
+#include <math.h>
+int main(void) {
+  float f;
+  _isfinite(f);
+}
+Performing C SOURCE FILE Test _finite_compile_ok failed with the following output:
+Change Dir: /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9da69/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9da69.dir/build.make CMakeFiles/cmTC_9da69.dir/build
+make[1]: Entering directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9da69.dir/src.c.o
+/usr/bin/cc   -I/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/float.h  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -D_finite_compile_ok   -o CMakeFiles/cmTC_9da69.dir/src.c.o   -c /home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c
+/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
+/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c:4:3: warning: implicit declaration of function ‘_finite’ [-Wimplicit-function-declaration]
+   _finite(f);
+   ^
+/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp/src.c:4:3: warning: ‘f’ is used uninitialized in this function [-Wuninitialized]
+Linking C executable cmTC_9da69
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9da69.dir/link.txt --verbose=1
+/usr/bin/cc  -Wno-maybe-uninitialized -Wextra -Wno-missing-field-initializers -Wno-sign-compare -Wpointer-arith -Wall -Wno-unused -Wunused-value -Wunused-parameter   -D_finite_compile_ok    CMakeFiles/cmTC_9da69.dir/src.c.o  -o cmTC_9da69 -rdynamic 
+CMakeFiles/cmTC_9da69.dir/src.c.o: In function `main':
+src.c:(.text+0x13): undefined reference to `_finite'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_9da69.dir/build.make:97: recipe for target 'cmTC_9da69' failed
+make[1]: *** [cmTC_9da69] Error 1
+make[1]: Leaving directory '/home/levnon/Downloads/DMS/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_9da69/fast' failed
+make: *** [cmTC_9da69/fast] Error 2
+
+Source file was:
+#include <float.h>
+int main(void) {
+  float f;
+  _finite(f);
+}
