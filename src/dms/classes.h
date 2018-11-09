@@ -96,6 +96,9 @@ private:
 	PetscInt numSS;
 	PetscInt ssIndex;
 	char* selFname;
+
+	char* mode; // determines the mechanism by which a microstate is reconstructed.
+	// Can be either default (Newtonian) or new (Lagrangian) mode
 };
 
 

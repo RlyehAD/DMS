@@ -169,6 +169,8 @@ Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 	// TODO: destroy vec/mat PETSC objects before allocating new ones for copy const and operator=
 	PetscFunctionBeginUser;
 
+	mode = NULL;
+
 	COMM = Comm;
 	Coords.resize(Dim);
 	pCoords.resize(Dim);
@@ -466,7 +468,7 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 	PetscFunctionBegin;
 
 	std::cout << "Syncing GROMACS with DMS" << std::endl;
-	PetscScalar *Coords_ptr, *Vels_ptr;
+	PetscScalar *Coords_ptr, *Vels_ptr, *Forces_ptr;
 	// TODO: Figure out how this is gonna work in parallel
 
 	if(!MPI_Rank)
@@ -477,6 +479,9 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 
 				ierr = VecGetArray(Velocities[dim], &Vels_ptr);
                 		CHKERRQ(ierr);
+
+				ierr = VecGetArray(Forces[dim], &Forces_ptr);
+                                CHKERRQ(ierr);
 
 				t_atom         *atom;
 		                char* resname, *atomname;
@@ -496,7 +501,11 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 
                         				if(strncmp(resname, "SOL", 3) && strncmp(resname, "NA", 2) && strncmp(resname, "CL", 2) && strncmp(resname, "GRA", 3)) {
 								//velocity = Coords_ptr[count] - MD_state->x[atomindex][dim];
-                                				MD_state->x[atomindex][dim] = Coords_ptr[count++];
+
+								if(mode)
+									MD_state->f[atomindex][dim] += Forces_ptr[count++]; 
+								else
+                                					MD_state->x[atomindex][dim] = Coords_ptr[count++];
 							}
 							//else
 								//if (!strncmp(resname, "SOL", 3) || !strncmp(resname, "NA", 2) || !strncmp(resname, "CL", 2))
