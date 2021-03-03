@@ -4,14 +4,6 @@
 DMS (Deductive Multiscale Simulator) an open-source multiscale all-atom 
 simulator that is based on the GROMACS molecular dynamics source code.
 
-If you are familiar with Unix, it should be fairly trivial to compile and
-install DMS since it uses both GROMACS and PETSc, and both packages are fairly 
-supported on most architechtures. Similar to Gromacs, DMS uses only the CMake 
-build sytem, and an installation guide can be found at
-http://www.gromacs.org/Documentation/Installation_Instructions.
-
-                               * * * * *
-
 DMS is free software, distributed under the GNU General
 Public License, version 2.1. DMS uses a substantial portion of the source
 code of the molecular dynamics package GROMACS. If you want to distribute 
@@ -23,6 +15,7 @@ must clearly be labeled as derived work. It should not use the name
 of the DMS developers.
 
                                * * * * *
+## Acknowledgement
 
 The development of DMS is mainly funded by academic research grants. 
 To help us fund development, we humbly ask that you cite the DMS papers:
@@ -39,4 +32,8 @@ To help us fund development, we humbly ask that you cite the DMS papers:
   J. Chem. Phys., 2014, 140, pp 074102
   DOI: 10.1063/1.4864200
 
-Thank you and good luck with your simulations~!
+
+## Compilation with conda
+```
+conda create -n dms -c conda-forge ...
+```
