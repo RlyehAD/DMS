@@ -44,9 +44,11 @@ cd DMS
 mkdir build
 cd build
 
-PETSC_LIBRARIES=/home/USER_NAME/miniconda3/envs/dms/lib/libpetsc.so PETSC_INCLUDES=/home/USER_NAME/miniconda3/envs/dms/include cmake .. -DCMAKE_PREFIX_PATH=/miniconda3/envs/dms/  
--DCMAKE_INSTALL_PREFIX=INSTALLATION_ADDRESS/dms -DCMAKE_C_COMPILER=/home/USER_NAME/miniconda3/envs/dms/bin/x86_64-conda_cos6-linux-gnu-gcc   
--DBUILD_SHARED_LIBS=ON -DGMX_DEFAULT_SUFFIX=OFF -DGMX_BINARY_SUFFIX=_dms -DGMX_LIBS_SUFFIX=_dms -DGMX_BUILD_MDRUN_ONLY=ON -DGMX_GPU=OFF -DGMX_MPI=ON -DGMX_OPENMP=OFF
+PETSC_LIBRARIES=/home/USER_NAME/miniconda3/envs/dms/lib/libpetsc.so PETSC_INCLUDES=/home/USER_NAME/miniconda3/envs/dms/include   
+cmake .. -DCMAKE_PREFIX_PATH=/miniconda3/envs/dms/ -DCMAKE_INSTALL_PREFIX=INSTALLATION_ADDRESS/dms   
+-DCMAKE_C_COMPILER=/home/USER_NAME/miniconda3/envs/dms/bin/x86_64-conda_cos6-linux-gnu-gcc   
+-DBUILD_SHARED_LIBS=ON -DGMX_DEFAULT_SUFFIX=OFF -DGMX_BINARY_SUFFIX=_dms -DGMX_LIBS_SUFFIX=_dms   
+-DGMX_BUILD_MDRUN_ONLY=ON -DGMX_GPU=OFF -DGMX_MPI=ON -DGMX_OPENMP=OFF
 
 make
 make install
