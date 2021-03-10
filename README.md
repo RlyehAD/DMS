@@ -33,7 +33,19 @@ To help us fund development, we humbly ask that you cite the DMS papers:
   DOI: 10.1063/1.4864200
 
 
-## Compilation with conda
+## Compilation with conda on Linux
 ```
-conda create -n dms -c conda-forge ...
+conda create -n dms -c conda-forge gcc_linux-64
+conda activate dms
+conda install -c conda-forge gxx_linux-64
+conda install -c conda-forge cmake hdf5 petsc fftw boost
+git clone git@github.com:CTCNano/DMS.git
+cd DMS
+mkdir build
+cd build
+
+PETSC_LIBRARIES=/home/USER_NAME/miniconda3/envs/dms/lib/libpetsc.so PETSC_INCLUDES=/home/USER_NAME/miniconda3/envs/dms/include cmake .. -DCMAKE_PREFIX_PATH=/miniconda3/envs/dms/ -DCMAKE_INSTALL_PREFIX=INSTALLATION_ADDRESS/dms -DCMAKE_C_COMPILER=/home/USER_NAME/miniconda3/envs/dms/bin/x86_64-conda_cos6-linux-gnu-gcc -DBUILD_SHARED_LIBS=ON -DGMX_DEFAULT_SUFFIX=OFF -DGMX_BINARY_SUFFIX=_dms -DGMX_LIBS_SUFFIX=_dms -DGMX_BUILD_MDRUN_ONLY=ON -DGMX_GPU=OFF -DGMX_MPI=ON -DGMX_OPENMP=OFF
+
+make
+make install
 ```
