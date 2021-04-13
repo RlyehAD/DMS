@@ -35,6 +35,7 @@ To help us fund development, we humbly ask that you cite the DMS papers:
 
 ## Compilation with conda on Linux
 ```
+WARNING: Your conda enviroments may not be located in /miniconda3/envs. Please use 'conda info --envs' to check.
 conda create -n dms -c conda-forge gcc_linux-64
 conda activate dms
 conda install -c conda-forge gxx_linux-64
