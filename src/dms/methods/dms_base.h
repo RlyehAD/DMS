@@ -131,6 +131,9 @@ public:
 	void setNcg(PetscInt n) { nCG = n; } 
 	void setNcgAdj(PetscInt n) { nCGAdj = n; }
 
+	// For backmapping
+	bool conv = TRUE;
+
 	std::fstream fpLog;
 	PetscViewer viewer;
 

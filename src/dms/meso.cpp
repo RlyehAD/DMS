@@ -24,6 +24,7 @@ Meso_state::Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt nHistory, MPI_Co
 
 	Coords.resize(Dim);
 	Ref_Coords.resize(Dim);
+	cCoords.resize(Dim);
 	pCoords.resize(Dim);
 	Velocities.resize(Dim);
 	pVelocities.resize(Dim);
@@ -36,6 +37,11 @@ Meso_state::Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt nHistory, MPI_Co
 			VecZeroEntries(Get_Coords()[dim]);
 			VecAssemblyBegin(Get_Coords()[dim]);
 			VecAssemblyEnd(Get_Coords()[dim]);
+            
+            VecCreateMPI(COMM, PETSC_DECIDE, NumCG, cCoords.data() + dim);
+            VecZeroEntries(Get_cCoords()[dim]);
+            VecAssemblyBegin(Get_cCoords()[dim]);
+            VecAssemblyEnd(Get_cCoords()[dim]);
 
 			VecCreateMPI(COMM, PETSC_DECIDE, NumCG, pCoords.data() + dim);
 			VecZeroEntries(Get_pCoords()[dim]);
@@ -65,7 +71,10 @@ Meso_state::Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt nHistory, MPI_Co
 		else {
 			VecCreateSeq(COMM, NumCG, Coords.data() + dim);
 			VecZeroEntries(Get_Coords()[dim]);
-
+            
+            VecCreateSeq(COMM, NumCG, cCoords.data() + dim);
+            VecZeroEntries(Get_cCoords()[dim]);
+            
 			VecCreateSeq(COMM, NumCG, pCoords.data() + dim);
 			VecZeroEntries(Get_pCoords()[dim]);
 
