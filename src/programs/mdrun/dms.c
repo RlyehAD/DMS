@@ -254,6 +254,7 @@ double do_md(FILE *fplog, t_commrec *cr, int nfile, const t_filenm fnm[],
 
     /* DMS params */
     gmx_bool bStartMS = FALSE;
+    gmx_bool converge_cgF = FALSE;
     real bondEnergy = -1.0; // bond energy will always be >= 0
 
     int dmsStep = 0, dmsSteps = dArgs->dt;
@@ -1942,12 +1943,14 @@ ir->nstcalcenergy);
                 rerun_parallel_comm(cr, &rerun_fr, &bNotLastFrame);
             }
         }
-
-        if (!bRerunMD || !rerun_fr.bStep)
-        {
-            // increase the MD step number
-            step++;
-            step_rel++;
+        
+        if(converge_cgF){ 
+            if (!bRerunMD || !rerun_fr.bStep)
+            {
+                // increase the MD step number
+                step++;
+                step_rel++;
+            }
         }
 
         cycles = wallcycle_stop(wcycle, ewcSTEP);
@@ -2040,42 +2043,44 @@ ir->nstcalcenergy);
 	}
 
 	if(bondEnergy >= 0.0) {
-		if(!bStartMS) {
-                	if( ( fabs(enerd->term[F_TEMP] - ir->opts.ref_t[0]) <= 100.0 ) && counter >= dmsRelax ) {
-                        	if(MASTER(cr)) {
+        if(converge_cgF){
+		      if(!bStartMS) {
+                	   if( ( fabs(enerd->term[F_TEMP] - ir->opts.ref_t[0]) <= 100.0 ) && counter >= dmsRelax ) {
+                        	   if(MASTER(cr)) {
 
-					printf("Successfully equilibriated the system based on bond energies %f kJ/nm*mol at temp %f K ...\n", enerd->term[F_BONDS], enerd->term[F_TEMP]);
-                                	printf("***********************\n");
-                                	printf("Constructing Coords at step %d\n", step);
-                                	printf("***********************\n");
+					   printf("Successfully equilibriated the system based on bond energies %f kJ/nm*mol at temp %f K ...\n", enerd->term[F_BONDS], enerd->term[F_TEMP]);
+                                	   printf("***********************\n");
+                                	   printf("Constructing Coords at step %d\n", step);
+                                	   printf("***********************\n");
 
-                        	}
+                        	   }
 
-                        	dd_collect_vec(cr->dd, state, state->x, state_global->x);
-				dd_collect_vec(cr->dd, state, state->v, state_global->v);
+                        	   dd_collect_vec(cr->dd, state, state->x, state_global->x);
+				    dd_collect_vec(cr->dd, state, state->v, state_global->v);
 
-				step -= counter + 1;
-		                step_rel -= counter + 1;
+				    step -= counter + 1;
+		                  step_rel -= counter + 1;
 
-				do_md_trajectory_writing(fplog, cr, nfile, fnm, step, step_rel, t,
+				    do_md_trajectory_writing(fplog, cr, nfile, fnm, step, step_rel, t,
 	                                 ir, state, state_global, top_global, fr,
         	                         outf, mdebin, ekind, f, f_global,
                 	                 wcycle, &nchkpt,
                         	         bCPT, bRerunMD, bLastStep, (Flags & MD_CONFOUT),
                                 	 bSumEkinhOld);
 
-				if(MASTER(cr))
-					for(nss = 0; nss < dArgs->nss; nss++)
+				    if(MASTER(cr))
+					   for(nss = 0; nss < dArgs->nss; nss++)
                         			constructDmsCoords(DmsBase[nss]);
 
                         	bStartMS = TRUE;
-                	}
-                	else
+                	   }
+                	   else
                         	counter++;
-        	}
-        	else
-                	dmsStep++;
-	}
+        	       }   
+        	       else
+                	   dmsStep++;
+	   }
+    }
 
 	if( dmsStep == microSteps && bondEnergy >= 0.0 ) {
                 if(MASTER(cr)) {
@@ -2087,9 +2092,20 @@ ir->nstcalcenergy);
 		dd_collect_vec(cr->dd, state, state->x, state_global->x);
 		dd_collect_vec(cr->dd, state, state->v, state_global->v);
 
+        for(nss = 0; nss < dArgs->nss; nss++){
+            if(DmsBase[nss].conv){
+                converge_cgF = TRUE;
+            }
+            else{
+                converge_cgF = FALSE;
+                break;
+            }
+        }
+
+        /*if(converge_cgF){
                 step += dmsSteps - microSteps;
                 step_rel += dmsSteps - microSteps;
-
+        }*/
 		if(MASTER(cr))
 			for(nss = 0; nss < dArgs->nss; nss++)
                 		dmsCGStep(DmsBase[nss], step);
@@ -2097,9 +2113,14 @@ ir->nstcalcenergy);
 		if (DOMAINDECOMP(cr))
 			dmsDistributeCoords(cr->dd, state_global->x, state->x); 
 
+        if(converge_cgF){
+        step += dmsSteps - microSteps;        
+        step_rel += dmsSteps - microSteps;
+
 		dmsStep = 0;
 		bStartMS = FALSE;
                 counter = 0;
+            }
 
         }
 

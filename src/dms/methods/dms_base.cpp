@@ -408,6 +408,9 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
                 then calculate dcg and set conv value accordingly.
                 When !conv, the integrator should not be called. */
 
+                ierr = constructConstrainForces();
+                CHKERRQ = (ierr); //update atomic forces
+
 		for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++){
 			ierr = VecCopy(Mesoscopic->Get_cCoords()[dim], deltaPhi);
 			CHKERRQ(ierr);
@@ -443,8 +446,8 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 		ierr = (Microscopic->mapping)(Mesoscopic->Get_Coords(), Mesoscopic->Get_pCoords(), *this, DmsBase::fpLog);
 		CHKERRQ(ierr); */
 
-		ierr = (Microscopic->mapping)(Mesoscopic->Get_cCoords(), Mesoscopic->Get_pCoords(), *this, DmsBase::fpLog);
-		CHKERRQ(ierr);
+		//ierr = (Microscopic->mapping)(Mesoscopic->Get_cCoords(), Mesoscopic->Get_pCoords(), *this, DmsBase::fpLog);
+		//CHKERRQ(ierr);
 		/* The increment calculated will be directly added to the microstate, cCoords and pCoords are 
 		not changed in this process del */
 
