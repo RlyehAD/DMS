@@ -13,6 +13,7 @@ PetscErrorCode swm::fineGrain(CVec Coords, CVec coordsPrev, DmsBase& Dbase, std:
 	fpLog << Dbase.getTime() << ":INFO:Recovering microstate" << std::endl;
 
 	Mat* mesoMicroMap = Dbase.getMesoMicro();
+	PetscScalar alpha = 0.1;
 
 	Vec deltaPhi;
 	ierr = VecCreateSeq(Dbase.getComm(), Dbase.Mesoscopic->Get_DOF(), &deltaPhi);
@@ -24,7 +25,10 @@ PetscErrorCode swm::fineGrain(CVec Coords, CVec coordsPrev, DmsBase& Dbase, std:
 	Vec tmpVec;
         ierr = VecCreateSeq(Dbase.getComm(), Dbase.Microscopic->Get_DOF_local(), &tmpVec);
         CHKERRQ(ierr);
-
+    
+    ierr = MatScale(*mesoMicroMap, alpha);
+    CHEERRQ(ierr);
+    
 	for(auto dim = 0; dim < Dbase.Microscopic->Get_Dim(); dim++) {
 
 		ierr = VecCopy(Coords[dim], deltaPhi);

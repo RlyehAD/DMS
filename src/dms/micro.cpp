@@ -163,13 +163,15 @@ PetscErrorCode Micro_state::setupRefTop(char* topFname, DmsBase* Dbase) {
 Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 		const gmx_mtop_t* top, const t_inputrec* ir, PetscInt Dim, MPI_Comm Comm, 
 		ptrMap ptr_func, int microSteps, const real dt, 
-		PetscInt nSS, PetscInt ssI, DmsBase* Dbase, char* topFname, char* sFname) : Dim(Dim) {
+		PetscInt nSS, PetscInt ssI, DmsBase* Dbase, char* topFname, char* sFname, rvec f[]) : Dim(Dim) {
 
 	// TODO: atomic forces must be included
 	// TODO: destroy vec/mat PETSC objects before allocating new ones for copy const and operator=
 	PetscFunctionBeginUser;
 
-	mode = NULL;
+	char FGM = 'L';
+	mode = &FGM;
+	/* TODO: add mode to the command line input options */
 
 	COMM = Comm;
 	Coords.resize(Dim);
@@ -401,12 +403,13 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
 	std::cout << "Syncing DMS with GROMACS" << std::endl;
 
 	// TODO: This can be made more efficient i.e. Values allocated once and Indices is constant
-	std::vector< std::vector<PetscScalar> > Values(Dim), ValuesV(Dim);
+	std::vector< std::vector<PetscScalar> > Values(Dim), ValuesV(Dim), ValuesF(Dim);
 	std::vector<PetscInt> Indices(DOF_local);
 
 	for(int dim = 0; dim < Dim; dim++) {
 		Values[dim].resize(DOF_local);
 		ValuesV[dim].resize(DOF_local);
+		ValuesF[dim].resize(DOF_local);
 	}
 
 	for(int dim = 0; dim < Dim; dim++) {
@@ -435,6 +438,7 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
 
                                 	  		Values[dim][count] = MD_state->x[atomindex][dim];
 							ValuesV[dim][count] = MD_state->v[atomindex][dim];
+							ValuesF[dim][count] = f[atomindex][dim];
 							Indices[count] = count++;
 
 						}
@@ -448,6 +452,11 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
 			ierr = VecSetValues(Get_Velocities()[dim], DOF_local, Indices.data(), ValuesV[dim].data(),
 							  	 INSERT_VALUES);
 			CHKERRQ(ierr);
+
+			ierr = VecSetValues(Get_Forces()[dim], DOF_local, Indices.data(), ValuesF[dim].data(),
+				INSERT_VALUES);
+
+			CHKERRQ(ierr);
 		}
 
 		ierr = VecAssemblyBegin(Get_Coords()[dim]);
@@ -458,6 +467,11 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
 		ierr = VecAssemblyBegin(Get_Velocities()[dim]);
 		CHKERRQ(ierr);
 		ierr = VecAssemblyEnd(Get_Velocities()[dim]);
+		CHKERRQ(ierr);
+
+		ierr = VecAssemblyBegin(Get_Forces()[dim]);
+		CHKERRQ(ierr);
+		ierr = VecAssemblyEnd(Get_Forces()[dim]);
 		CHKERRQ(ierr);
 	}
 
@@ -503,7 +517,8 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 								//velocity = Coords_ptr[count] - MD_state->x[atomindex][dim];
 
 								if(mode)
-									MD_state->f[atomindex][dim] += Forces_ptr[count++]; 
+									f[atomindex][dim] += Forces_ptr[count++];
+									//MD_state->f[atomindex][dim] += Forces_ptr[count++]; 
 								else
                                 					MD_state->x[atomindex][dim] = Coords_ptr[count++];
 							}

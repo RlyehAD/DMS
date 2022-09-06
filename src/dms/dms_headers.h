@@ -5,6 +5,7 @@
 #include "types/state.h"
 #include "types/atoms.h"
 #include "types/topology.h"
+#include "types/simple.h"
 #include "gmx_fatal.h"
 #include "mdatoms.h"
 

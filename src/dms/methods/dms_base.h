@@ -63,7 +63,7 @@ public:
 	DmsBase(const t_state* state, const t_mdatoms* mdatoms,
                 const gmx_mtop_t* top, const t_inputrec* ir, const gmx_int64_t aDim, const gmx_int64_t cDim, const int max_order,
                 const gmx_int64_t freq, const real dt, const gmx_int64_t t0, MPI_Comm comm, const int mSteps, const double optimScale, const PetscInt, 
-		const PetscInt, const PetscInt, std::string = "SpaceWarping", char* readref = NULL, char* topFname = NULL, char* subFname = NULL);
+		const PetscInt, const PetscInt, std::string = "SpaceWarping", char* readref = NULL, char* topFname = NULL, char* subFname = NULL, rvec forces[] = NULL);
 
 	DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
 			const gmx_mtop_t* top, const t_inputrec* ir, const gmx_int64_t aDim, const gmx_int64_t cDim, const gmx_int64_t nCGx,
@@ -130,6 +130,9 @@ public:
 	// Setters
 	void setNcg(PetscInt n) { nCG = n; } 
 	void setNcgAdj(PetscInt n) { nCGAdj = n; }
+
+	// For backmapping
+	bool conv = TRUE;
 
 	std::fstream fpLog;
 	PetscViewer viewer;

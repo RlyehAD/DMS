@@ -209,7 +209,7 @@ DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
 DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
 		const gmx_mtop_t* top, const t_inputrec* ir, const gmx_int64_t aDim, const gmx_int64_t cDim, const int maxOrder,
 		const gmx_int64_t freq, const real dt, const gmx_int64_t t0, MPI_Comm communic, const int mSteps, const double optimScale, const PetscInt nHist, 
-		const PetscInt ssIndex, const PetscInt nss, std::string cgType, char* userRef, char* topFname, char* selFname) { 
+		const PetscInt ssIndex, const PetscInt nss, std::string cgType, char* userRef, char* topFname, char* selFname, rvec forces[]) { 
 
 	PetscFunctionBegin;
 
@@ -263,7 +263,7 @@ DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
                 	throw std::invalid_argument("CG method has not yet been implemented");
         	}
 
-               	Microscopic = new Micro_state(state, tmdatoms, top, ir, dim, comm, fineGrainHash[cgMethod], mSteps, dt, numSS, ssIndex, this, topFname, selFname);
+               	Microscopic = new Micro_state(state, tmdatoms, top, ir, dim, comm, fineGrainHash[cgMethod], mSteps, dt, numSS, ssIndex, this, topFname, selFname, forces);
 
 		nAtoms = Microscopic->Get_DOF();
 		nLocalAtoms = Microscopic->Get_DOF_local();
@@ -294,6 +294,12 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 	 */
 
 	PetscFunctionBegin;
+
+	Vec deltaPhi;
+        ierr = VecCreateSeq(getComm(), nCG, &deltaPhi);
+        CHKERRQ(ierr);
+
+        PetscScalar maxChange;
 
 	// Do serial computations for SWM
 	if(!mpiRank) {
@@ -381,27 +387,69 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 			ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_pCoords()[dim]);
 			CHKERRQ(ierr);
 		}
+                // The cg coords now are the same in Coords and pCoords del 
 
 		fpLog << getTime() << ":INFO:Advancing CG variables in time" << std::endl;
-
-		if(nHistory > 1)
-			ierr = Integrator->integrate(Mesoscopic->Get_Coords(), Mesoscopic->Get_Velocities()); // call Pade->integrate method
-		else {
+                
+                if(conv){
+			if(nHistory > 1)
+				ierr = Integrator->integrate(Mesoscopic->Get_Coords(), Mesoscopic->Get_Velocities()); // call Pade->integrate method
+			else {
 				
-			ierr = Integrator->integrate(Mesoscopic->Get_Coords(),  Mesoscopic->Get_Velocities());
-                        CHKERRQ(ierr);
-		}	
+				ierr = Integrator->integrate(Mesoscopic->Get_Coords(),  Mesoscopic->Get_Velocities());
+                       		CHKERRQ(ierr);
+			}
+			ierr = VecCopy(Mesoscopic->Get_Coords(), Mesoscopic->Get_cCoords());
+			CHKERRQ(ierr);
+		}
+
+                // Now the Coods has been updated, which is the constrained version del
+                /* If conv, copy meso->getcoords to meso->getccoords,
+                then calculate dcg and set conv value accordingly.
+                When !conv, the integrator should not be called. */
+
+                ierr = constructConstrainForces();
+                CHKERRQ = (ierr); //update atomic forces
+
+		for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++){
+			ierr = VecCopy(Mesoscopic->Get_cCoords()[dim], deltaPhi);
+			CHKERRQ(ierr);
+
+			ierr = VecAXPY(deltaPhi, -1.0, Mesoscopic->Get_pCoords()[dim]);
+			CHKERRQ(ierr);
+
+			ierr = VecAbs(deltaPhi);
+			CHKERRQ(ierr);
+
+			VecMax(deltaPhi, NULL, maxChange);
+
+			if(maxChange > 0.1){
+				conv = false;
+				break;
+			}
+			else{
+				conv = true;
+			}
+		}
 
 		// Fine-grain (recover atomistic configuration)
+		/* Since I use cCoords to store the constrained cg vars, we should input cCoords and pCoords into 
+		the fine-graining function 
 		for(int dim = 0; dim < Microscopic->Get_Dim(); dim++) {
 
 				ierr = VecCopy(Microscopic->Get_Coords()[dim], Microscopic->Get_pCoords()[dim]);
 				CHKERRQ(ierr);
 
 		}
+		// It is saving the micro Coords del
 
 		ierr = (Microscopic->mapping)(Mesoscopic->Get_Coords(), Mesoscopic->Get_pCoords(), *this, DmsBase::fpLog);
-		CHKERRQ(ierr);
+		CHKERRQ(ierr); */
+
+		//ierr = (Microscopic->mapping)(Mesoscopic->Get_cCoords(), Mesoscopic->Get_pCoords(), *this, DmsBase::fpLog);
+		//CHKERRQ(ierr);
+		/* The increment calculated will be directly added to the microstate, cCoords and pCoords are 
+		not changed in this process del */
 
 		auto topIndices = Microscopic->getTopIndices();
 
@@ -579,6 +627,55 @@ PetscErrorCode DmsBase::constructCoords() {
         (Mesoscopic->mapping)(Microscopic->Get_Coords(), Microscopic->Get_pCoords(), *this, DmsBase::fpLog);
 
         PetscFunctionReturn(ierr);
+}
+
+PetscErrorCode DmsBase::constructConstrainForces(){
+	/* This function constructs the cg force used for 
+	Lagrangian Backmapping. It computes
+	MBd_cg/Delta^2 */
+
+        PetscFunctionBegin;
+
+        Mat *mesoMicroMap = getMesoMicro(),
+            *kernel = getKernel(); // B
+
+	ierr = MatCopy(*mesoMicroMap, *kernel, SAME_NONZERO_PATTERN);
+	CHKERRQ(ierr);
+
+        PetscScalar alpha = 0.1;
+        Vec tmpVec;
+		ierr = VecCreateSeq(getComm(), Mesoscopic->Get_DOF_local(), &tmpVec);
+		CHKERRQ(ierr);
+
+        Vec df;
+                ierr = VecCreateSeq(getComm(), Microscopic->Get_DOF_local(), &df);
+                CHKERRQ(ierr);
+        
+        ierr = MatDiagonalScale(*kernel, Microscopic->getMass(), NULL); // MB
+        CHKERRQ = (ierr);
+
+        ierr = MatScale(*kernel, 1.0/(dt*dt));
+        CHKERRQ = (ierr); // MB/Delta^2
+
+	for(auto dim = 0; dim < Microscopic->Get_Dim(); dim++){
+	        ierr = VecCopy(Mesoscopic->Get_cCoords()[dim], tmpVec);
+		CHKERRQ(ierr);
+
+	        ierr = VecAXPY(tmpVec, -1.0, Mesoscopic->Get_pCoords()[dim]);
+		CHKERRQ(ierr); // dcg[dim]
+
+		ierr = MatMult(*kernel, tmpVec, df);
+		CHKERRQ(ierr);
+
+                ierr = VecAXPY(Mesoscopic->Get_Forces()[dim], alpha, df);
+                CHKERRQ(ierr);
+	}
+
+	ierr = VecDestroy(&tmpVec);
+	CHKERRQ(ierr);
+
+	ierr = VecDestroy(&df);
+	CHKERRQ(df);
 }
 
 std::vector<PetscScalar> DmsBase::compCentOfMass(const CVec& Coords) {

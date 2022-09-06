@@ -22,7 +22,7 @@ class Micro_state {
 public:
 
 	Micro_state(const t_state* state, const t_mdatoms* tmdatoms, const gmx_mtop_t* top,
-		    const t_inputrec*, PetscInt Dim, MPI_Comm, ptrMap, const int, const real, PetscInt, PetscInt, DmsBase*, char*, char*);
+		    const t_inputrec*, PetscInt Dim, MPI_Comm, ptrMap, const int, const real, PetscInt, PetscInt, DmsBase*, char*, char*, rvec);
 	Micro_state() {};
 
 	explicit Micro_state(const Micro_state&);
@@ -37,6 +37,7 @@ public:
 	PetscInt Get_Dim() const { return Dim; }
 
 	CVec Get_Coords() const { return Coords; }
+	//Cvec Get_cCoords() const { return cCoords; } Moved this to the son class Meso_State
 	CVec Get_pCoords() const { return pCoords; }
 	CVec Get_RefCoords() const { return Ref_Coords; }
 
@@ -61,6 +62,7 @@ protected:
 
 	CVec Coords,
 	     pCoords,
+	     cCoords, // used to save the constrained  
 	     Velocities,
 	     pVelocities,
 	     Forces,
@@ -106,7 +108,9 @@ class Meso_state: public Micro_state {
 	std::vector< CVec > cgTensor;
 	PetscInt nHist;
 public:
-
+    
+    Cvec Get_cCoords() const { return cCoords; }
+    
 	Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt, MPI_Comm, ptrMap, ptrMapVelo);
 
 	Meso_state() {};
