@@ -163,7 +163,7 @@ PetscErrorCode Micro_state::setupRefTop(char* topFname, DmsBase* Dbase) {
 Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 		const gmx_mtop_t* top, const t_inputrec* ir, PetscInt Dim, MPI_Comm Comm, 
 		ptrMap ptr_func, int microSteps, const real dt, 
-		PetscInt nSS, PetscInt ssI, DmsBase* Dbase, char* topFname, char* sFname) : Dim(Dim) {
+		PetscInt nSS, PetscInt ssI, DmsBase* Dbase, char* topFname, char* sFname, rvec f[]) : Dim(Dim) {
 
 	// TODO: atomic forces must be included
 	// TODO: destroy vec/mat PETSC objects before allocating new ones for copy const and operator=
@@ -438,7 +438,7 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
 
                                 	  		Values[dim][count] = MD_state->x[atomindex][dim];
 							ValuesV[dim][count] = MD_state->v[atomindex][dim];
-							ValuesF[dim][count] = MD_state->f[atomindex][dim];
+							ValuesF[dim][count] = f[atomindex][dim];
 							Indices[count] = count++;
 
 						}
@@ -517,7 +517,8 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 								//velocity = Coords_ptr[count] - MD_state->x[atomindex][dim];
 
 								if(mode)
-									MD_state->f[atomindex][dim] += Forces_ptr[count++]; 
+									f[atomindex][dim] += Forces_ptr[count++];
+									//MD_state->f[atomindex][dim] += Forces_ptr[count++]; 
 								else
                                 					MD_state->x[atomindex][dim] = Coords_ptr[count++];
 							}

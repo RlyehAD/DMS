@@ -174,6 +174,8 @@ double do_md(FILE *fplog, t_commrec *cr, int nfile, const t_filenm fnm[],
 	     dmsArgs* dArgs)
 {
     gmx_mdoutf_t    outf = NULL;
+    gmx_int64_t     backmap_step = 0; // Used to count the step number of backmapping
+    gmx_int64_t     step_tmp, step_rel_tmp; // Used to record step and step_rel when doing a cg step
     gmx_int64_t     step, step_rel;
     double          elapsed_time;
     double          t, t0, lam0[efptNR];
@@ -1944,14 +1946,14 @@ ir->nstcalcenergy);
             }
         }
         
-        if(converge_cgF){ 
+
             if (!bRerunMD || !rerun_fr.bStep)
             {
                 // increase the MD step number
                 step++;
                 step_rel++;
             }
-        }
+        
 
         cycles = wallcycle_stop(wcycle, ewcSTEP);
         if (DOMAINDECOMP(cr) && wcycle)
@@ -2060,13 +2062,14 @@ ir->nstcalcenergy);
 
 				    step -= counter + 1;
 		                  step_rel -= counter + 1;
-
+                        
 				    do_md_trajectory_writing(fplog, cr, nfile, fnm, step, step_rel, t,
 	                                 ir, state, state_global, top_global, fr,
         	                         outf, mdebin, ekind, f, f_global,
                 	                 wcycle, &nchkpt,
                         	         bCPT, bRerunMD, bLastStep, (Flags & MD_CONFOUT),
                                 	 bSumEkinhOld);
+                    
 
 				    if(MASTER(cr))
 					   for(nss = 0; nss < dArgs->nss; nss++)
@@ -2074,12 +2077,12 @@ ir->nstcalcenergy);
 
                         	bStartMS = TRUE;
                 	   }
-                	   else
+                	   else 
                         	counter++;
         	       }   
-        	       else
+        	       else 
                 	   dmsStep++;
-	   }
+            }
     }
 
 	if( dmsStep == microSteps && bondEnergy >= 0.0 ) {
@@ -2091,6 +2094,11 @@ ir->nstcalcenergy);
 
 		dd_collect_vec(cr->dd, state, state->x, state_global->x);
 		dd_collect_vec(cr->dd, state, state->v, state_global->v);
+
+        if(converge_cgF){
+                step_tmp = step;
+                step_rel_tmp = step_rel;
+        }
 
         for(nss = 0; nss < dArgs->nss; nss++){
             if(DmsBase[nss].conv){
@@ -2114,13 +2122,26 @@ ir->nstcalcenergy);
 			dmsDistributeCoords(cr->dd, state_global->x, state->x); 
 
         if(converge_cgF){
+        step = step_tmp;
+        step_rel = step_rel_tmp;
         step += dmsSteps - microSteps;        
         step_rel += dmsSteps - microSteps;
+
+        if(MASTER(cr)){
+            printf("***********************\n");
+            printf("Backmapping is converged after %d MD steps ...\n", backmap_step);
+            printf("***********************\n");
+
+        }
 
 		dmsStep = 0;
 		bStartMS = FALSE;
                 counter = 0;
+                backmap_step = 0;
             }
+        else {
+            backmap_step++;
+        }
 
         }
 

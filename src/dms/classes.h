@@ -22,7 +22,7 @@ class Micro_state {
 public:
 
 	Micro_state(const t_state* state, const t_mdatoms* tmdatoms, const gmx_mtop_t* top,
-		    const t_inputrec*, PetscInt Dim, MPI_Comm, ptrMap, const int, const real, PetscInt, PetscInt, DmsBase*, char*, char*);
+		    const t_inputrec*, PetscInt Dim, MPI_Comm, ptrMap, const int, const real, PetscInt, PetscInt, DmsBase*, char*, char*, rvec);
 	Micro_state() {};
 
 	explicit Micro_state(const Micro_state&);

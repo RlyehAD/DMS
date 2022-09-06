@@ -209,7 +209,7 @@ DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
 DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
 		const gmx_mtop_t* top, const t_inputrec* ir, const gmx_int64_t aDim, const gmx_int64_t cDim, const int maxOrder,
 		const gmx_int64_t freq, const real dt, const gmx_int64_t t0, MPI_Comm communic, const int mSteps, const double optimScale, const PetscInt nHist, 
-		const PetscInt ssIndex, const PetscInt nss, std::string cgType, char* userRef, char* topFname, char* selFname) { 
+		const PetscInt ssIndex, const PetscInt nss, std::string cgType, char* userRef, char* topFname, char* selFname, rvec forces[]) { 
 
 	PetscFunctionBegin;
 
@@ -263,7 +263,7 @@ DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
                 	throw std::invalid_argument("CG method has not yet been implemented");
         	}
 
-               	Microscopic = new Micro_state(state, tmdatoms, top, ir, dim, comm, fineGrainHash[cgMethod], mSteps, dt, numSS, ssIndex, this, topFname, selFname);
+               	Microscopic = new Micro_state(state, tmdatoms, top, ir, dim, comm, fineGrainHash[cgMethod], mSteps, dt, numSS, ssIndex, this, topFname, selFname, forces);
 
 		nAtoms = Microscopic->Get_DOF();
 		nLocalAtoms = Microscopic->Get_DOF_local();
