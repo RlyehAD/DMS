@@ -132,7 +132,7 @@ public:
 	void setNcgAdj(PetscInt n) { nCGAdj = n; }
 
 	// For backmapping
-	bool conv = TRUE;
+	gmx_bool conv = TRUE;
 
 	std::fstream fpLog;
 	PetscViewer viewer;
@@ -209,7 +209,7 @@ void delDmsBase(dmsBasePtr);
 // Each public method takes an opaque reference to the object
 // that was returned from the above constructor plus the methods parameters.
 int dmsCGStep(dmsBasePtr, gmx_int64_t);
-bool checkconverge(dmsBasePtr swm);
+gmx_bool checkconverge(dmsBasePtr swm);
 int constructDmsCoords(dmsBasePtr swm);
 int constructDmsVelo(dmsBasePtr swm, const int dmsStep);
 dmsBasePtr newDmsBase(const t_state* state, const t_mdatoms* mdatoms,
