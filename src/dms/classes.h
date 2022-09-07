@@ -109,7 +109,7 @@ class Meso_state: public Micro_state {
 	PetscInt nHist;
 public:
     
-    Cvec Get_cCoords() const { return cCoords; }
+    CVec Get_cCoords() const { return cCoords; }
     
 	Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt, MPI_Comm, ptrMap, ptrMapVelo);
 
