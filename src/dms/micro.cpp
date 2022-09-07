@@ -438,7 +438,7 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
 
                                 	  		Values[dim][count] = MD_state->x[atomindex][dim];
 							ValuesV[dim][count] = MD_state->v[atomindex][dim];
-							ValuesF[dim][count] = f[atomindex][dim];
+							ValuesF[dim][count] = forces[atomindex][dim];
 							Indices[count] = count++;
 
 						}
@@ -517,7 +517,7 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 								//velocity = Coords_ptr[count] - MD_state->x[atomindex][dim];
 
 								if(mode)
-									f[atomindex][dim] += Forces_ptr[count++];
+									forces[atomindex][dim] += Forces_ptr[count++];
 									//MD_state->f[atomindex][dim] += Forces_ptr[count++]; 
 								else
                                 					MD_state->x[atomindex][dim] = Coords_ptr[count++];
