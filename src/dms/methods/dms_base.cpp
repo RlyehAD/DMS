@@ -594,6 +594,9 @@ int constructDmsVelocs(dmsBasePtr swm) {
         PetscFunctionReturn(ierr);
 }
 */
+bool checkconverge(dmsBasePtr swm){
+	return reinterpret_cast<DmsBase*>(swm)->conv;
+}
 
 dmsBasePtr newDmsBase(const t_state* state, const t_mdatoms* mdatoms,
                       const gmx_mtop_t* top, const t_inputrec* ir, gmx_int64_t dim,

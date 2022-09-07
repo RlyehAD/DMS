@@ -2101,7 +2101,7 @@ ir->nstcalcenergy);
         }
 
         for(nss = 0; nss < dArgs->nss; nss++){
-            if(DmsBase[nss].conv){
+            if(checkconverge(DmsBase[nss])){
                 converge_cgF = TRUE;
             }
             else{
