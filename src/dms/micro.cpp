@@ -189,6 +189,7 @@ Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 	numSS = nSS;
 	ssIndex = ssI;
 	selFname = sFname;
+	atom_forces = f; 
 
 	atomIndices.resize(DOF);
 
@@ -438,7 +439,7 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
 
                                 	  		Values[dim][count] = MD_state->x[atomindex][dim];
 							ValuesV[dim][count] = MD_state->v[atomindex][dim];
-							ValuesF[dim][count] = forces[atomindex][dim];
+							ValuesF[dim][count] = atom_forces[atomindex][dim];
 							Indices[count] = count++;
 
 						}
@@ -517,7 +518,7 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 								//velocity = Coords_ptr[count] - MD_state->x[atomindex][dim];
 
 								if(mode)
-									forces[atomindex][dim] += Forces_ptr[count++];
+									atom_forces[atomindex][dim] += Forces_ptr[count++];
 									//MD_state->f[atomindex][dim] += Forces_ptr[count++]; 
 								else
                                 					MD_state->x[atomindex][dim] = Coords_ptr[count++];
