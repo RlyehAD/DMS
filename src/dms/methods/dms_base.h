@@ -69,7 +69,7 @@ public:
 			const gmx_mtop_t* top, const t_inputrec* ir, const gmx_int64_t aDim, const gmx_int64_t cDim, const gmx_int64_t nCGx,
 			const gmx_int64_t nCGy, const gmx_int64_t nCGz, const gmx_int64_t freq, const gmx_int64_t assFreq, const real dt, MPI_Comm communic, 
 			const int mSteps, const real resol, const real scaling, const gmx_int64_t thresh, const int, const PetscInt,
-			const PetscInt ssIndex, std::string cgType = "FieldVariables", bool deb = false, char* topFname = NULL, char* subFname = NULL);
+			const PetscInt ssIndex, std::string cgType = "FieldVariables", bool deb = false, char* topFname = NULL, char* subFname = NULL, rvec forces[] = NULL);
 
 	Micro_state *Microscopic;
     	Meso_state  *Mesoscopic;
