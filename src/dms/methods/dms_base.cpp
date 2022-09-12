@@ -669,9 +669,9 @@ PetscErrorCode DmsBase::constructConstrainForces(){
 	        ierr = VecAXPY(tmpVec, -1.0, Mesoscopic->Get_pCoords()[dim]);
 		CHKERRQ(ierr); // dcg[dim]
 
-		ierr VecScale(df, 6.022e-26);
+		ierr = VecScale(df, 6.022e-26);
 		CHKERRQ(ierr);
-		
+
 		ierr = MatMult(*kernel, tmpVec, df);
 		CHKERRQ(ierr);
 
