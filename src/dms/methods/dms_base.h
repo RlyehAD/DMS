@@ -89,6 +89,7 @@ public:
 	PetscErrorCode constructVelocities(); // useless?
     	PetscErrorCode constructCoords();
 	PetscErrorCode constructForces();
+	PetscErrorCode constructConstrainForces();
     
 	// Getters
 	gmx_int64_t getNatoms() const { return nAtoms; }

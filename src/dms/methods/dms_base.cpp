@@ -399,8 +399,10 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 				ierr = Integrator->integrate(Mesoscopic->Get_Coords(),  Mesoscopic->Get_Velocities());
                        		CHKERRQ(ierr);
 			}
-			ierr = VecCopy(Mesoscopic->Get_Coords(), Mesoscopic->Get_cCoords());
+			for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++){
+			ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_cCoords()[dim]);
 			CHKERRQ(ierr);
+			}
 		}
 
                 // Now the Coods has been updated, which is the constrained version del
@@ -409,7 +411,7 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
                 When !conv, the integrator should not be called. */
 
                 ierr = constructConstrainForces();
-                CHKERRQ = (ierr); //update atomic forces
+                CHKERRQ(ierr); //update atomic forces
 
 		for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++){
 			ierr = VecCopy(Mesoscopic->Get_cCoords()[dim], deltaPhi);
@@ -421,7 +423,7 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 			ierr = VecAbs(deltaPhi);
 			CHKERRQ(ierr);
 
-			VecMax(deltaPhi, NULL, maxChange);
+			VecMax(deltaPhi, NULL, &maxChange);
 
 			if(maxChange > 0.1){
 				conv = false;
