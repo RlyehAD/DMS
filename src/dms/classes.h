@@ -68,7 +68,7 @@ protected:
 	     Forces,
 	     Ref_Coords;
 
-	rvec[] atom_forces;
+	rvec atom_forces[];
 	Vec Mass, eqLength;
 	std::vector<PetscInt> atomIndices;
 	PetscErrorCode ierr;
