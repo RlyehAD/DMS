@@ -27,7 +27,7 @@ PetscErrorCode swm::fineGrain(CVec Coords, CVec coordsPrev, DmsBase& Dbase, std:
         CHKERRQ(ierr);
     
     ierr = MatScale(*mesoMicroMap, alpha);
-    CHEERRQ(ierr);
+    CHKERRQ(ierr);
     
 	for(auto dim = 0; dim < Dbase.Microscopic->Get_Dim(); dim++) {
 
