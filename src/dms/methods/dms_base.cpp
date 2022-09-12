@@ -659,7 +659,7 @@ PetscErrorCode DmsBase::constructConstrainForces(){
         ierr = MatDiagonalScale(*kernel, Microscopic->getMass(), NULL); // MB
         CHKERRQ(ierr);
 
-        ierr = MatScale(*kernel, 1.0/(dt*dt));
+        ierr = MatScale(*kernel, 1.0/(Delta*Delta));
         CHKERRQ(ierr); // MB/Delta^2
 
 	for(auto dim = 0; dim < Microscopic->Get_Dim(); dim++){
@@ -669,6 +669,9 @@ PetscErrorCode DmsBase::constructConstrainForces(){
 	        ierr = VecAXPY(tmpVec, -1.0, Mesoscopic->Get_pCoords()[dim]);
 		CHKERRQ(ierr); // dcg[dim]
 
+		ierr VecScale(df, 6.022e-26);
+		CHKERRQ(ierr);
+		
 		ierr = MatMult(*kernel, tmpVec, df);
 		CHKERRQ(ierr);
 
