@@ -659,7 +659,7 @@ PetscErrorCode DmsBase::constructConstrainForces(){
         ierr = MatDiagonalScale(*kernel, Microscopic->getMass(), NULL); // MB
         CHKERRQ(ierr);
 
-        ierr = MatScale(*kernel, 1.0/(Delta*Delta));
+        ierr = MatScale(*kernel, 1000000.0/(Delta*Delta));
         CHKERRQ(ierr); // MB/Delta^2
 
 	for(auto dim = 0; dim < Microscopic->Get_Dim(); dim++){
