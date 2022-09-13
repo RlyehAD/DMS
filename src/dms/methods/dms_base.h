@@ -217,7 +217,7 @@ dmsBasePtr newDmsBase(const t_state* state, const t_mdatoms* mdatoms,
                       const gmx_mtop_t* top, const t_inputrec* ir, gmx_int64_t dim,
                       gmx_int64_t, int, gmx_int64_t freq, const real dt, const gmx_int64_t,
                       MPI_Comm comm, const int, const float, const int, const PetscInt, const int, char 
-		      const*, char* readref, char*, char*);
+		      const*, char* readref, char*, char*, rvec forces[]);
 
 gmx_bool dmsInitialize(int argc, char* argv[]);
 
