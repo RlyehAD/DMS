@@ -605,11 +605,11 @@ dmsBasePtr newDmsBase(const t_state* state, const t_mdatoms* mdatoms,
                       gmx_int64_t cgDim, int nCG, gmx_int64_t freq, const real dt, 
 		      const gmx_int64_t t0, MPI_Comm comm, const int mSteps, const float scale, 
 		      const PetscInt nHist, const PetscInt ssIndex, const PetscInt nss, char const* cgMeth, 
-		      char* userRef, char* topFname, char* selFname) {
+		      char* userRef, char* topFname, char* selFname, rvec forces[]) {
 
     std::string cgMethod = cgMeth;
     return reinterpret_cast<void*>(new DmsBase(state, mdatoms, top, ir, dim, cgDim, nCG, freq, dt, t0, comm, mSteps, 
-				   scale, nHist, ssIndex, nss, cgMethod, userRef, topFname, selFname));
+				   scale, nHist, ssIndex, nss, cgMethod, userRef, topFname, selFname, forces));
 }
 
 void delDmsBase(dmsBasePtr swm) {

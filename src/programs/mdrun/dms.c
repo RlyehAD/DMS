@@ -374,7 +374,7 @@ double do_md(FILE *fplog, t_commrec *cr, int nfile, const t_filenm fnm[],
  
     	for(nss = 0; nss < dArgs->nss; nss++)
 		DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale, 
-					  dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname);
+					  dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f);
     }
 
     clear_mat(total_vir);
