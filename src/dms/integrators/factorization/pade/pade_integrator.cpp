@@ -4,6 +4,8 @@ DmsPade::DmsPade(PetscScalar dt, PetscScalar dtMicro, bool Adpt, MPI_Comm comm) 
   DmsIntegrator::DmsIntegrator(dt, Adpt, comm), delta(dtMicro) {
 
 	PetscFunctionBegin;
+
+	PetscFunctionReturn(ierr);
 }
 
 PetscErrorCode DmsPade::computeInvMat(PetscScalar Coords[]) {
