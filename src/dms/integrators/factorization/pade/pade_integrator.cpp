@@ -5,7 +5,6 @@ DmsPade::DmsPade(PetscScalar dt, PetscScalar dtMicro, bool Adpt, MPI_Comm comm) 
 
 	PetscFunctionBegin;
 
-	PetscFunctionReturn(ierr);
 }
 
 PetscErrorCode DmsPade::computeInvMat(PetscScalar Coords[]) {
