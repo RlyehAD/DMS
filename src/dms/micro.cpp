@@ -537,6 +537,10 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 
 				ierr = VecRestoreArray(Velocities[dim], &Vels_ptr);
                                 CHKERRQ(ierr);
+
+                ierr = VecRestoreArray(Forces[dim], &Forces_ptr);
+                CHKERRQ(ierr);
+                
 			}
 
 	PetscFunctionReturn(ierr);
