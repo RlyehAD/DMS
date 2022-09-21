@@ -370,12 +370,12 @@ double do_md(FILE *fplog, t_commrec *cr, int nfile, const t_filenm fnm[],
     int nss;
     dmsBasePtr DmsBase[dArgs->nss];
 
-    if(MASTER(cr)) {
+    /*if(MASTER(cr)) {
  
     	for(nss = 0; nss < dArgs->nss; nss++)
 		DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale, 
 					  dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f);
-    }
+    }*/
 
     clear_mat(total_vir);
     clear_mat(pres);
@@ -391,6 +391,15 @@ double do_md(FILE *fplog, t_commrec *cr, int nfile, const t_filenm fnm[],
     {
         snew(f, top_global->natoms);
     }
+
+
+    if(MASTER(cr)) {
+ 
+        for(nss = 0; nss < dArgs->nss; nss++)
+        DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale, 
+                      dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f);
+    }
+
 
     /* Kinetic energy data */
     snew(ekind, 1);
