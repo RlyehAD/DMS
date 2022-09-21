@@ -392,15 +392,6 @@ double do_md(FILE *fplog, t_commrec *cr, int nfile, const t_filenm fnm[],
         snew(f, top_global->natoms);
     }
 
-
-    if(MASTER(cr)) {
- 
-        for(nss = 0; nss < dArgs->nss; nss++)
-        DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale, 
-                      dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f);
-    }
-
-
     /* Kinetic energy data */
     snew(ekind, 1);
     init_ekindata(fplog, top_global, &(ir->opts), ekind);
@@ -500,6 +491,14 @@ ir->nstcalcenergy);
 
         setup_bonded_threading(fr, &top->idef);
     }
+
+    if(MASTER(cr)) {
+ 
+        for(nss = 0; nss < dArgs->nss; nss++)
+        DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale, 
+                      dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f_global);
+    }
+
 
     /* Set up interactive MD (IMD) */
     init_IMD(ir, cr, top_global, fplog, ir->nstcalcenergy, state_global->x,
