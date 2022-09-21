@@ -133,7 +133,7 @@ gmx_bool dmsInitialize(int argc, char* argv[]) {
 }
 
 void DmsBase::registerMethods() {
-	PetscFunctionBegin;
+	//PetscFunctionBegin;
 
 	std::string SpaceWarping = "SpaceWarping",
         FieldVariables = "FieldVariables";
@@ -149,7 +149,7 @@ void DmsBase::registerMethods() {
     	initializeHash[FieldVariables] = swm::initialize;
     	updateRefHash[FieldVariables] = swm::updateRef;
 
-    	PetscFunctionReturn(0);
+    	//PetscFunctionReturn(0);
 }
 
 DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
