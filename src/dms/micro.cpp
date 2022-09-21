@@ -103,6 +103,11 @@ PetscErrorCode Micro_state::setupRefTop(char* topFname, DmsBase* Dbase) {
 		ierr = VecCopy(Get_Coords()[dim], Get_RefCoords()[dim]);
 		DMS_CHKERRQ(ierr);
 
+		ierr = VecAssemblyBegin(Coords[dim]);
+		DMS_CHKERRQ(ierr);
+		ierr = VecAssemblyEnd(Coords[dim]);
+		DMS_CHKERRQ(ierr);
+
 		ierr = VecAssemblyBegin(Get_RefCoords()[dim]);
 		DMS_CHKERRQ(ierr);
 		ierr = VecAssemblyEnd(Get_RefCoords()[dim]);
@@ -440,7 +445,9 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
                                 	  		Values[dim][count] = MD_state->x[atomindex][dim];
 							ValuesV[dim][count] = MD_state->v[atomindex][dim];
 							ValuesF[dim][count] = atom_forces[atomindex][dim];
-							Indices[count] = count++;
+							//Indices[count] = count++;
+							Indices[count] = count;
+							count++;
 
 						}
 					}
@@ -540,7 +547,7 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 
                 ierr = VecRestoreArray(Forces[dim], &Forces_ptr);
                 CHKERRQ(ierr);
-                
+
 			}
 
 	PetscFunctionReturn(ierr);
