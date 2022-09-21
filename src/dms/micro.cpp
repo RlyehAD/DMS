@@ -172,7 +172,7 @@ Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 
 	// TODO: atomic forces must be included
 	// TODO: destroy vec/mat PETSC objects before allocating new ones for copy const and operator=
-	PetscFunctionBeginUser;
+	//PetscFunctionBeginUser;
 
 	char FGM = 'L';
 	mode = &FGM;
@@ -293,7 +293,6 @@ Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 
     DMS_CHKERRQ(ierr);
 
-    PetscFunctionReturn(ierr);
 }
 
 Micro_state::Micro_state(const Micro_state& micro_class) : COMM(micro_class.COMM),
