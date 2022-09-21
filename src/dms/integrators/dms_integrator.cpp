@@ -4,4 +4,5 @@ DmsIntegrator::DmsIntegrator(PetscScalar dt, bool adpt, MPI_Comm COMM) : Delta(d
 								   adaptive(adpt), comm(COMM) {
 
 	PetscFunctionBegin;
+	PetscFunctionReturn(0);
 }

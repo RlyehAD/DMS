@@ -124,11 +124,12 @@ std::vector<std::string> split(const std::string &s, char delim) {
 
 // Move this function somewhere else
 gmx_bool dmsInitialize(int argc, char* argv[]) {
-	PetscFunctionBegin;
+	//PetscFunctionBegin;
 
 	PetscInitialize(&argc, &argv, NULL, NULL);
 
 	return 0;
+	//PetscFunctionReturn(0);
 }
 
 void DmsBase::registerMethods() {
@@ -147,6 +148,8 @@ void DmsBase::registerMethods() {
     	coarseGrainHash[FieldVariables] = swm::coarseGrain;
     	initializeHash[FieldVariables] = swm::initialize;
     	updateRefHash[FieldVariables] = swm::updateRef;
+
+    	PetscFunctionReturn(0);
 }
 
 DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
@@ -279,6 +282,8 @@ DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
                 fpLog << getTime() << ":INFO:Success! Number of CG variables per subsystem is " << nCG << std::endl;
 		fpLog << getTime() << ":INFO:Reference structure will be updated every " << freqUpdate <<  " ps" << std::endl;
         }
+
+   	PetscFunctionReturn(ierr);
 }
 
 int DmsBase::cgStep(gmx_int64_t gromacStep) {

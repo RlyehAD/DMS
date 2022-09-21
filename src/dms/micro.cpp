@@ -292,6 +292,8 @@ Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 	}
 
     DMS_CHKERRQ(ierr);
+
+    PetscFunctionReturn(ierr);
 }
 
 Micro_state::Micro_state(const Micro_state& micro_class) : COMM(micro_class.COMM),
