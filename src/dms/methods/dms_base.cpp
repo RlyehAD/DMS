@@ -214,7 +214,7 @@ DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
 		const gmx_int64_t freq, const real dt, const gmx_int64_t t0, MPI_Comm communic, const int mSteps, const double optimScale, const PetscInt nHist, 
 		const PetscInt ssIndex, const PetscInt nss, std::string cgType, char* userRef, char* topFname, char* selFname, rvec forces[]) { 
 
-	PetscFunctionBegin;
+	//PetscFunctionBegin;
 
 	freqUpdate = freq;
 	timeStep = t0;
@@ -283,7 +283,7 @@ DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
 		fpLog << getTime() << ":INFO:Reference structure will be updated every " << freqUpdate <<  " ps" << std::endl;
         }
 
-   	PetscFunctionReturn(ierr);
+   	//PetscFunctionReturn(ierr);
 }
 
 int DmsBase::cgStep(gmx_int64_t gromacStep) {
