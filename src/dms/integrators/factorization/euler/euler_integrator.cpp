@@ -4,6 +4,7 @@ DmsEuler::DmsEuler(PetscScalar dt, bool adpt, MPI_Comm comm) :
 					DmsIntegrator::DmsIntegrator(dt, adpt, comm) {
 
 	PetscFunctionBegin;
+	PetscFunctionReturn(0);
 }
 
 PetscErrorCode DmsEuler::integrate(const CVec& Coords, const CVec& RHS) {
