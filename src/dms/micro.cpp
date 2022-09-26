@@ -526,7 +526,7 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 								//velocity = Coords_ptr[count] - MD_state->x[atomindex][dim];
 
 								if(mode)
-									atom_forces[atomindex][dim] += Forces_ptr[count++];
+									atom_forces[atomindex][dim] = Forces_ptr[count++];
 									//MD_state->f[atomindex][dim] += Forces_ptr[count++]; 
 								else
                                 					MD_state->x[atomindex][dim] = Coords_ptr[count++];

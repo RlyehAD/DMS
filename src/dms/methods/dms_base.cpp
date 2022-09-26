@@ -372,8 +372,8 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 		ierr = constructVelocities();
 		CHKERRQ(ierr);
 		
-		ierr = constructForces();
-                CHKERRQ(ierr);
+		//ierr = constructForces();
+                //CHKERRQ(ierr);
 
 		// Pade: save CG state at t = -	Delta + delta
 		/*
@@ -430,12 +430,13 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 
 			VecMax(deltaPhi, NULL, &maxChange);
 
-			if(maxChange > 0.1){
+			if(maxChange > 0.01){
 				conv = false;
 				break;
 			}
 			else{
 				conv = true;
+				fpLog << getTime() << ":INFO: The cg forces have converged with largest deltaPhi of " << maxChange << std::endl;
 			}
 		}
 
@@ -680,7 +681,8 @@ PetscErrorCode DmsBase::constructConstrainForces(){
 		ierr = MatMult(*kernel, tmpVec, df);
 		CHKERRQ(ierr);
 
-                ierr = VecAXPY(Mesoscopic->Get_Forces()[dim], alpha, df);
+                //ierr = VecAXPY(Mesoscopic->Get_Forces()[dim], alpha, df);
+                ierr = VecAXPY(Microscopic->Get_Forces()[dim], alpha, df);
                 CHKERRQ(ierr);
 	}
 

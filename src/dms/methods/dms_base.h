@@ -133,7 +133,7 @@ public:
 	void setNcgAdj(PetscInt n) { nCGAdj = n; }
 
 	// For backmapping
-	gmx_bool conv = TRUE;
+	gmx_bool conv = FALSE;
 
 	std::fstream fpLog;
 	PetscViewer viewer;
