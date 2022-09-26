@@ -37,7 +37,7 @@ public:
 	PetscInt Get_Dim() const { return Dim; }
 
 	CVec Get_Coords() const { return Coords; }
-	CVec Get_cCoords() const { return cCoords; } Moved this to the son class Meso_State
+	CVec Get_cCoords() const { return cCoords; } //Moved this to the son class Meso_State
 	CVec Get_pCoords() const { return pCoords; }
 	CVec Get_RefCoords() const { return Ref_Coords; }
 
