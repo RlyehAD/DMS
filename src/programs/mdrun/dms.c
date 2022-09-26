@@ -256,7 +256,7 @@ double do_md(FILE *fplog, t_commrec *cr, int nfile, const t_filenm fnm[],
 
     /* DMS params */
     gmx_bool bStartMS = FALSE;
-    gmx_bool converge_cgF = FALSE;
+    gmx_bool converge_cgF = TRUE;
     real bondEnergy = -1.0; // bond energy will always be >= 0
 
     int dmsStep = 0, dmsSteps = dArgs->dt;
@@ -385,10 +385,16 @@ double do_md(FILE *fplog, t_commrec *cr, int nfile, const t_filenm fnm[],
                   enerd);
     if (DOMAINDECOMP(cr))
     {
+	if(MASTER(cr)){
+	   printf("Option 1 of DD is done");
+	}
         f = NULL;
     }
     else
     {
+	if(MASTER(cr)){
+	  printf("Option 2 of DD is done");
+	}
         snew(f, top_global->natoms);
     }
 
@@ -460,6 +466,9 @@ ir->nstcalcenergy);
 
         if (DDMASTER(cr->dd) && ir->nstfout)
         {
+	    if(MASTER(cr)){
+		printf("Option 3 of DD is done");
+	    }
             snew(f_global, state_global->natoms);
         }
     }
@@ -470,6 +479,9 @@ ir->nstcalcenergy);
         forcerec_set_excl_load(fr, top);
 
         state    = serial_init_local_state(state_global);
+	if(MASTER(cr)){
+	   printf("Option 4 of DD is done");
+	}
         f_global = f;
 
         atoms2md(top_global, ir, 0, NULL, top_global->natoms, mdatoms);
@@ -492,8 +504,11 @@ ir->nstcalcenergy);
         setup_bonded_threading(fr, &top->idef);
     }
 
-    if(MASTER(cr)) {
- 
+   if(MASTER(cr)) {
+        printf("The length of the force vec is %d \n", sizeof(f)/sizeof(f[0]));    
+    }
+
+   if(MASTER(cr)) {
         for(nss = 0; nss < dArgs->nss; nss++)
         DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale, 
                       dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f_global);
