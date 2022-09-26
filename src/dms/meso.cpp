@@ -2,7 +2,7 @@
 
 Meso_state::Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt nHistory, MPI_Comm Comm, ptrMap ptrFunc, ptrMapVelo ptrFuncVelo) {
 
-	PetscFunctionBegin;
+	//PetscFunctionBegin;
 
 	DOF = NumCG;
 	Dim = DimCG;

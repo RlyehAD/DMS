@@ -37,7 +37,7 @@ public:
 	PetscInt Get_Dim() const { return Dim; }
 
 	CVec Get_Coords() const { return Coords; }
-	//Cvec Get_cCoords() const { return cCoords; } Moved this to the son class Meso_State
+	CVec Get_cCoords() const { return cCoords; } Moved this to the son class Meso_State
 	CVec Get_pCoords() const { return pCoords; }
 	CVec Get_RefCoords() const { return Ref_Coords; }
 
@@ -110,7 +110,7 @@ class Meso_state: public Micro_state {
 	PetscInt nHist;
 public:
     
-    CVec Get_cCoords() const { return cCoords; }
+    //CVec Get_cCoords() const { return cCoords; }
     
 	Meso_state(PetscInt NumCG, PetscInt DimCG, PetscInt, MPI_Comm, ptrMap, ptrMapVelo);
 
