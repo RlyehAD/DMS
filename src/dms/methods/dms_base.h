@@ -157,6 +157,9 @@ protected:
 	threshold, // minimum number 
 	assembleFreq;
 
+	// For backmapping
+	int fg_extrap = 0;
+
 	int order, numSS, numSSglob;
 	double scale;
 

@@ -2108,15 +2108,6 @@ ir->nstcalcenergy);
                 step_rel_tmp = step_rel;
         }
 
-        for(nss = 0; nss < dArgs->nss; nss++){
-            if(checkconverge(DmsBase[nss])){
-                converge_cgF = TRUE;
-            }
-            else{
-                converge_cgF = FALSE;
-                break;
-            }
-        }
 
         /*if(converge_cgF){
                 step += dmsSteps - microSteps;
@@ -2128,6 +2119,16 @@ ir->nstcalcenergy);
 
 		if (DOMAINDECOMP(cr))
 			dmsDistributeCoords(cr->dd, state_global->x, state->x); 
+
+        for(nss = 0; nss < dArgs->nss; nss++){
+            if(checkconverge(DmsBase[nss])){
+                converge_cgF = TRUE;
+            }
+            else{
+                converge_cgF = FALSE;
+                break;
+            }
+        }
 
         if(converge_cgF){
         step = step_tmp;
