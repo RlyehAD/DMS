@@ -395,8 +395,12 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
                 // The cg coords now are the same in Coords and pCoords del 
 
 		fpLog << getTime() << ":INFO:Advancing CG variables in time" << std::endl;
+
+		if(fg_extrap == 0){
+			conv = FALSE;
+		}
                 
-                if(conv){
+                if(!conv && fg_extrap == 0){
 			if(nHistory > 1)
 				ierr = Integrator->integrate(Mesoscopic->Get_Coords(), Mesoscopic->Get_Velocities()); // call Pade->integrate method
 			else {
@@ -432,10 +436,12 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 
 			if(maxChange > 0.01){
 				conv = false;
+				fg_extrap++;
 				break;
 			}
 			else{
 				conv = true;
+				fg_extrap = 0;
 				fpLog << getTime() << ":INFO: The cg forces have converged with largest deltaPhi of " << maxChange << std::endl;
 			}
 		}
