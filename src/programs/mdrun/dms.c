@@ -2128,9 +2128,13 @@ ir->nstcalcenergy);
 		if(MASTER(cr))
 			for(nss = 0; nss < dArgs->nss; nss++)
                 		dmsCGStep(DmsBase[nss], step);
+                
+                printf("cg step can be finished\n");
 
 		if (DOMAINDECOMP(cr))
 			dmsDistributeCoords(cr->dd, state_global->x, state->x); 
+
+                printf("distribution coords can be finished\n");
 
         for(nss = 0; nss < dArgs->nss; nss++){
             if(MASTER(cr)){
