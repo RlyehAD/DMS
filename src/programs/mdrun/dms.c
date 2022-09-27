@@ -2154,7 +2154,7 @@ ir->nstcalcenergy);
                 printf("\n");
                 printf("***********************\n");
                 }
-            }
+            
 
 
             if(checkconverge(DmsBase[nss])){
@@ -2205,7 +2205,8 @@ ir->nstcalcenergy);
                 printf("dmsStep number is  %d, \n", dmsStep);
                 printf("***********************\n");
 
-            }         
+                }
+
 
 
         }
