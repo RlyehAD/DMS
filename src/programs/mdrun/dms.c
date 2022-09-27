@@ -2119,6 +2119,11 @@ ir->nstcalcenergy);
 		dd_collect_vec(cr->dd, state, state->v, state_global->v);
 
         if(converge_cgF){
+                if(MASTER(cr)) {
+                        printf("***********************\n");
+                        printf("Saving original step informations");
+                        printf("***********************\n");
+                }
                 step_tmp = step;
                 step_rel_tmp = step_rel;
         }
