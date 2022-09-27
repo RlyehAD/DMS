@@ -526,7 +526,7 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 								//velocity = Coords_ptr[count] - MD_state->x[atomindex][dim];
 
 								if(mode){
-									std::cout << "Adding the constrain forces to the original atomic forces" << std::endl;
+									//std::cout << "Adding the constrain forces to the original atomic forces" << std::endl;
 									atom_forces[atomindex][dim] = Forces_ptr[count++];
 									//MD_state->f[atomindex][dim] += Forces_ptr[count++]; 
 								}

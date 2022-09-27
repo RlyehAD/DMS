@@ -2148,6 +2148,15 @@ ir->nstcalcenergy);
 			dmsDistributeCoords(cr->dd, state_global->x, state->x); 
 
         for(nss = 0; nss < dArgs->nss; nss++){
+            if(MASTER(cr)){
+                printf("***********************\n");
+                printf(checkconverge(DmsBase[nss]));
+                printf("\n");
+                printf("***********************\n");
+                }
+            }
+
+
             if(checkconverge(DmsBase[nss])){
                 converge_cgF = TRUE;
             if(MASTER(cr)){
