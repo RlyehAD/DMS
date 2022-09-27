@@ -409,9 +409,10 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
                        		CHKERRQ(ierr);
 			}
 			for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++){
-			ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_cCoords()[dim]);
-			CHKERRQ(ierr);
+				ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_cCoords()[dim]);
+				CHKERRQ(ierr);
 			}
+			fpLog << getTime() << ":INFO:Constrained cg Coords have been saved" << std::endl;
 		}
 
                 // Now the Coods has been updated, which is the constrained version del
@@ -419,6 +420,7 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
                 then calculate dcg and set conv value accordingly.
                 When !conv, the integrator should not be called. */
 
+		fpLog << getTime() << ":INFO: Start to update the atomic forces" << std::endl;
                 ierr = constructConstrainForces();
                 CHKERRQ(ierr); //update atomic forces
 
