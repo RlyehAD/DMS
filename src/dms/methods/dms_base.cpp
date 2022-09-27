@@ -310,7 +310,7 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 	if(!mpiRank) {
 
 		fpLog << getTime() << ":INFO:Taking CG time step " << timeStep << std::endl;
-		timeStep++;
+		//timeStep++;
 		CHKERRQ(ierr);
 
 
@@ -438,16 +438,21 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 
 			if(maxChange > 0.01){
 				conv = false;
+				fpLog << getTime() << ":INFO:At iteration " << fg_extrap << " the cg forces are still not converged" << std::endl;
 				fg_extrap++;
 				break;
 			}
 			else{
 				conv = true;
-				fg_extrap = 0;
 				fpLog << getTime() << ":INFO:The cg forces have converged with largest deltaPhi of " << maxChange << std::endl;
 			}
 		}
 
+		if(conv){
+
+			timeStep++;
+			fg_extrap = 0;
+		}
 		// Fine-grain (recover atomistic configuration)
 		/* Since I use cCoords to store the constrained cg vars, we should input cCoords and pCoords into 
 		the fine-graining function 
@@ -683,11 +688,12 @@ PetscErrorCode DmsBase::constructConstrainForces(){
 	        ierr = VecAXPY(tmpVec, -1.0, Mesoscopic->Get_pCoords()[dim]);
 		CHKERRQ(ierr); // dcg[dim]
 
+		ierr = MatMult(*kernel, tmpVec, df);
+		CHKERRQ(ierr);
+
 		ierr = VecScale(df, 6.022e-26);
 		CHKERRQ(ierr);
 
-		ierr = MatMult(*kernel, tmpVec, df);
-		CHKERRQ(ierr);
 
                 //ierr = VecAXPY(Mesoscopic->Get_Forces()[dim], alpha, df);
                 ierr = VecAXPY(Microscopic->Get_Forces()[dim], alpha, df);
