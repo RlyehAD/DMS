@@ -420,7 +420,7 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
                 then calculate dcg and set conv value accordingly.
                 When !conv, the integrator should not be called. */
 
-		fpLog << getTime() << ":INFO: Start to update the atomic forces" << std::endl;
+		fpLog << getTime() << ":INFO:Start to update the atomic forces" << std::endl;
                 ierr = constructConstrainForces();
                 CHKERRQ(ierr); //update atomic forces
 
@@ -444,7 +444,7 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 			else{
 				conv = true;
 				fg_extrap = 0;
-				fpLog << getTime() << ":INFO: The cg forces have converged with largest deltaPhi of " << maxChange << std::endl;
+				fpLog << getTime() << ":INFO:The cg forces have converged with largest deltaPhi of " << maxChange << std::endl;
 			}
 		}
 
@@ -663,7 +663,7 @@ PetscErrorCode DmsBase::constructConstrainForces(){
 
         PetscScalar alpha = 0.1;
         Vec tmpVec;
-		ierr = VecCreateSeq(getComm(), Mesoscopic->Get_DOF_local(), &tmpVec);
+		ierr = VecCreateSeq(getComm(), Mesoscopic->Get_DOF(), &tmpVec);
 		CHKERRQ(ierr);
 
         Vec df;
