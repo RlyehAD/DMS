@@ -663,6 +663,8 @@ PetscErrorCode DmsBase::constructConstrainForces(){
         Mat *mesoMicroMap = getMesoMicro(),
             *kernel = getKernel(); // B
 
+        fpLog << getTime() << ":INFO:ccf func flag 1000" std::endl;
+
 	ierr = MatCopy(*mesoMicroMap, *kernel, SAME_NONZERO_PATTERN);
 	CHKERRQ(ierr);
 
@@ -677,6 +679,8 @@ PetscErrorCode DmsBase::constructConstrainForces(){
         
         ierr = MatDiagonalScale(*kernel, Microscopic->getMass(), NULL); // MB
         CHKERRQ(ierr);
+
+        fpLog << getTime() << ":INFO:ccf func flag 2000" std::endl;
 
         ierr = MatScale(*kernel, 1000000.0/(Delta*Delta));
         CHKERRQ(ierr); // MB/Delta^2
@@ -694,11 +698,13 @@ PetscErrorCode DmsBase::constructConstrainForces(){
 		ierr = VecScale(df, 6.022e-26);
 		CHKERRQ(ierr);
 
-
+		fpLog << getTime() << ":INFO:ccf func flag 3000" std::endl;
                 //ierr = VecAXPY(Mesoscopic->Get_Forces()[dim], alpha, df);
                 ierr = VecAXPY(Microscopic->Get_Forces()[dim], alpha, df);
                 CHKERRQ(ierr);
 	}
+
+	fpLog << getTime() << ":INFO:ccf func flag 4000" std::endl;
 
 	ierr = VecDestroy(&tmpVec);
 	CHKERRQ(ierr);
