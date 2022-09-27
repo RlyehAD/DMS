@@ -699,6 +699,8 @@ PetscErrorCode DmsBase::constructConstrainForces(){
 
 	ierr = VecDestroy(&df);
 	CHKERRQ(ierr);
+
+        PetscFunctionReturn(ierr);
 }
 
 std::vector<PetscScalar> DmsBase::compCentOfMass(const CVec& Coords) {
