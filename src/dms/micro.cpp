@@ -525,12 +525,14 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
                         				if(strncmp(resname, "SOL", 3) && strncmp(resname, "NA", 2) && strncmp(resname, "CL", 2) && strncmp(resname, "GRA", 3)) {
 								//velocity = Coords_ptr[count] - MD_state->x[atomindex][dim];
 
-								if(mode)
+								if(mode){
 									std::cout << "Adding the constrain forces to the original atomic forces" << std::endl;
 									atom_forces[atomindex][dim] = Forces_ptr[count++];
 									//MD_state->f[atomindex][dim] += Forces_ptr[count++]; 
-								else
+								}
+								else{
                                 					MD_state->x[atomindex][dim] = Coords_ptr[count++];
+                                				}
 							}
 							//else
 								//if (!strncmp(resname, "SOL", 3) || !strncmp(resname, "NA", 2) || !strncmp(resname, "CL", 2))
