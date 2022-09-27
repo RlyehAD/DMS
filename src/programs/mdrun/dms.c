@@ -2093,6 +2093,13 @@ ir->nstcalcenergy);
             }
     }
 
+            if(MASTER(cr)){
+                printf("***********************\n");
+                printf("dmsStep number is  %d, \n", dmsStep);
+                printf("***********************\n");
+
+            }
+
 	if( dmsStep == microSteps && bondEnergy >= 0.0 ) {
                 if(MASTER(cr)) {
                         printf("***********************\n");
@@ -2106,7 +2113,7 @@ ir->nstcalcenergy);
         if(converge_cgF){
                 if(MASTER(cr)) {
                         printf("***********************\n");
-                        printf("Saving original step informations");
+                        printf("Saving original step informations\n");
                         printf("***********************\n");
                 }
                 step_tmp = step;
@@ -2128,34 +2135,54 @@ ir->nstcalcenergy);
         for(nss = 0; nss < dArgs->nss; nss++){
             if(checkconverge(DmsBase[nss])){
                 converge_cgF = TRUE;
+            if(MASTER(cr)){
+                printf("***********************\n");
+                printf("converged\n");
+                printf("***********************\n");
+                }
             }
             else{
                 converge_cgF = FALSE;
+
+            if(MASTER(cr)){
+                printf("***********************\n");
+                printf("Not converged yet\n");
+                printf("***********************\n");
+                }
                 break;
             }
         }
 
         if(converge_cgF){
-        step = step_tmp;
-        step_rel = step_rel_tmp;
-        step += dmsSteps - microSteps;        
-        step_rel += dmsSteps - microSteps;
+            
+            step = step_tmp;
+            step_rel = step_rel_tmp;
+            step += dmsSteps - microSteps;        
+            step_rel += dmsSteps - microSteps;
 
-        if(MASTER(cr)){
-            printf("***********************\n");
-            printf("Backmapping is converged after %d MD steps ...\n", backmap_step);
-            printf("***********************\n");
+            if(MASTER(cr)){
+                printf("***********************\n");
+                printf("Backmapping is converged after %d MD steps ...\n", backmap_step);
+                printf("***********************\n");
 
-        }
+            }
 
-		dmsStep = 0;
-		bStartMS = FALSE;
-                counter = 0;
-                backmap_step = 0;
+		    dmsStep = 0;
+		    bStartMS = FALSE;
+            counter = 0;
+            backmap_step = 0;
             }
         else {
             backmap_step++;
-        }
+            }
+
+            if(MASTER(cr)){
+                printf("***********************\n");
+                printf("dmsStep number is  %d, \n", dmsStep);
+                printf("***********************\n");
+
+            }         
+
 
         }
 
