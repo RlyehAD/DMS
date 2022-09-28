@@ -519,6 +519,9 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 		writePetsc(Mesoscopic->Get_Coords(), keys, timeStep, &viewer);
 		fpLog << getTime() << ":INFO:Finish writing hdf5 file" << std::endl;
 	}
+	
+	ierr = VecDestroy(&deltaPhi);
+	CHKERRQ(ierr);
 
 	PetscFunctionReturn(ierr);
 }
