@@ -2126,45 +2126,46 @@ ir->nstcalcenergy);
                 step_rel += dmsSteps - microSteps;
         }*/
 		if(MASTER(cr))
-			for(nss = 0; nss < dArgs->nss; nss++)
+			for(nss = 0; nss < dArgs->nss; nss++){
                 		dmsCGStep(DmsBase[nss], step);
-                
-        if(MASTER(cr))
-            printf("cg step can be finished\n");
+                        printf("cg step can be finished\n");
+        }
 
 		if (DOMAINDECOMP(cr))
 			dmsDistributeCoords(cr->dd, state_global->x, state->x); 
 
-        if(MASTER(cr))
+        if(MASTER(cr)){
             printf("distribution coords can be finished\n");
+        
 
         for(nss = 0; nss < dArgs->nss; nss++){
-            if(MASTER(cr)){
+
                 printf("***********************\n");
                 printf(checkconverge(DmsBase[nss]));
                 printf("\n");
                 printf("***********************\n");
-                }
+                
             
 
 
             if(checkconverge(DmsBase[nss])){
                 converge_cgF = TRUE;
-            if(MASTER(cr)){
+
                 printf("***********************\n");
                 printf("converged\n");
                 printf("***********************\n");
-                }
+                
             }
             else{
                 converge_cgF = FALSE;
 
-            if(MASTER(cr)){
+
                 printf("***********************\n");
                 printf("Not converged yet\n");
                 printf("***********************\n");
-                }
+                
                 break;
+                }
             }
         }
 
@@ -2193,7 +2194,7 @@ ir->nstcalcenergy);
 
             if(MASTER(cr)){
                 printf("***********************\n");
-                printf("dmsStep number is  %d, \n", dmsStep);
+                printf("dmsStep number(low) is  %d, \n", dmsStep);
                 printf("***********************\n");
 
                 }
