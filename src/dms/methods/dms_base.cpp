@@ -712,15 +712,22 @@ PetscErrorCode DmsBase::constructConstrainForces(){
                 CHKERRQ(ierr);
 		}
 
-	}	
-
-	fpLog << getTime() << ":INFO:ccf func flag 4000" << std::endl;
 
 	ierr = VecDestroy(&tmpVec);
 	CHKERRQ(ierr);
 
 	ierr = VecDestroy(&df);
 	CHKERRQ(ierr);
+
+	}	
+
+	fpLog << getTime() << ":INFO:ccf func flag 4000" << std::endl;
+
+	/*ierr = VecDestroy(&tmpVec);
+	CHKERRQ(ierr);
+
+	ierr = VecDestroy(&df);
+	CHKERRQ(ierr);*/
 
         PetscFunctionReturn(ierr);
 }
