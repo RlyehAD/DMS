@@ -422,7 +422,7 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 
 		fpLog << getTime() << ":INFO:Start to update the atomic forces" << std::endl;
                 ierr = constructConstrainForces();
-                CHKERRQ(ierr); //update atomic forces
+                DMS_CHKERRQ(ierr); //update atomic forces
 
 		for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++){
 			ierr = VecCopy(Mesoscopic->Get_cCoords()[dim], deltaPhi);
@@ -506,7 +506,8 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 
 		fpLog << getTime() << ":INFO:Syncing GROMACS with DMS" << std::endl;
 		// Done with DMS computations! Now update the GROMACS t_state to re-initiate the MD phase
-		Microscopic->Sync_MD_fromDMS(this);
+		ierr = Microscopic->Sync_MD_fromDMS(this);
+		DMS_CHKERRQ(ierr);
 
 		fpLog << getTime() << ":INFO:Completed CG time step " << timeStep << ". Resuming micro(Gromacs) phase. " << std::endl;
 
@@ -670,6 +671,8 @@ PetscErrorCode DmsBase::constructConstrainForces(){
 
         fpLog << getTime() << ":INFO:ccf func flag 1000" << std::endl;
 
+        if(!mpiRank) {
+
 	ierr = MatCopy(*mesoMicroMap, *kernel, SAME_NONZERO_PATTERN);
 	CHKERRQ(ierr);
 
@@ -707,7 +710,9 @@ PetscErrorCode DmsBase::constructConstrainForces(){
                 //ierr = VecAXPY(Mesoscopic->Get_Forces()[dim], alpha, df);
                 ierr = VecAXPY(Microscopic->Get_Forces()[dim], alpha, df);
                 CHKERRQ(ierr);
-	}
+		}
+
+	}	
 
 	fpLog << getTime() << ":INFO:ccf func flag 4000" << std::endl;
 
