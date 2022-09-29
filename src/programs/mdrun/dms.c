@@ -504,15 +504,18 @@ ir->nstcalcenergy);
         setup_bonded_threading(fr, &top->idef);
     }
 
-   if(MASTER(cr)) {
-        printf("The length of the force vec is %d \n", sizeof(f)/sizeof(f[0]));    
-    }
 
-   if(MASTER(cr)) {
-        for(nss = 0; nss < dArgs->nss; nss++)
-        DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale, 
-                      dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f_global);
-    }
+
+
+
+
+
+
+
+
+
+
+
 
 
     /* Set up interactive MD (IMD) */
@@ -529,6 +532,15 @@ ir->nstcalcenergy);
                             nrnb, wcycle, FALSE);
 
     }
+
+
+    if(MASTER(cr)) {
+ 
+        for(nss = 0; nss < dArgs->nss; nss++)
+        DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale, 
+                      dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f);
+    }
+
 
     update_mdatoms(mdatoms, state->lambda[efptMASS]);
 
