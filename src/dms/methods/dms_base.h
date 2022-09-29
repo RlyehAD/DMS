@@ -139,10 +139,9 @@ public:
 	PetscViewer viewer;
 
 protected:
-    	gmx_int64_t freqUpdate,
-    	timeStep,
-	Delta, // CG timestep in ps
-    	dim,
+    gmx_int64_t freqUpdate,
+    timeStep,
+    dim,
 	cgDim,
 	nAtoms,
 	nLocalAtoms, // number of atoms per subsystem. TODO: change the identifier to "sub" versus "local"
@@ -156,6 +155,8 @@ protected:
 	neighZ, // # of neighbor cells used for doing NNS along the z-direction
 	threshold, // minimum number 
 	assembleFreq;
+
+	real Delta;// CG timestep in ps
 
 	// For backmapping
 	int fg_extrap = 0;
