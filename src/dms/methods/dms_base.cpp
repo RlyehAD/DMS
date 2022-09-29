@@ -700,8 +700,8 @@ PetscErrorCode DmsBase::constructConstrainForces(){
 		ierr = MatMult(*kernel, tmpVec, df);
 		CHKERRQ(ierr);
 
-		ierr = VecScale(df, 6.022e20);
-		CHKERRQ(ierr);
+		//ierr = VecScale(df, 6.022e20);
+		//CHKERRQ(ierr);
 
 
                 //ierr = VecAXPY(Mesoscopic->Get_Forces()[dim], alpha, df);
