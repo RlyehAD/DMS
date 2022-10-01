@@ -946,6 +946,14 @@ ir->nstcalcenergy);
             }
         }
 
+
+
+                if(MASTER(cr)) {
+                        printf("***********************\n");
+                        printf("PASS FLAG 00\n", counter);
+                        printf("***********************\n");
+                }        
+
         /* Stop Center of Mass motion */
         bStopCM = (ir->comm_mode != ecmNO && do_per_step(step, ir->nstcomm));
 
@@ -1678,6 +1686,13 @@ ir->nstcalcenergy);
                     gmx_fatal(FARGS, "Constraint error: Shake, Lincs or Settle could not solve the constrains");
                 }
 
+
+                 if(MASTER(cr)) {
+                        printf("***********************\n");
+                        printf("PASS FLAG 01\n", counter);
+                        printf("***********************\n");
+                }                
+
                 if (fr->bSepDVDL && fplog && do_log)
                 {
                     gmx_print_sepdvdl(fplog, "Constraint dV/dl", 0.0, dvdl_constr);
@@ -1937,6 +1952,13 @@ ir->nstcalcenergy);
 
         /* #######  END SET VARIABLES FOR NEXT ITERATION ###### */
 
+
+                if(MASTER(cr)) {
+                        printf("***********************\n");
+                        printf("PASS FLAG 00\n", counter);
+                        printf("***********************\n");
+                } 
+                
         if ( (membed != NULL) && (!bLastStep) )
         {
             rescale_membed(step_rel, membed, state_global->x);
@@ -2191,12 +2213,12 @@ ir->nstcalcenergy);
             backmap_step++;
             }
 
-            if(MASTER(cr)){
+            //if(MASTER(cr)){
                 printf("***********************\n");
                 printf("dmsStep number(low) is  %d, \n", dmsStep);
                 printf("***********************\n");
 
-                }
+              //  }
 
 
 
