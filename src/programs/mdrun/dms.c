@@ -538,7 +538,7 @@ ir->nstcalcenergy);
  
         for(nss = 0; nss < dArgs->nss; nss++)
         DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale, 
-                      dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f_global);
+                      dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f);
     }
 
 
@@ -1078,7 +1078,14 @@ ir->nstcalcenergy);
                 wallcycle_stop(wcycle, ewcDOMDEC);
                 /* If using an iterative integrator, reallocate space to match the decomposition */
             }
+
+                if(MASTER(cr)) {
+                        printf("***********************\n");
+                        printf("PASS FLAG 03\n", counter);
+                        printf("***********************\n");
+                }
         }
+
 
         if (MASTER(cr) && do_log)
         {
@@ -1313,6 +1320,12 @@ ir->nstcalcenergy);
                        called in the previous step */
                     unshift_self(graph, state->box, state->x);
                 }
+
+                if(MASTER(cr)) {
+                        printf("***********************\n");
+                        printf("PASS FLAG 04\n", counter);
+                        printf("***********************\n");
+                }                
 
                 /* if VV, compute the pressure and constraints */
                 /* For VV2, we strictly only need this if using pressure
@@ -1980,10 +1993,10 @@ ir->nstcalcenergy);
 
                 if(MASTER(cr)) {
                         printf("***********************\n");
-                        printf("PASS FLAG 00\n", counter);
+                        printf("PASS FLAG 02\n", counter);
                         printf("***********************\n");
                 } 
-                
+
         if ( (membed != NULL) && (!bLastStep) )
         {
             rescale_membed(step_rel, membed, state_global->x);
@@ -2180,7 +2193,7 @@ ir->nstcalcenergy);
 		if (DOMAINDECOMP(cr))
 			dmsDistributeCoords(cr->dd, state_global->x, state->x); 
 
-        if(MASTER(cr)){
+        if(MASTER(cr))
             printf("distribution coords can be finished\n");
         
 
@@ -2213,7 +2226,7 @@ ir->nstcalcenergy);
                 break;
                 }
             }
-        }
+        
 
         if(converge_cgF){
             
