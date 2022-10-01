@@ -538,7 +538,7 @@ ir->nstcalcenergy);
  
         for(nss = 0; nss < dArgs->nss; nss++)
         DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale, 
-                      dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f);
+                      dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f_global);
     }
 
 
@@ -2136,13 +2136,10 @@ ir->nstcalcenergy);
 
 		dd_collect_vec(cr->dd, state, state->x, state_global->x);
 		dd_collect_vec(cr->dd, state, state->v, state_global->v);
+        dd_collect_vec(cr->dd, state, f, f_global);
 
         if(converge_cgF){
-                if(MASTER(cr)) {
-                        printf("***********************\n");
-                        printf("Saving original step informations\n");
-                        printf("***********************\n");
-                }
+
                 step_tmp = step;
                 step_rel_tmp = step_rel;
         }
