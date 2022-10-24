@@ -76,6 +76,8 @@ public:
 
 	virtual PetscInt cgStep(gmx_int64_t); // do we really need this to be virtual? Perhaps it's best to 
 	// prevent overriding this in derived classes
+	
+	PetscInt extrapolation(gmx_int64_t);
 
 	DmsIntegrator *Integrator;
 	virtual ~DmsBase();
@@ -133,7 +135,7 @@ public:
 	void setNcgAdj(PetscInt n) { nCGAdj = n; }
 
 	// For backmapping
-	gmx_bool conv = FALSE;
+	gmx_bool conv;
 
 	std::fstream fpLog;
 	PetscViewer viewer;
@@ -155,6 +157,7 @@ protected:
 	neighZ, // # of neighbor cells used for doing NNS along the z-direction
 	threshold, // minimum number 
 	assembleFreq;
+	
 
 	real Delta;// CG timestep in ps
 
@@ -215,6 +218,7 @@ void delDmsBase(dmsBasePtr);
 // that was returned from the above constructor plus the methods parameters.
 int dmsCGStep(dmsBasePtr, gmx_int64_t);
 gmx_bool checkconverge(dmsBasePtr swm);
+int Dmsextrapolation(dmsBasePtr swm, gmx_int64_t);
 int constructDmsCoords(dmsBasePtr swm);
 int constructDmsVelo(dmsBasePtr swm, const int dmsStep);
 dmsBasePtr newDmsBase(const t_state* state, const t_mdatoms* mdatoms,
