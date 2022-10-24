@@ -267,7 +267,7 @@ DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
                 	throw std::invalid_argument("CG method has not yet been implemented");
         	}
 		
-		fpLog << getTime() << ":INFO:In the constructor of dmsbase, rvec* f is passed in, now print its sugao " << forces << std::endl;
+		fpLog << getTime() << ":INFO:In the constructor of dmsbase, rvec* f is passed in, now print the address it points to " << (void*)forces << std::endl;
                	Microscopic = new Micro_state(state, tmdatoms, top, ir, dim, comm, fineGrainHash[cgMethod], mSteps, dt, numSS, ssIndex, this, topFname, selFname, forces);
 
 		nAtoms = Microscopic->Get_DOF();
@@ -456,6 +456,8 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 				fpLog << getTime() << ":INFO:The cg forces have converged with largest deltaPhi of " << maxChange << std::endl;
 			}
 		}
+		
+		fpLog << getTime() << ":INFO: the address of conv is " << &conv << std::endl;
 
 		if(conv){
 
@@ -641,6 +643,8 @@ gmx_bool checkconverge(dmsBasePtr swm){
 	//return reinterpret_cast<DmsBase*>(swm)->conv;
 		
 		DmsBase* dmsBase = reinterpret_cast<DmsBase*>(swm);
+		
+		printf("In checkconverge the address of conv is %p\n", &conv);
 
 		Cconv = dmsBase->conv;
  
