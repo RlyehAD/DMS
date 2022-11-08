@@ -256,7 +256,8 @@ double do_md(FILE *fplog, t_commrec *cr, int nfile, const t_filenm fnm[],
 
     /* DMS params */
     gmx_bool bStartMS = FALSE;
-    gmx_bool converge_cgF = TRUE;
+    //gmx_bool converge_cgF = TRUE;
+    int converge_cgF = 1;
     real bondEnergy = -1.0; // bond energy will always be >= 0
 
     int dmsStep = 0, dmsSteps = dArgs->dt;
@@ -2200,7 +2201,10 @@ ir->nstcalcenergy);
 
 		if(MASTER(cr)){
 			for(nss =0; nss < dArgs->nss; nss++){
-				converge_cgF = checkconverge(DmsBase[nss]);
+				//converge_cgF = checkconverge(DmsBase[nss]);
+				//converge_cgF = checkconverge(DmsBase[nss], step);
+				if(checkconverge(DmsBase[nss], step))
+					converge_cgF = 1;
 			}
 		}
 

@@ -78,6 +78,7 @@ public:
 	// prevent overriding this in derived classes
 	
 	PetscInt extrapolation(gmx_int64_t);
+	PetscInt convergence_check(gmx_int64_t);
 
 	DmsIntegrator *Integrator;
 	virtual ~DmsBase();
@@ -217,7 +218,7 @@ void delDmsBase(dmsBasePtr);
 // Each public method takes an opaque reference to the object
 // that was returned from the above constructor plus the methods parameters.
 int dmsCGStep(dmsBasePtr, gmx_int64_t);
-gmx_bool checkconverge(dmsBasePtr swm);
+int checkconverge(dmsBasePtr swm, gmx_int64_t);
 int Dmsextrapolation(dmsBasePtr swm, gmx_int64_t);
 int constructDmsCoords(dmsBasePtr swm);
 int constructDmsVelo(dmsBasePtr swm, const int dmsStep);
