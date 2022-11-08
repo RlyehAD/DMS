@@ -256,7 +256,8 @@ double do_md(FILE *fplog, t_commrec *cr, int nfile, const t_filenm fnm[],
 
     /* DMS params */
     gmx_bool bStartMS = FALSE;
-    gmx_bool converge_cgF = TRUE;
+    //gmx_bool converge_cgF = TRUE;
+    int converge_cgF = 1;
     real bondEnergy = -1.0; // bond energy will always be >= 0
 
     int dmsStep = 0, dmsSteps = dArgs->dt;
@@ -374,7 +375,7 @@ double do_md(FILE *fplog, t_commrec *cr, int nfile, const t_filenm fnm[],
  
     	for(nss = 0; nss < dArgs->nss; nss++)
 		DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale, 
-					  dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f);
+					  dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f_global);
     }*/
 
     clear_mat(total_vir);
@@ -457,6 +458,20 @@ ir->nstcalcenergy);
         }
     }
 
+	
+    /*if (DOMAINDECOMP(cr))
+    {
+	if(DDMASTER(cr->dd) && ir->nstfout)
+		snew(f_global, state_global->natoms);
+    }
+
+    if(MASTER(cr)) {
+	
+	for(nss = 0; nss < dArgs->nss; nss++)
+		DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale,
+		dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f_global);
+    }*/
+
     if (DOMAINDECOMP(cr))
     {
         top = dd_init_local_top(top_global);
@@ -467,7 +482,7 @@ ir->nstcalcenergy);
         if (DDMASTER(cr->dd) && ir->nstfout)
         {
 	    if(MASTER(cr)){
-		printf("Option 3 of DD is done");
+		printf("cr->dd's dd after initiation is %p \n", cr->dd);
 	    }
             snew(f_global, state_global->natoms);
         }
@@ -2187,31 +2202,17 @@ ir->nstcalcenergy);
 		if(MASTER(cr)){
 			for(nss =0; nss < dArgs->nss; nss++){
 				converge_cgF = checkconverge(DmsBase[nss]);
+				//converge_cgF = checkconverge(DmsBase[nss]);
+				//converge_cgF = checkconverge(DmsBase[nss], step);
+				if(checkconverge(DmsBase[nss], step))
+					converge_cgF = 1;
 			}
-		}
-
-		if(MASTER(cr)){
-			for(nss = 0; nss < dArgs->nss; nss++){
-                		dmsCGStep(DmsBase[nss], step);
-                        printf("cg step can be finished\n");
-			printf("When f has been processed in dmsbase by cgstep(), it is %p\n", f_global);
-       			 }
 		}
 
 		if (DOMAINDECOMP(cr)){
 			dmsDistributeCoords(cr->dd, state_global->x, state->x);
 			dmsDistributeCoords(cr->dd, f_global, f);
 		} 
-
-
-
-		/*if(MASTER(cr)){
-			for(nss = 0; nss < dArgs->nss; nss++){
-				converge_cgF = checkconverge(DmsBase[nss]);
-				if(converge_cgF == 0)
-					break;
-			}
-		}*/        
 
             
 		if(converge_cgF == 1){

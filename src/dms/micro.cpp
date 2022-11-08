@@ -431,6 +431,7 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
 			
 
 			std::cout << "in the sync of dms from md, the force ptr is pointing to " << atom_forces << std::endl;				
+			std::cout << "in the sync of dms from md, the force ptr is pointing to " << (void*)atom_forces << std::endl;				
 
 			while(count < DOF_local) {
 
