@@ -332,6 +332,11 @@ gmx_c_flags()
 # generated in gmxCFlags nor are SIMD or MPI related.
 set(EXTRA_C_FLAGS "")
 set(EXTRA_CXX_FLAGS "")
+# The following lines about -march are added on Sep.15.2022
+CHECK_CXX_COMPILER_FLAG("-march=native" COMPILER_SUPPORTS_MARCH_NATIVE)
+if(COMPILER_SUPPORTS_MARCH_NATIVE)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+endif()
 
 # Run through a number of tests for buggy compilers and other issues
 include(gmxTestCompilerProblems)

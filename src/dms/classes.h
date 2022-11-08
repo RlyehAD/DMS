@@ -89,6 +89,7 @@ private:
 	const t_mdatoms* mdatoms; // contains the local no of atoms on each proc ... among other things (??)
 	const gmx_mtop_t* MD_top; // topology state
 	const t_mdatoms* tmdatoms;
+	//rvec* atom_forces;
 	real mdLength; // length of the MD micro phase in ps
 	std::vector< std::vector<PetscInt> > topIndices;
 

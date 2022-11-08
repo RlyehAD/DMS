@@ -428,6 +428,9 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
                         int resnum, atomindex, count = 0;
 
                         gmx_mtop_atomloop_all_t aloop = gmx_mtop_atomloop_all_init(MD_top);
+			
+
+			std::cout << "in the sync of dms from md, the force ptr is pointing to " << atom_forces << std::endl;				
 
 			while(count < DOF_local) {
 
@@ -513,6 +516,8 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
                 		gmx_mtop_atomloop_all_t aloop = gmx_mtop_atomloop_all_init(MD_top);
 				//PetscScalar velocity = .0;
 
+				std::cout << "in the function of sync md from dms, before the modification of f, it is pointing to " << atom_forces << std::endl;
+
 				while(count < DOF_local) {
 
 					if (selFname)
@@ -524,10 +529,13 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 
                         				if(strncmp(resname, "SOL", 3) && strncmp(resname, "NA", 2) && strncmp(resname, "CL", 2) && strncmp(resname, "GRA", 3)) {
 								//velocity = Coords_ptr[count] - MD_state->x[atomindex][dim];
-
+								
 								if(mode){
 									std::cout << "The new force is " << Forces_ptr[count] << " while the original one is " << atom_forces[atomindex][dim] << std::endl;
-									atom_forces[atomindex][dim] = Forces_ptr[count++];
+									//std::cout << "The new coord is " << Coords_ptr[count++] << " while the original one is " << MD_state->x[atomindex][dim] << std::endl;
+									atom_forces[atomindex][dim] = Forces_ptr[count];
+										count++;
+									
 									//MD_state->f[atomindex][dim] += Forces_ptr[count++]; 
 								}
 								else{
