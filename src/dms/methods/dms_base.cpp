@@ -267,7 +267,7 @@ DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
                 	throw std::invalid_argument("CG method has not yet been implemented");
         	}
 		
-		fpLog << getTime() << ":INFO:In the constructor of dmsbase, rvec* f is passed in, now print the address it points to " << (void*)forces << std::endl;
+		//fpLog << getTime() << ":INFO:In the constructor of dmsbase, rvec* f is passed in, now print the address it points to " << (void*)forces << std::endl;
                	Microscopic = new Micro_state(state, tmdatoms, top, ir, dim, comm, fineGrainHash[cgMethod], mSteps, dt, numSS, ssIndex, this, topFname, selFname, forces);
 
 		nAtoms = Microscopic->Get_DOF();
