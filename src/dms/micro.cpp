@@ -532,7 +532,7 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 								//velocity = Coords_ptr[count] - MD_state->x[atomindex][dim];
 								
 								if(mode){
-									std::cout << "The new force is " << Forces_ptr[count] << " while the original one is " << atom_forces[atomindex][dim] << std::endl;
+									//std::cout << "The new force is " << Forces_ptr[count] << " while the original one is " << atom_forces[atomindex][dim] << std::endl;
 									//std::cout << "The new coord is " << Coords_ptr[count++] << " while the original one is " << MD_state->x[atomindex][dim] << std::endl;
 									atom_forces[atomindex][dim] = Forces_ptr[count];
 										count++;

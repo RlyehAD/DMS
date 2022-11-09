@@ -985,12 +985,6 @@ ir->nstcalcenergy);
 
 
 
-                if(MASTER(cr)) {
-                        printf("***********************\n");
-                        printf("PASS FLAG 00\n", counter);
-                        printf("***********************\n");
-                }        
-
         /* Stop Center of Mass motion */
         bStopCM = (ir->comm_mode != ecmNO && do_per_step(step, ir->nstcomm));
 
@@ -1076,17 +1070,11 @@ ir->nstcalcenergy);
                 }
             }
 	    
-	    if(MASTER(cr))
-		printf("=========PASS FLAG 05\n");
 
             if (DOMAINDECOMP(cr))
             {
                 /* Repartition the domain decomposition */
                 wallcycle_start(wcycle, ewcDOMDEC);
-		if(MASTER(cr)){
-			printf("===========PASS FLAG 06\n");
-			printf("Check the value of bmasterstate %d\n", bMasterState); 
-			}
 
                 dd_partition_system(fplog, step, cr,
                                     bMasterState, nstglobalcomm,
@@ -1096,18 +1084,11 @@ ir->nstcalcenergy);
                                     nrnb, wcycle,
                                     do_verbose && !bPMETuneRunning);
 
-		if(MASTER(cr))
-			printf("==========PASS FLAG 07\n");
 
                 wallcycle_stop(wcycle, ewcDOMDEC);
                 /* If using an iterative integrator, reallocate space to match the decomposition */
             }
 
-                if(MASTER(cr)) {
-                        printf("***********************\n");
-                        printf("PASS FLAG 03\n", counter);
-                        printf("***********************\n");
-                }
         }
 
 
@@ -1345,11 +1326,6 @@ ir->nstcalcenergy);
                     unshift_self(graph, state->box, state->x);
                 }
 
-                if(MASTER(cr)) {
-                        printf("***********************\n");
-                        printf("PASS FLAG 04\n", counter);
-                        printf("***********************\n");
-                }                
 
                 /* if VV, compute the pressure and constraints */
                 /* For VV2, we strictly only need this if using pressure
@@ -1749,11 +1725,6 @@ ir->nstcalcenergy);
                 }
 
 
-                 if(MASTER(cr)) {
-                        printf("***********************\n");
-                        printf("PASS FLAG 01\n", counter);
-                        printf("***********************\n");
-                }                
 
                 if (fr->bSepDVDL && fplog && do_log)
                 {
@@ -2015,11 +1986,6 @@ ir->nstcalcenergy);
         /* #######  END SET VARIABLES FOR NEXT ITERATION ###### */
 
 
-                if(MASTER(cr)) {
-                        printf("***********************\n");
-                        printf("PASS FLAG 02\n", counter);
-                        printf("***********************\n");
-                } 
 
         if ( (membed != NULL) && (!bLastStep) )
         {
