@@ -321,17 +321,17 @@ int DmsBase::convergence_check(gmx_int64_t gromacStep) {
 	 */
 	
 	PetscFunctionBegin;
-	PetscInt check_conv = 0;
+	//PetscInt check_conv = 0;
 	
-	//Vec deltaPhi;
-	//ierr = VecCreateSeq(getComm(), nCG, &deltaPhi);
-	//CHKERRQ(ierr);
+	Vec deltaPhi;
+	ierr = VecCreateSeq(getComm(), nCG, &deltaPhi);
+	CHKERRQ(ierr);
 
-	//PetscScalar maxChange = 0.0;
+	PetscScalar maxChange = 0.0;
 
-	//int check_conv = 0;
+	int check_conv = 0;
 
-	/*for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
+	for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
 		ierr = VecCopy(Mesoscopic->Get_cCoords()[dim], deltaPhi);
 		CHKERRQ(ierr);
 
@@ -353,10 +353,10 @@ int DmsBase::convergence_check(gmx_int64_t gromacStep) {
 			check_conv = 1;
 			fpLog << getTime() << ":INFO:The cg forces have converged with largest deltaPhi of " << maxChange << std::endl;
 		}
-	}*/
+	}
 	
-	//ierr = VecDestroy(&deltaPhi);
-	//CHKERRQ(ierr);
+	ierr = VecDestroy(&deltaPhi);
+	CHKERRQ(ierr);
 
 	PetscFunctionReturn(check_conv);
 }
