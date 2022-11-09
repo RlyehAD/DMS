@@ -2167,7 +2167,6 @@ ir->nstcalcenergy);
 
 		if(MASTER(cr)){
 			for(nss =0; nss < dArgs->nss; nss++){
-				converge_cgF = checkconverge(DmsBase[nss]);
 				//converge_cgF = checkconverge(DmsBase[nss]);
 				//converge_cgF = checkconverge(DmsBase[nss], step);
 				if(checkconverge(DmsBase[nss], step))

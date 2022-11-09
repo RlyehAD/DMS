@@ -430,9 +430,6 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
                         gmx_mtop_atomloop_all_t aloop = gmx_mtop_atomloop_all_init(MD_top);
 			
 
-			std::cout << "in the sync of dms from md, the force ptr is pointing to " << atom_forces << std::endl;				
-			std::cout << "in the sync of dms from md, the force ptr is pointing to " << (void*)atom_forces << std::endl;				
-
 			while(count < DOF_local) {
 
 				if(selFname) {
@@ -517,7 +514,6 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
                 		gmx_mtop_atomloop_all_t aloop = gmx_mtop_atomloop_all_init(MD_top);
 				//PetscScalar velocity = .0;
 
-				std::cout << "in the function of sync md from dms, before the modification of f, it is pointing to " << atom_forces << std::endl;
 
 				while(count < DOF_local) {
 

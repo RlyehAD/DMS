@@ -1322,9 +1322,6 @@ static void dd_collect_cg(gmx_domdec_t *dd,
     int                  buf2[2], *ibuf, i, ncg_home = 0, *cg = NULL, nat_home = 0;
     t_block             *cgs_gl;
 	
-    printf("state ddp_count is %d \n", state_local->ddp_count);
-    printf("When collecting dd is %p \n", dd);
-	
     if (state_local->ddp_count == dd->comm->master_cg_ddp_count)
     {
         /* The master has the correct distribution */
