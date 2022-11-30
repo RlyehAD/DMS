@@ -256,8 +256,8 @@ double do_md(FILE *fplog, t_commrec *cr, int nfile, const t_filenm fnm[],
 
     /* DMS params */
     gmx_bool bStartMS = FALSE;
-    //gmx_bool converge_cgF = TRUE;
-    int converge_cgF = 1;
+    gmx_bool converge_cgF = TRUE;
+    //int converge_cgF = 1;
     real bondEnergy = -1.0; // bond energy will always be >= 0
 
     int dmsStep = 0, dmsSteps = dArgs->dt;
@@ -2104,7 +2104,7 @@ ir->nstcalcenergy);
 			printf("Estimated bond energies successfully at %f kJ /nm*mol...\nProceeding with multiscale simulation ...\n", enerd->term[F_BONDS]);
 	}
 
-	if(bondEnergy >= 0.0) {
+	if(bondEnergy >= 0.0 && converge_cgF == TRUE) {
 		      if(!bStartMS) {
                 	   if( ( fabs(enerd->term[F_TEMP] - ir->opts.ref_t[0]) <= 100.0 ) && counter >= dmsRelax ) {
                         	   if(MASTER(cr)) {
@@ -2140,7 +2140,8 @@ ir->nstcalcenergy);
                 	   else 
                         	counter++;
         	       }   
-        	       else if(converge_cgF == 1)
+        	       //else if(converge_cgF == 1)
+			else
                 	   dmsStep++;
     }
 
@@ -2157,22 +2158,40 @@ ir->nstcalcenergy);
 		dd_collect_vec(cr->dd, state, state->v, state_global->v);
         	dd_collect_vec(cr->dd, state, f, f_global);
 		
-		if(backmap_step == 0)	
+		if(backmap_step == 0){	
 		if(MASTER(cr)){
 			for(nss = 0; nss < dArgs->nss; nss++){
 				Dmsextrapolation(DmsBase[nss], step);
 			}
 		}
+		step_tmp = step;
+		step_rel_tmp = step_rel;
+		}
 		
 
 		if(MASTER(cr)){
+                        for(nss =0; nss < dArgs->nss; nss++){
+                                dmsCGStep(DmsBase[nss], step);
+			}	
+		}
+
+
+		//if(MASTER(cr)){
 			for(nss =0; nss < dArgs->nss; nss++){
 				//converge_cgF = checkconverge(DmsBase[nss]);
 				//converge_cgF = checkconverge(DmsBase[nss], step);
-				if(checkconverge(DmsBase[nss], step))
-					converge_cgF = 1;
+				//printf("checkconverge gives %d\n", checkconverge(DmsBase[nss], step));
+				if(checkconverge(DmsBase[nss], step)){
+					converge_cgF = TRUE;
+				}
+				else {
+					converge_cgF = FALSE;
+				}
 			}
-		}
+			printf("***********************\n");
+			printf("converge var is %d\n", converge_cgF);
+			printf("***********************\n");
+		//}
 
 		if (DOMAINDECOMP(cr)){
 			dmsDistributeCoords(cr->dd, state_global->x, state->x);
@@ -2180,7 +2199,7 @@ ir->nstcalcenergy);
 		} 
 
             
-		if(converge_cgF == 1){
+		if(converge_cgF == TRUE){
             		//step = step_tmp;
             		//step_rel = step_rel_tmp;
             		step += dmsSteps - microSteps - backmap_step;        
@@ -2192,7 +2211,9 @@ ir->nstcalcenergy);
             		counter = 0;
             		backmap_step = 0;
 		}
-		else{
+		else{	
+			step = step_tmp;
+			step_rel = step_rel_tmp;
 			backmap_step += 1;
 		}
 			
