@@ -297,17 +297,36 @@ int DmsBase::extrapolation(gmx_int64_t gromacStep) {
 
 	PetscFunctionBegin;
 	
-	if(nHistory > 1)
-		ierr = Integrator->integrate(Mesoscopic->Get_Coords(), Mesoscopic->Get_Velocities());
-	else{
-		ierr = Integrator->integrate(Mesoscopic->Get_Coords(),  Mesoscopic->Get_Velocities());
+	for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
+		ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_pCoords()[dim]);
 		CHKERRQ(ierr);
 	}
+	
+	ierr = Microscopic->Sync_DMS_fromMD(this);
+	CHKERRQ(ierr);
+
+	ierr = constructCoords();
+	CHKERRQ(ierr);
+
+	ierr = constructVelocities();
+	CHKERRQ(ierr);
 
 	for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++){
 		ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_cCoords()[dim]);
 		CHKERRQ(ierr);
 	}
+	
+	if(nHistory > 1)
+		ierr = Integrator->integrate(Mesoscopic->Get_Coords(), Mesoscopic->Get_Velocities());
+	else{
+		ierr = Integrator->integrate(Mesoscopic->Get_cCoords(),  Mesoscopic->Get_Velocities());
+		CHKERRQ(ierr);
+	}
+
+	/*for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++){
+		ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_cCoords()[dim]);
+		CHKERRQ(ierr);
+	}*/
 
 	fpLog << getTime() << ":INFO:The constrained cg coords are computed successfully" << std::endl;
 	
@@ -329,6 +348,7 @@ int DmsBase::convergence_check(gmx_int64_t gromacStep) {
 	CHKERRQ(ierr);
 
 	PetscScalar maxChange = 0.0;
+	PetscScalar temp = 0.0;
 
 	//int check_conv = 0;
 
@@ -336,26 +356,37 @@ int DmsBase::convergence_check(gmx_int64_t gromacStep) {
 		ierr = VecCopy(Mesoscopic->Get_cCoords()[dim], deltaPhi);
 		CHKERRQ(ierr);
 
+		//ierr = PetscPrint(getComm(), "cCoord: %g\n", Mesoscopic->Get_cCoords()[dim]);
+
 		ierr = VecAXPY(deltaPhi, -1.0, Mesoscopic->Get_pCoords()[dim]);
 		CHKERRQ(ierr);
 
 		ierr = VecAbs(deltaPhi);
 		CHKERRQ(ierr);
 		
-		ierr = VecMax(deltaPhi, NULL, &maxChange);
+		ierr = VecView(deltaPhi, PETSC_VIEWER_STDOUT_SELF);
 		CHKERRQ(ierr);
-		
-		if(maxChange > 0.1) {
-			check_conv = 0;
-			fpLog << getTime() << ":INFO:The cg forces are still not converged" << std::endl;
-			fpLog << getTime() << ":INFO:check_conv now is " << check_conv << std::endl;
-			break;	
-		}
-		else {
-			check_conv = 1;
-			fpLog << getTime() << ":INFO:The cg forces have converged with largest deltaPhi of " << maxChange << std::endl;
+	
+		ierr = VecMax(deltaPhi, NULL, &temp);
+		CHKERRQ(ierr);
+
+		if(temp > maxChange){
+			maxChange = temp;
 		}
 	}
+
+	if(maxChange > 0.1) {
+		check_conv = 0;
+		fpLog << getTime() << ":INFO:The cg forces are still not converged" << std::endl;
+		fpLog << getTime() << ":INFO:The max difference is " << maxChange << std::endl;
+	}
+	else {
+		check_conv = 1;
+		fpLog << getTime() << ":INFO:The cg forces have converged with largest deltaPhi of " << maxChange << std::endl;
+	}
+
+	
+	//}
 	
 	ierr = VecDestroy(&deltaPhi);
 	CHKERRQ(ierr);
@@ -383,14 +414,12 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 	// Do serial computations for SWM
 	if(!mpiRank) {
 		
-		PetscInt convergence;
-
-		Vec deltaPhi;
-		ierr = VecCreateSeq(getComm(), nCG, &deltaPhi);
-		CHKERRQ(ierr);
+		PetscInt convergence = 1;
 
 		fpLog << getTime() << ":INFO:Taking CG time step " << timeStep << std::endl;
-		//timeStep++;
+		if(convergence == 1)
+		timeStep++;
+		
 		CHKERRQ(ierr);
 
 
@@ -409,7 +438,7 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 
 		// Coarse-grain before MD phase (initial CGs) should have already been called during halfMD stage
 
-		for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
+		/*for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
                         ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_pCoords()[dim]);
                         CHKERRQ(ierr);
                 }
@@ -417,7 +446,7 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 		for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
                         ierr = VecCopy(Mesoscopic->Get_Velocities()[dim], Mesoscopic->Get_pVelocities()[dim]);
                         CHKERRQ(ierr);
-                }
+                }*/
 
 		if(timeStep == 1)
 			for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
@@ -427,18 +456,18 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
                 	}
 
 		// save current coords to be potentially used for fine-graining
-		for(int dim = 0; dim < Microscopic->Get_Dim(); dim++) {
+		/*for(int dim = 0; dim < Microscopic->Get_Dim(); dim++) {
                         ierr = VecCopy(Microscopic->Get_Coords()[dim], Microscopic->Get_pCoords()[dim]);
                         CHKERRQ(ierr);
-                }
+                }*/
 
-		fpLog << getTime() << ":INFO:Syncing DMS with Gromacs" << std::endl;
+		//fpLog << getTime() << ":INFO:Syncing DMS with Gromacs" << std::endl;
 
 		// This function syncs the coords, velocities, etc. with the GROMACS t_state
-		ierr = Microscopic->Sync_DMS_fromMD(this);
-		CHKERRQ(ierr);
+		//ierr = Microscopic->Sync_DMS_fromMD(this);
+		//CHKERRQ(ierr);
 		
-		fpLog << getTime() << "finish sync dms from md" << std::endl;
+		//fpLog << getTime() << "finish sync dms from md" << std::endl;
 		// update the ref config if needed based on the relaxed microstate
 		
 		ierr = updateRefHash[cgMethod](*this);
@@ -446,14 +475,14 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 		fpLog << getTime() << "finish updating ref" << std::endl;
 
 		// Coarse-grain after MD phase(final Coords)
-		ierr = constructCoords();
-		CHKERRQ(ierr);
+		//ierr = constructCoords();
+		//CHKERRQ(ierr);
 
 		for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++)
                         ierr = VecCopy(Mesoscopic->Get_Velocities()[dim], Mesoscopic->Get_pVelocities()[dim]);
 
-		ierr = constructVelocities();
-		CHKERRQ(ierr);
+	 	//ierr = constructVelocities();
+		//CHKERRQ(ierr);
 		
 		//ierr = constructForces();
                 //CHKERRQ(ierr);
@@ -475,7 +504,7 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 			ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_pCoords()[dim]);
 			CHKERRQ(ierr);
 		}
-		fpLog << getTime() << "coords are copied to pcoords" << std::endl;
+		//fpLog << getTime() << "coords are copied to pcoords" << std::endl;
                 // The cg coords now are the same in Coords and pCoords del 
 
 		//fpLog << getTime() << ":INFO:Advancing CG variables in time" << std::endl;
@@ -487,10 +516,10 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 
 		convergence = convergence_check(gromacStep);
 		
-		if(convergence){
+		//if(convergence){
 
-			timeStep++;
-		}
+		//	timeStep++;
+		//}
 		// Fine-grain (recover atomistic configuration)
 		/* Since I use cCoords to store the constrained cg vars, we should input cCoords and pCoords into 
 		the fine-graining function 
@@ -523,7 +552,7 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
         	}
 
 		// save CG state
-		for(int dim = 0; dim < Microscopic->Get_Dim(); dim++) {
+		/*for(int dim = 0; dim < Microscopic->Get_Dim(); dim++) {
 			
 			ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_pCoords()[dim]);
 			CHKERRQ(ierr);
@@ -561,8 +590,8 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 		fpLog << getTime() << ":INFO:Finish writing hdf5 file" << std::endl;
 		}
 
-		ierr = VecDestroy(&deltaPhi);
-		CHKERRQ(ierr);
+		//ierr = VecDestroy(&deltaPhi);
+		//CHKERRQ(ierr);
 	}
 	
 	PetscFunctionReturn(ierr);
@@ -725,7 +754,7 @@ PetscErrorCode DmsBase::constructConstrainForces(){
 	ierr = MatCopy(*mesoMicroMap, *kernel, SAME_NONZERO_PATTERN);
 	CHKERRQ(ierr);
 
-        PetscScalar alpha = 0.1;
+        PetscScalar alpha = 2.0;
         Vec tmpVec;
 		ierr = VecCreateSeq(getComm(), Mesoscopic->Get_DOF(), &tmpVec);
 		CHKERRQ(ierr);
@@ -747,14 +776,12 @@ PetscErrorCode DmsBase::constructConstrainForces(){
 	        ierr = VecCopy(Mesoscopic->Get_cCoords()[dim], tmpVec);
 		CHKERRQ(ierr);
 
-	        ierr = VecAXPY(tmpVec, -1.0, Mesoscopic->Get_pCoords()[dim]);
+	        ierr = VecAXPY(tmpVec, -1.0, Mesoscopic->Get_Coords()[dim]);
 		CHKERRQ(ierr); // dcg[dim]
+
 
 		ierr = MatMult(*kernel, tmpVec, df);
 		CHKERRQ(ierr);
-
-		//ierr = VecScale(df, 6.022e20);
-		//CHKERRQ(ierr);
 
 
                 //ierr = VecAXPY(Mesoscopic->Get_Forces()[dim], alpha, df);
