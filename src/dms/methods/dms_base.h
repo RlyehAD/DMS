@@ -139,7 +139,7 @@ public:
 	void setNcgAdj(PetscInt n) { nCGAdj = n; }
 
 	// For backmapping
-	gmx_bool conv;
+	bool conv;
 
 	std::fstream fpLog;
 	PetscViewer viewer;
@@ -224,6 +224,7 @@ int dmsCGStep(dmsBasePtr, gmx_int64_t);
 int checkconverge(dmsBasePtr swm, gmx_int64_t);
 int Dmsextrapolation(dmsBasePtr swm, gmx_int64_t);
 int constructDmsCoords(dmsBasePtr swm);
+int constructDmsForces(dmsBasePtr swm);
 int constructDmsVelo(dmsBasePtr swm, const int dmsStep);
 dmsBasePtr newDmsBase(const t_state* state, const t_mdatoms* mdatoms,
                       const gmx_mtop_t* top, const t_inputrec* ir, gmx_int64_t dim,

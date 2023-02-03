@@ -20,7 +20,7 @@ PetscErrorCode swm::initialize(DmsBase& Dbase) {
 	ierr = setupBasis(Dbase.getLocalNatoms(), Dbase.getNcg(), Dbase);
 	CHKERRQ(ierr);
 
-	ierr = constructBasis(Dbase.Microscopic->Get_RefCoords(), Dbase);
+	ierr = constructBasis(Dbase.Microscopic->Get_RefCoords(), Dbase, Dbase.fpLog);
 	CHKERRQ(ierr);
 
 	PetscFunctionReturn(ierr); // this is redundant, indices are being computed elsewhere
@@ -70,8 +70,9 @@ PetscErrorCode swm::updateRef(DmsBase& Dbase) {
 	if(!(Dbase.getTimeStep() % Dbase.getFreqUpdate())) {
 
         	// Microscopic->Ref_Coords is updated here only
-                ierr = constructBasis(Dbase.Microscopic->Get_RefCoords(), Dbase);
+                ierr = constructBasis(Dbase.Microscopic->Get_RefCoords(), Dbase, Dbase.fpLog);
                 CHKERRQ(ierr);
+		
 
 		for(int dim = 0; dim < Dbase.Mesoscopic->Get_Dim(); dim++) {
                         ierr = VecCopy(Dbase.Mesoscopic->Get_RefCoords()[dim], Dbase.Mesoscopic->Get_Coords()[dim]);

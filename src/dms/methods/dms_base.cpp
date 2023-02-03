@@ -226,7 +226,7 @@ DmsBase::DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
 	numSS = nss;
 	nHistory = nHist;
 	Delta = dt;
-	conv = 0;
+	conv = 1;
 
 	MPI_Comm_size(PETSC_COMM_WORLD, &mpiSize);
 	MPI_Comm_rank(PETSC_COMM_WORLD, &mpiRank);
@@ -302,6 +302,14 @@ int DmsBase::extrapolation(gmx_int64_t gromacStep) {
 		CHKERRQ(ierr);
 	}
 	
+	if(timeStep == 0)
+		for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++){
+			
+			ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_RefCoords()[dim]);
+			CHKERRQ(ierr);
+
+		}
+	
 	ierr = Microscopic->Sync_DMS_fromMD(this);
 	CHKERRQ(ierr);
 
@@ -317,7 +325,7 @@ int DmsBase::extrapolation(gmx_int64_t gromacStep) {
 	}
 	
 	if(nHistory > 1)
-		ierr = Integrator->integrate(Mesoscopic->Get_Coords(), Mesoscopic->Get_Velocities());
+		ierr = Integrator->integrate(Mesoscopic->Get_cCoords(), Mesoscopic->Get_Velocities());
 	else{
 		ierr = Integrator->integrate(Mesoscopic->Get_cCoords(),  Mesoscopic->Get_Velocities());
 		CHKERRQ(ierr);
@@ -343,6 +351,7 @@ int DmsBase::convergence_check(gmx_int64_t gromacStep) {
 	int check_conv = 0;
 	
 	if(!mpiRank){
+	//int check_conv = 0;
 	Vec deltaPhi;
 	ierr = VecCreateSeq(getComm(), nCG, &deltaPhi);
 	CHKERRQ(ierr);
@@ -358,7 +367,7 @@ int DmsBase::convergence_check(gmx_int64_t gromacStep) {
 
 		//ierr = PetscPrint(getComm(), "cCoord: %g\n", Mesoscopic->Get_cCoords()[dim]);
 
-		ierr = VecAXPY(deltaPhi, -1.0, Mesoscopic->Get_pCoords()[dim]);
+		ierr = VecAXPY(deltaPhi, -1.0, Mesoscopic->Get_Coords()[dim]);
 		CHKERRQ(ierr);
 
 		ierr = VecAbs(deltaPhi);
@@ -375,7 +384,9 @@ int DmsBase::convergence_check(gmx_int64_t gromacStep) {
 		}
 	}
 
-	if(maxChange > 0.1) {
+	
+
+	if(maxChange > 0.01) {
 		check_conv = 0;
 		fpLog << getTime() << ":INFO:The cg forces are still not converged" << std::endl;
 		fpLog << getTime() << ":INFO:The max difference is " << maxChange << std::endl;
@@ -386,13 +397,15 @@ int DmsBase::convergence_check(gmx_int64_t gromacStep) {
 	}
 
 	
-	//}
+	
 	
 	ierr = VecDestroy(&deltaPhi);
 	CHKERRQ(ierr);
 	}
 
 	PetscFunctionReturn(check_conv);
+	//}
+
 }
 
 
@@ -414,11 +427,11 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 	// Do serial computations for SWM
 	if(!mpiRank) {
 		
-		PetscInt convergence = 1;
+		//PetscInt convergence = 1;
 
 		fpLog << getTime() << ":INFO:Taking CG time step " << timeStep << std::endl;
-		if(convergence == 1)
-		timeStep++;
+		if(conv == 1)
+			timeStep++;
 		
 		CHKERRQ(ierr);
 
@@ -447,13 +460,15 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
                         ierr = VecCopy(Mesoscopic->Get_Velocities()[dim], Mesoscopic->Get_pVelocities()[dim]);
                         CHKERRQ(ierr);
                 }*/
+		/*if(conv == 1){
+			if(timeStep == 1)
+				for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
 
-		if(timeStep == 1)
-			for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++) {
-
-                        	ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_RefCoords()[dim]);
-                        	CHKERRQ(ierr);		
-                	}
+                        		ierr = VecCopy(Mesoscopic->Get_Coords()[dim], Mesoscopic->Get_RefCoords()[dim]);
+                        		CHKERRQ(ierr);		
+                		}
+			}
+                */
 
 		// save current coords to be potentially used for fine-graining
 		/*for(int dim = 0; dim < Microscopic->Get_Dim(); dim++) {
@@ -464,19 +479,19 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 		//fpLog << getTime() << ":INFO:Syncing DMS with Gromacs" << std::endl;
 
 		// This function syncs the coords, velocities, etc. with the GROMACS t_state
-		//ierr = Microscopic->Sync_DMS_fromMD(this);
-		//CHKERRQ(ierr);
+		ierr = Microscopic->Sync_DMS_fromMD(this);
+		CHKERRQ(ierr);
 		
 		//fpLog << getTime() << "finish sync dms from md" << std::endl;
 		// update the ref config if needed based on the relaxed microstate
 		
 		ierr = updateRefHash[cgMethod](*this);
-        	//CHKERRQ(ierr);
+        	CHKERRQ(ierr);
 		fpLog << getTime() << "finish updating ref" << std::endl;
 
-		// Coarse-grain after MD phase(final Coords)
-		//ierr = constructCoords();
-		//CHKERRQ(ierr);
+		//Coarse-grain after MD phase(final Coords)
+		ierr = constructCoords();
+		CHKERRQ(ierr);
 
 		for(int dim = 0; dim < Mesoscopic->Get_Dim(); dim++)
                         ierr = VecCopy(Mesoscopic->Get_Velocities()[dim], Mesoscopic->Get_pVelocities()[dim]);
@@ -510,11 +525,11 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 		//fpLog << getTime() << ":INFO:Advancing CG variables in time" << std::endl;
 
 
-		fpLog << getTime() << ":INFO:Start to update the atomic forces" << std::endl;
-                ierr = constructConstrainForces();
+		//fpLog << getTime() << ":INFO:Start to update the atomic forces" << std::endl;
+                //ierr = constructConstrainForces();
                 CHKERRQ(ierr); //update atomic forces
 
-		convergence = convergence_check(gromacStep);
+		conv = convergence_check(gromacStep);
 		
 		//if(convergence){
 
@@ -573,8 +588,8 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 
 		fpLog << getTime() << ":INFO:Syncing GROMACS with DMS" << std::endl;
 		// Done with DMS computations! Now update the GROMACS t_state to re-initiate the MD phase
-		ierr = Microscopic->Sync_MD_fromDMS(this);
-		DMS_CHKERRQ(ierr);
+		//ierr = Microscopic->Sync_MD_fromDMS(this);
+		//DMS_CHKERRQ(ierr);
 
 		fpLog << getTime() << ":INFO:Completed CG time step " << timeStep << ". Resuming micro(Gromacs) phase. " << std::endl;
 
@@ -584,7 +599,7 @@ int DmsBase::cgStep(gmx_int64_t gromacStep) {
 		keys[2] = "/CGz";
 
 
-		if(convergence){
+		if(conv){
 		fpLog << getTime() << ":INFO:Start writing hdf5 file" << std::endl;
 		writePetsc(Mesoscopic->Get_Coords(), keys, timeStep, &viewer);
 		fpLog << getTime() << ":INFO:Finish writing hdf5 file" << std::endl;
@@ -693,7 +708,21 @@ int constructDmsVelocs(dmsBasePtr swm) {
 */
 
 int checkconverge(dmsBasePtr swm, gmx_int64_t step){
-	return reinterpret_cast<DmsBase*>(swm)->convergence_check(step);
+	PetscFunctionBegin;
+	PetscErrorCode ierr;
+	int result;
+
+	if(!reinterpret_cast<DmsBase*>(swm)->getRank()) {
+		
+		DmsBase* dmsbase = reinterpret_cast<DmsBase*>(swm);
+
+		result = dmsbase->convergence_check(step);
+		//CHKERRQ(ierr);
+	//}
+
+	PetscFunctionReturn(result);
+	}	
+	//return reinterpret_cast<DmsBase*>(swm)->convergence_check(step);
 	//return static_cast<DmsBase*>(swm)->convergence_check(step);
 }
 
@@ -727,6 +756,28 @@ int Dmsextrapolation(dmsBasePtr swm, gmx_int64_t step){
 	return reinterpret_cast<DmsBase*>(swm)->extrapolation(step);
 }
 
+int constructDmsForces(dmsBasePtr swm){
+	PetscFunctionBegin;
+	PetscErrorCode ierr;
+	
+	if(!reinterpret_cast<DmsBase*>(swm)->getRank()){
+		
+		DmsBase* dmsBase = reinterpret_cast<DmsBase*>(swm);
+
+
+		ierr = dmsBase->Microscopic->Sync_DMS_fromMD(dmsBase);
+		CHKERRQ(ierr);
+
+		ierr = dmsBase->constructConstrainForces();
+		CHKERRQ(ierr);
+
+		ierr = dmsBase->Microscopic->Sync_MD_fromDMS(dmsBase);
+		CHKERRQ(ierr);
+	}
+
+	PetscFunctionReturn(ierr);
+}
+
 PetscErrorCode DmsBase::constructCoords() {
         /* This function constructs SWM coords, velocities, and forces, depending on the arguments
          * supplied. The three CG-construction function pointers in Mesoscopic should all point to
@@ -748,13 +799,17 @@ PetscErrorCode DmsBase::constructConstrainForces(){
 
         PetscFunctionBegin;
 
-        Mat *mesoMicroMap = getMesoMicro(),
-            *kernel = getKernel(); // B
+        Mat *mesoMicroMap = getMesoMicro();
+            //*kernel = getKernel(); // B
+	Mat kernel;
 
-	ierr = MatCopy(*mesoMicroMap, *kernel, SAME_NONZERO_PATTERN);
+	ierr = MatCreateSeqDense(getComm(), nAtoms, nCG, NULL, &kernel);
 	CHKERRQ(ierr);
 
-        PetscScalar alpha = 2.0;
+	ierr = MatCopy(*mesoMicroMap, kernel, SAME_NONZERO_PATTERN);
+	CHKERRQ(ierr);
+
+        PetscScalar alpha = 10;
         Vec tmpVec;
 		ierr = VecCreateSeq(getComm(), Mesoscopic->Get_DOF(), &tmpVec);
 		CHKERRQ(ierr);
@@ -763,13 +818,13 @@ PetscErrorCode DmsBase::constructConstrainForces(){
                 ierr = VecCreateSeq(getComm(), Microscopic->Get_DOF_local(), &df);
                 CHKERRQ(ierr);
         
-        ierr = MatDiagonalScale(*kernel, Microscopic->getMass(), NULL); // MB
+        ierr = MatDiagonalScale(kernel, Microscopic->getMass(), NULL); // MB
         CHKERRQ(ierr);
 
         fpLog << getTime() << ":INFO:dmsdt value is " << Delta << std::endl;
 
 
-        ierr = MatScale(*kernel, 1.0/(Delta*Delta));//Delta here is in the unit of ps
+        ierr = MatScale(kernel, 1.0/(Delta*Delta));//Delta here is in the unit of ps
         CHKERRQ(ierr); // MB/Delta^2
 
 	for(auto dim = 0; dim < Microscopic->Get_Dim(); dim++){
@@ -780,7 +835,7 @@ PetscErrorCode DmsBase::constructConstrainForces(){
 		CHKERRQ(ierr); // dcg[dim]
 
 
-		ierr = MatMult(*kernel, tmpVec, df);
+		ierr = MatMult(kernel, tmpVec, df);
 		CHKERRQ(ierr);
 
 
@@ -789,14 +844,15 @@ PetscErrorCode DmsBase::constructConstrainForces(){
                 CHKERRQ(ierr);
 		
          }
+	
+	ierr = MatDestroy(&kernel);
+	CHKERRQ(ierr);
 
 	ierr = VecDestroy(&tmpVec);
 	CHKERRQ(ierr);
 
 	ierr = VecDestroy(&df);
 	CHKERRQ(ierr);
-
-		
 
 
 	/*ierr = VecDestroy(&tmpVec);

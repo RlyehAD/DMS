@@ -1222,6 +1222,23 @@ ir->nstcalcenergy);
                      state->lambda, graph,
                      fr, vsite, mu_tot, t, mdoutf_get_fp_field(outf), ed, bBornRadii,
                      (bNS ? GMX_FORCE_NS : 0) | force_flags, elecField);
+           
+	    if(!converge_cgF){
+	   	dd_collect_vec(cr->dd, state, state->x, state_global->x);
+            	dd_collect_vec(cr->dd, state, state->v, state_global->v);
+	    	dd_collect_vec(cr->dd, state, f, f_global);
+
+	    	if(MASTER(cr)){
+			for(nss = 0; nss < dArgs->nss; nss++){
+				constructDmsForces(DmsBase[nss]);
+				}
+			}
+
+	    	if(DOMAINDECOMP(cr)){
+			dmsDistributeCoords(cr->dd, state_global->x, state->x);
+			dmsDistributeCoords(cr->dd, f_global, f);
+			}
+	 	 }
         }
 
         if (bVV && !bStartingFromCpt && !bRerunMD)
@@ -2176,7 +2193,7 @@ ir->nstcalcenergy);
 		}
 
 
-		//if(MASTER(cr)){
+		//if(MASTER(cr))
 			for(nss =0; nss < dArgs->nss; nss++){
 				//converge_cgF = checkconverge(DmsBase[nss]);
 				//converge_cgF = checkconverge(DmsBase[nss], step);
@@ -2188,9 +2205,12 @@ ir->nstcalcenergy);
 					converge_cgF = FALSE;
 				}
 			}
+
+		if(MASTER(cr)){
 			printf("***********************\n");
 			printf("converge var is %d\n", converge_cgF);
 			printf("***********************\n");
+		}
 		//}
 
 		if (DOMAINDECOMP(cr)){

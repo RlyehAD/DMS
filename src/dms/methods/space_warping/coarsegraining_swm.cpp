@@ -13,14 +13,15 @@
  *
  */
 
-PetscErrorCode swm::constructBasis(const std::vector<Vec>& Coords, DmsBase& Dbase) {
+PetscErrorCode swm::constructBasis(const std::vector<Vec>& Coords, DmsBase& Dbase, std::fstream& fpLog) {
 
 	/* This function could be be called in parallel.
 	 * The basis matrix is of size Natoms x nCG, and it is partitioned row-wise.
 	 */
 	PetscFunctionBegin;
 	PetscErrorCode ierr;
-
+	
+	fpLog << Dbase.getTime() << "constructBasis() is called" << std::endl;
 	// construct reference config
 	// very hackish!!!!
 	ierr = Dbase.constructRef();

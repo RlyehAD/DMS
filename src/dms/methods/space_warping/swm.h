@@ -55,7 +55,7 @@ namespace swm {
 	PetscErrorCode fineGrain(CVec Coords, CVec Coords_prev, DmsBase& Dbase, std::fstream&);
 	PetscErrorCode constructVelocities(DmsBase& Dbase);
 	PetscErrorCode constructCoords(CVec Vars, CVec pVars, DmsBase& Dbase, std::fstream&);
-	PetscErrorCode constructBasis(const std::vector<Vec>& Coords, DmsBase& Dbase);
+	PetscErrorCode constructBasis(const std::vector<Vec>& Coords, DmsBase& Dbase, std::fstream&);
 	PetscErrorCode scaleBasis(DmsBase& Dbase);
 	PetscErrorCode setupBasis(const PetscInt nAtoms, const PetscInt nCG, DmsBase& Dbase);
 	std::vector< std::vector<PetscInt> > computeIndices(int kmax);
