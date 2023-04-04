@@ -96,7 +96,7 @@ PetscErrorCode Micro_state::setupRefTop(char* topFname, DmsBase* Dbase) {
     ierr = Sync_DMS_fromMD(Dbase);
     DMS_CHKERRQ(ierr);
 
-    std::cout << "Done syncing DMS from MD" << std::endl;
+    //std::cout << "Done syncing DMS from MD" << std::endl;
 
     for(int dim = 0; dim < Dim; dim++) {
 
@@ -412,13 +412,12 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
 	// TODO: This can be made more efficient i.e. Values allocated once and Indices is constant
 	std::vector< std::vector<PetscScalar> > Values(Dim), ValuesV(Dim), ValuesF(Dim);
 	std::vector<PetscInt> Indices(DOF_local);
-
 	for(int dim = 0; dim < Dim; dim++) {
 		Values[dim].resize(DOF_local);
 		ValuesV[dim].resize(DOF_local);
 		ValuesF[dim].resize(DOF_local);
 	}
-
+	std::cout << "DOF is " << DOF_local << std::endl;
 	for(int dim = 0; dim < Dim; dim++) {
 
 		if(!MPI_Rank) {
@@ -443,6 +442,7 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
                                			gmx_mtop_atomloop_all_names(aloop, &atomname, &resnum, &resname);
 
                         			if(strncmp(resname, "SOL", 3) && strncmp(resname, "NA", 2) && strncmp(resname, "CL", 2) && strncmp(resname, "GRA", 3)) {
+							
 
                                 	  		Values[dim][count] = MD_state->x[atomindex][dim];
 							ValuesV[dim][count] = MD_state->v[atomindex][dim];

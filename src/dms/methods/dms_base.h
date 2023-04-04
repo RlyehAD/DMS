@@ -63,7 +63,7 @@ public:
 	DmsBase(const t_state* state, const t_mdatoms* mdatoms,
                 const gmx_mtop_t* top, const t_inputrec* ir, const gmx_int64_t aDim, const gmx_int64_t cDim, const int max_order,
                 const gmx_int64_t freq, const real dt, const gmx_int64_t t0, MPI_Comm comm, const int mSteps, const double optimScale, const PetscInt, 
-		const PetscInt, const PetscInt, std::string = "SpaceWarping", char* readref = NULL, char* topFname = NULL, char* subFname = NULL, rvec forces[] = NULL);
+		const PetscInt, const PetscInt, std::string = "SpaceWarping", char* readref = NULL, char* topFname = NULL, char* subFname = NULL, rvec forces[] = NULL, const double alpha = 0.8, const int max_itera = 100, const double min_dcg = 0.1);
 
 	DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
 			const gmx_mtop_t* top, const t_inputrec* ir, const gmx_int64_t aDim, const gmx_int64_t cDim, const gmx_int64_t nCGx,
@@ -139,7 +139,8 @@ public:
 	void setNcgAdj(PetscInt n) { nCGAdj = n; }
 
 	// For backmapping
-	bool conv;
+	int conv;
+	int n_itra;
 
 	std::fstream fpLog;
 	PetscViewer viewer;
@@ -168,7 +169,8 @@ protected:
 	// For backmapping
 	int fg_extrap = 0;
 
-	int order, numSS, numSSglob;
+	int order, numSS, numSSglob, max_it;
+	double alph, min_deltaphi;
 	double scale;
 
     	PetscErrorCode ierr;
@@ -230,7 +232,7 @@ dmsBasePtr newDmsBase(const t_state* state, const t_mdatoms* mdatoms,
                       const gmx_mtop_t* top, const t_inputrec* ir, gmx_int64_t dim,
                       gmx_int64_t, int, gmx_int64_t freq, const real dt, const gmx_int64_t,
                       MPI_Comm comm, const int, const float, const int, const PetscInt, const int, char 
-		      const*, char* readref, char*, char*, rvec forces[]);
+		      const*, char* readref, char*, char*, rvec forces[], const double alpha, const int max_itera, const double min_dcg);
 
 gmx_bool dmsInitialize(int argc, char* argv[]);
 

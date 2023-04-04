@@ -492,7 +492,9 @@ int gmx_mdrun(int argc, char *argv[])
 
     // default DMS params
     int dmsKmax = 1, dmsDt = 100, dmsMicro = 10, dmsChains = 1, dmsRelax = 10, dmsSSn = 1, dmsHist = 1;
-    gmx_int64_t dmsFreq = 100000;
+    gmx_int64_t dmsFreq = 100000, dmsitera = 100;
+
+    double dmsalpha = 0.8, dmsmindcg = 0.1;
 
     real elecFieldAmp, elecFieldFreq, elecFieldPhase;
 
@@ -501,6 +503,12 @@ int gmx_mdrun(int argc, char *argv[])
     char *dmsUserRef = NULL, *dmsTopFname = NULL, *dmsElecMulti = NULL, *dmsSelFname = NULL;
 
     t_pargs         pa[] = {
+	{"-dms_alpha", FALSE, etREAL, {&dmsalpha},
+	"The scaling factor of cg forces"},
+	{"-dms_itera", FALSE, etINT, {&dmsitera},
+	"max iterations of fine-graining"},
+	{"-dms_mindcg", FALSE, etREAL, {&dmsmindcg},
+	"The standard to determine if dcg has converged"},
     	{ "-dms_kmax", FALSE, etINT, {&dmsKmax},
     	  "max order to use when constructing CG variables" },
 	{ "-dms_relax", FALSE, etINT, {&dmsRelax},
@@ -835,6 +843,9 @@ int gmx_mdrun(int argc, char *argv[])
     dArgs.nss	   = dmsSSn;
     dArgs.nHist	   = dmsHist;
     dArgs.selFname = dmsSelFname;
+    dArgs.alpha = dmsalpha;
+    dArgs.max_itera = dmsitera;
+    dArgs.min_dcg = dmsmindcg;
 
     if(dmsElecMulti) {
 

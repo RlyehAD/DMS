@@ -21,7 +21,7 @@ PetscErrorCode swm::constructBasis(const std::vector<Vec>& Coords, DmsBase& Dbas
 	PetscFunctionBegin;
 	PetscErrorCode ierr;
 	
-	fpLog << Dbase.getTime() << "constructBasis() is called" << std::endl;
+	//fpLog << Dbase.getTime() << "constructBasis() is called" << std::endl;
 	// construct reference config
 	// very hackish!!!!
 	ierr = Dbase.constructRef();
@@ -62,12 +62,17 @@ PetscErrorCode swm::constructBasis(const std::vector<Vec>& Coords, DmsBase& Dbas
 		VecSum(NCoords[dim], &COG);
 		COG /= Dbase.Microscopic->Get_DOF_local();
 
-		ierr = VecShift(NCoords[dim], - COG);
+		//ierr = VecShift(NCoords[dim], - COG);
+		ierr = VecShift(NCoords[dim], - COM[dim]);
 		CHKERRQ(ierr);
+		
+		ierr = VecShift(NCoords[dim], - COM[dim]);
+		CHKERRQ(ierr); 
 
 		// Normalize coordinates to [-1,1]
 		ierr = VecScale(NCoords[dim], 1.0/box_size[dim]);
 		CHKERRQ(ierr);
+		std::cout << "The box size is " << box_size[dim] << std::endl;
 
 		ierr = VecAssemblyBegin(NCoords[dim]);
 		CHKERRQ(ierr);
@@ -76,6 +81,7 @@ PetscErrorCode swm::constructBasis(const std::vector<Vec>& Coords, DmsBase& Dbas
 	}
 
 	PetscScalar *NCoords_ptr;
+	PetscInt degrees[1];
 	std::vector< std::vector<PetscInt> > indices = computeIndices(Dbase.getOrder());
 
 	for(int order = 0; order < Dbase.getNcg(); order++) {
@@ -85,10 +91,26 @@ PetscErrorCode swm::constructBasis(const std::vector<Vec>& Coords, DmsBase& Dbas
 
 			ierr = VecGetArray(NCoords[dim], &NCoords_ptr);
 			CHKERRQ(ierr);
-
+		 		
+			/*std::cout << "Now printing the address NCoords_ptr points to " << NCoords_ptr << std::endl;
+			degrees[0] = indices[order][dim];*/
+			
+			if (indices[order][dim] == 1 || indices[order][dim] == 0){
 			ierr = PetscDTLegendreEval(iend - istart, NCoords_ptr, 1,
 			       &indices[order][dim], polynomials[dim].data(), NULL, NULL);
 			CHKERRQ(ierr);
+   			}
+			else {
+				for (int i = 0; i < iend - istart; i++){
+					polynomials[dim][i] = 0.5*(3.0*NCoords_ptr[i]*NCoords_ptr[i] - 1.0);
+				}
+			}
+
+			/*std::cout << "Now the order is " << order << " and the dim is  " << dim << std::endl;
+			std::cout << "The indices is  " << indices[order][dim] << std::endl;
+			for (int i = 0; i < iend - istart;  i++){
+				std::cout << polynomials[dim][i] << std::endl;
+				}*/
 
 			ierr = VecRestoreArray(NCoords[dim], &NCoords_ptr);
 			CHKERRQ(ierr);
@@ -111,6 +133,10 @@ PetscErrorCode swm::constructBasis(const std::vector<Vec>& Coords, DmsBase& Dbas
 
 	ierr = MatAssemblyEnd(*mesoMicroMap, MAT_FINAL_ASSEMBLY);
 	CHKERRQ(ierr);
+	
+	/*std::cout << "Now printing mesoMicroMap " << std::endl;
+	ierr = MatView(*mesoMicroMap, PETSC_VIEWER_STDOUT_SELF);
+	CHKERRQ(ierr); */
 
 	/* This functions computed micro_meso_map = (MU)^t U.
 	 * It is called whenever the reference configuration is updated.
@@ -156,6 +182,10 @@ PetscErrorCode swm::scaleBasis(DmsBase& Dbase) {
 	ierr = MatMatMult(MUT, *mesoMicroMap, MAT_INITIAL_MATRIX, PETSC_DEFAULT, microMesoMap);
 	CHKERRQ(ierr);
 
+	/*std::cout << "Now printing microMesoMap " << std::endl;
+	ierr = MatView(*microMesoMap, PETSC_VIEWER_STDOUT_SELF);
+	CHKERRQ(ierr);*/
+	
 	ierr = MatDestroy(&MUT);
 	CHKERRQ(ierr);
 

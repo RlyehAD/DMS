@@ -99,6 +99,9 @@ typedef struct dmsArgs {
 	char *userRef;
 	char *topFname;
 	char *selFname;
+	double alpha;
+	int max_itera;
+	double min_dcg;
 } dmsArgs;
 
 typedef double gmx_integrator_t (FILE *log, t_commrec *cr,

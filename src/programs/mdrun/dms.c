@@ -524,8 +524,7 @@ ir->nstcalcenergy);
 	
 	for(nss = 0; nss < dArgs->nss; nss++)
 	DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale,
-		dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f_global);
-	printf("when f_global is sent to dmsbase it points to %p\n", f_global);
+		dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f_global, dArgs->alpha, dArgs->max_itera, dArgs->min_dcg);
 	}
 
 
@@ -1224,6 +1223,7 @@ ir->nstcalcenergy);
                      (bNS ? GMX_FORCE_NS : 0) | force_flags, elecField);
            
 	    if(!converge_cgF){
+		//printf("start to modify forces");
 	   	dd_collect_vec(cr->dd, state, state->x, state_global->x);
             	dd_collect_vec(cr->dd, state, state->v, state_global->v);
 	    	dd_collect_vec(cr->dd, state, f, f_global);
@@ -1235,6 +1235,7 @@ ir->nstcalcenergy);
 			}
 
 	    	if(DOMAINDECOMP(cr)){
+		//printf("start to distribute forces");
 			dmsDistributeCoords(cr->dd, state_global->x, state->x);
 			dmsDistributeCoords(cr->dd, f_global, f);
 			}
@@ -2130,6 +2131,7 @@ ir->nstcalcenergy);
                                 	   printf("***********************\n");
                                 	   printf("Constructing Coords at step %d\n", step);
                                 	   printf("***********************\n");
+					   printf("counter is %d while dmsrelax is %d\n", counter, dmsRelax);
 
                         	   }
 
@@ -2166,10 +2168,13 @@ ir->nstcalcenergy);
 
 	if( dmsStep == microSteps && bondEnergy >= 0.0 ) {
                 if(MASTER(cr)) {
-                        printf("***********************\n");
-                        printf("Performing CG step after %d MD steps ...\n", counter);
-                        printf("***********************\n");
-                	}
+			if(converge_cgF) {
+                	        printf("***********************\n");
+                	        printf("Performing CG step after %d MD steps ...\n", counter);
+                    		printf("***********************\n");
+				printf("dmsStep is %d\n", dmsStep);
+			}
+                }
 
 		dd_collect_vec(cr->dd, state, state->x, state_global->x);
 		dd_collect_vec(cr->dd, state, state->v, state_global->v);
@@ -2186,14 +2191,14 @@ ir->nstcalcenergy);
 		}
 		
 
-		if(MASTER(cr)){
+		/*if(MASTER(cr)){
                         for(nss =0; nss < dArgs->nss; nss++){
                                 dmsCGStep(DmsBase[nss], step);
 			}	
-		}
+		}*/
 
 
-		//if(MASTER(cr))
+		if(MASTER(cr)) {
 			for(nss =0; nss < dArgs->nss; nss++){
 				//converge_cgF = checkconverge(DmsBase[nss]);
 				//converge_cgF = checkconverge(DmsBase[nss], step);
@@ -2205,13 +2210,20 @@ ir->nstcalcenergy);
 					converge_cgF = FALSE;
 				}
 			}
+		}
 
+		MPI_Bcast(&converge_cgF, 1, MPI_INT, 0, MPI_COMM_WORLD);
+		
 		if(MASTER(cr)){
+			for(nss =0; nss < dArgs->nss; nss++){
+				dmsCGStep(DmsBase[nss], step);    
+			}
+		}
+		/*if(MASTER(cr)){
 			printf("***********************\n");
 			printf("converge var is %d\n", converge_cgF);
 			printf("***********************\n");
-		}
-		//}
+		}*/
 
 		if (DOMAINDECOMP(cr)){
 			dmsDistributeCoords(cr->dd, state_global->x, state->x);
@@ -2222,9 +2234,13 @@ ir->nstcalcenergy);
 		if(converge_cgF == TRUE){
             		//step = step_tmp;
             		//step_rel = step_rel_tmp;
-            		step += dmsSteps - microSteps - backmap_step;        
-            		step_rel += dmsSteps - microSteps - backmap_step;
-
+            		step = step_tmp + dmsSteps - microSteps; //- backmap_step;        
+            		step_rel = step_rel_tmp + dmsSteps - microSteps; //- backmap_step;
+			if(MASTER(cr)) {
+				printf("***********************\n");
+				printf("The cg vars converge at step %d \n", backmap_step);
+				printf("***********************\n");
+			}
 	
 	    		dmsStep = 0;
             		bStartMS = FALSE;
@@ -2311,5 +2327,6 @@ ir->nstcalcenergy);
 
     return 0;
 }
+
 
 
