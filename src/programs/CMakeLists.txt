@@ -72,6 +72,7 @@ else()
         file(GLOB VIEW_SOURCES view/view.cpp)
     endif()
     add_library(view_objlib OBJECT ${VIEW_SOURCES})
+    find_package(Eigen3 3.4 REQUIRED NO_MODULE)
     add_executable(gmx
         ${GMX_MAIN_SOURCES}
         $<TARGET_OBJECTS:mdrun_objlib>
@@ -84,6 +85,7 @@ else()
 	$<TARGET_OBJECTS:dms_pade_objlib>
         #$<TARGET_OBJECTS:fvm_objlib>
         )
+    target_link_libraries(gmx Eigen3::Eigen)
     target_link_libraries(gmx libgromacs ${GMX_EXE_LINKER_FLAGS} ${PETSC_LIBRARIES})
     if(GMX_X11)
         target_link_libraries(gmx ${X11_LIBRARIES})

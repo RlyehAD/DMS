@@ -66,13 +66,13 @@ PetscErrorCode swm::constructBasis(const std::vector<Vec>& Coords, DmsBase& Dbas
 		ierr = VecShift(NCoords[dim], - COM[dim]);
 		CHKERRQ(ierr);
 		
-		ierr = VecShift(NCoords[dim], - COM[dim]);
-		CHKERRQ(ierr); 
+		//ierr = VecShift(NCoords[dim], - COM[dim]);
+		//CHKERRQ(ierr); 
 
 		// Normalize coordinates to [-1,1]
 		ierr = VecScale(NCoords[dim], 1.0/box_size[dim]);
 		CHKERRQ(ierr);
-		std::cout << "The box size is " << box_size[dim] << std::endl;
+		//std::cout << "The box size is " << box_size[dim] << std::endl;
 
 		ierr = VecAssemblyBegin(NCoords[dim]);
 		CHKERRQ(ierr);
@@ -134,9 +134,9 @@ PetscErrorCode swm::constructBasis(const std::vector<Vec>& Coords, DmsBase& Dbas
 	ierr = MatAssemblyEnd(*mesoMicroMap, MAT_FINAL_ASSEMBLY);
 	CHKERRQ(ierr);
 	
-	/*std::cout << "Now printing mesoMicroMap " << std::endl;
-	ierr = MatView(*mesoMicroMap, PETSC_VIEWER_STDOUT_SELF);
-	CHKERRQ(ierr); */
+	//std::cout << "Now printing mesoMicroMap " << std::endl;
+	//ierr = MatView(*mesoMicroMap, PETSC_VIEWER_STDOUT_SELF);
+	//CHKERRQ(ierr); 
 
 	/* This functions computed micro_meso_map = (MU)^t U.
 	 * It is called whenever the reference configuration is updated.

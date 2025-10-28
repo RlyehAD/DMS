@@ -494,7 +494,7 @@ int gmx_mdrun(int argc, char *argv[])
     int dmsKmax = 1, dmsDt = 100, dmsMicro = 10, dmsChains = 1, dmsRelax = 10, dmsSSn = 1, dmsHist = 1;
     gmx_int64_t dmsFreq = 100000, dmsitera = 100;
 
-    double dmsalpha = 0.8, dmsmindcg = 0.1;
+    real dmsalpha = 0.8, dmsmindcg = 0.1;
 
     real elecFieldAmp, elecFieldFreq, elecFieldPhase;
 

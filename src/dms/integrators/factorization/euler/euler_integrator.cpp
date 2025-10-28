@@ -13,6 +13,17 @@ PetscErrorCode DmsEuler::integrate(const CVec& Coords, const CVec& RHS) {
 	for(int dim = 0; dim < Coords.size(); dim++) {
 		ierr = VecAXPY(Coords[dim], Delta, RHS[dim]);
 		DMS_CHKERRQ(ierr);
+		
+		//std::cout << "Coords" << std::endl;
+		//ierr = VecView(Coords[dim], PETSC_VIEWER_STDOUT_SELF);
+		//CHKERRQ(ierr);
+
+		//std::cout << "Delta" << Delta << std::endl; 
+		//std::cout << "RHS" << std::endl;
+
+		//ierr = VecView(RHS[dim], PETSC_VIEWER_STDOUT_SELF);
+		//CHKERRQ(ierr);
+		
 	}
 
 	PetscFunctionReturn(ierr);

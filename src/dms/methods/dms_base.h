@@ -63,7 +63,7 @@ public:
 	DmsBase(const t_state* state, const t_mdatoms* mdatoms,
                 const gmx_mtop_t* top, const t_inputrec* ir, const gmx_int64_t aDim, const gmx_int64_t cDim, const int max_order,
                 const gmx_int64_t freq, const real dt, const gmx_int64_t t0, MPI_Comm comm, const int mSteps, const double optimScale, const PetscInt, 
-		const PetscInt, const PetscInt, std::string = "SpaceWarping", char* readref = NULL, char* topFname = NULL, char* subFname = NULL, rvec forces[] = NULL, const double alpha = 0.8, const int max_itera = 100, const double min_dcg = 0.1);
+		const PetscInt, const PetscInt, const double alpha, const int max_itera, const double min_dcg, std::string = "SpaceWarping", char* readref = NULL, char* topFname = NULL, char* subFname = NULL, rvec forces[] = NULL);
 
 	DmsBase(const t_state* state, const t_mdatoms* tmdatoms,
 			const gmx_mtop_t* top, const t_inputrec* ir, const gmx_int64_t aDim, const gmx_int64_t cDim, const gmx_int64_t nCGx,
@@ -96,6 +96,8 @@ public:
     	PetscErrorCode constructCoords();
 	PetscErrorCode constructForces();
 	PetscErrorCode constructConstrainForces();
+	PetscErrorCode UpdateCoordinates();
+
     
 	// Getters
 	gmx_int64_t getNatoms() const { return nAtoms; }
@@ -208,7 +210,10 @@ protected:
 	std::vector< std::vector< std::vector<PetscInt> > > gridID;
 
 private:
+    double max_dcg;
     bool debug;
+    Vec walker;
+    Vec old_dcg;
     PetscInt nHistory;
 };
 
@@ -227,12 +232,13 @@ int checkconverge(dmsBasePtr swm, gmx_int64_t);
 int Dmsextrapolation(dmsBasePtr swm, gmx_int64_t);
 int constructDmsCoords(dmsBasePtr swm);
 int constructDmsForces(dmsBasePtr swm);
+int updateDmsCoords(dmsBasePtr swm);
 int constructDmsVelo(dmsBasePtr swm, const int dmsStep);
 dmsBasePtr newDmsBase(const t_state* state, const t_mdatoms* mdatoms,
                       const gmx_mtop_t* top, const t_inputrec* ir, gmx_int64_t dim,
                       gmx_int64_t, int, gmx_int64_t freq, const real dt, const gmx_int64_t,
-                      MPI_Comm comm, const int, const float, const int, const PetscInt, const int, char 
-		      const*, char* readref, char*, char*, rvec forces[], const double alpha, const int max_itera, const double min_dcg);
+                      MPI_Comm comm, const int, const float, const int, const PetscInt, const int, const double alpha, const int max_itera, const double min_dcg, char 
+		      const*, char* readref, char*, char*, rvec forces[]);
 
 gmx_bool dmsInitialize(int argc, char* argv[]);
 

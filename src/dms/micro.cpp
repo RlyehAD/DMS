@@ -1,5 +1,6 @@
 #include "classes.h"
 #include "mtop_util.h"
+#include <limits>
 #include "../gromacs/gmxpreprocess/grompp-impl.h"
 
 PetscInt compNumSolMol(const gmx_mtop_t* mdTop) {
@@ -175,7 +176,8 @@ Micro_state::Micro_state(const t_state* state, const t_mdatoms* mdatoms,
 	//PetscFunctionBeginUser;
 
 	char FGM = 'L';
-	mode = &FGM;
+	//mode = &FGM;
+	mode = 0;
 	/* TODO: add mode to the command line input options */
 
 	COMM = Comm;
@@ -433,7 +435,8 @@ PetscErrorCode Micro_state::Sync_DMS_fromMD(DmsBase* Dbase) {
 
 				if(selFname) {
                                           Values[dim][count] = MD_state->x[ssIndices[count]][dim];
-					  Indices[count] = count++;
+					  Indices[count] = count;
+					  count++;
 				}
                                 else
 
@@ -517,8 +520,10 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 
 				while(count < DOF_local) {
 
-					if (selFname)
-                                        		MD_state->x[ssIndices[count]][dim] = Coords_ptr[count++];
+					if (selFname){
+                                        		MD_state->x[ssIndices[count]][dim] = Coords_ptr[count];
+							count++;
+					}
 					else 
                 				while (gmx_mtop_atomloop_all_next(aloop, &atomindex, &atom)) {
 
@@ -530,13 +535,18 @@ PetscErrorCode Micro_state::Sync_MD_fromDMS(DmsBase* Dbase) {
 								if(mode){
 									//std::cout << "The new force is " << Forces_ptr[count] << " while the original one is " << atom_forces[atomindex][dim] << std::endl;
 									//std::cout << "The new coord is " << Coords_ptr[count++] << " while the original one is " << MD_state->x[atomindex][dim] << std::endl;
-									atom_forces[atomindex][dim] = Forces_ptr[count];
-										count++;
-									
+									//atom_forces[atomindex][dim] = Forces_ptr[count];
+										//count++;
+
+									MD_state->x[atomindex][dim] = Coords_ptr[count];
+									count++;
+									std::cout << "The new coord is " << Coords_ptr[count++] << " while the original one is " << MD_state->x[atomindex][dim] << std::endl;	
 									//MD_state->f[atomindex][dim] += Forces_ptr[count++]; 
 								}
 								else{
-                                					MD_state->x[atomindex][dim] = Coords_ptr[count++];
+									//std::cout << "The new coord is " << Coords_ptr[count++] << " while the original one is " << MD_state->x[atomindex][dim] << std::endl;
+                                					MD_state->x[atomindex][dim] = Coords_ptr[count];
+									count++;
                                 				}
 							}
 							//else

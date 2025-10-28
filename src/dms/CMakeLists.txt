@@ -2,6 +2,8 @@ include_directories(${CMAKE_CURRENT_LIST_DIR} ${PETSC_INCLUDES})
 file(GLOB DMS_SOURCES "*.h" "*.cpp")
 add_library(dms_objlib OBJECT ${DMS_SOURCES})
 
+#find_package(Eigen3 3.4 REQUIRED NO_MODULE)
+
 add_subdirectory("methods")
 add_subdirectory("methods/space_warping")
 add_subdirectory("integrators")

@@ -519,12 +519,11 @@ ir->nstcalcenergy);
         setup_bonded_threading(fr, &top->idef);
     }
 
-	
     if(MASTER(cr)) {
 	
 	for(nss = 0; nss < dArgs->nss; nss++)
 	DmsBase[nss] = newDmsBase(state_global, mdatoms, top_global, ir, 3, dimCG, kmax, numFreq, dtDms, step, MPI_COMM_SELF, microSteps, dmsScale,
-		dArgs->nHist, nss, dArgs->nss, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f_global, dArgs->alpha, dArgs->max_itera, dArgs->min_dcg);
+		dArgs->nHist, nss, dArgs->nss, dArgs->alpha, dArgs->max_itera, dArgs->min_dcg, dArgs->cgMethod, dArgs->userRef, dArgs->topFname, dArgs->selFname, f_global);
 	}
 
 
@@ -1222,7 +1221,7 @@ ir->nstcalcenergy);
                      fr, vsite, mu_tot, t, mdoutf_get_fp_field(outf), ed, bBornRadii,
                      (bNS ? GMX_FORCE_NS : 0) | force_flags, elecField);
            
-	    if(!converge_cgF){
+	    /*if(!converge_cgF){
 		//printf("start to modify forces");
 	   	dd_collect_vec(cr->dd, state, state->x, state_global->x);
             	dd_collect_vec(cr->dd, state, state->v, state_global->v);
@@ -1239,7 +1238,7 @@ ir->nstcalcenergy);
 			dmsDistributeCoords(cr->dd, state_global->x, state->x);
 			dmsDistributeCoords(cr->dd, f_global, f);
 			}
-	 	 }
+	 	 }*/
         }
 
         if (bVV && !bStartingFromCpt && !bRerunMD)
@@ -2141,7 +2140,15 @@ ir->nstcalcenergy);
 		
 				    step -= counter + 1;
 		                  step_rel -= counter + 1;
-                        
+                       			
+					/*printf("Now the time used is %d\n", elapsed_time);
+					printf("and bCPT is %d\n", bCPT);
+					printf("and nchkpt is %d\n", nchkpt);*/
+
+				    if(step%10000 == 0)
+					bCPT = 1;	
+					
+				   	
 				    do_md_trajectory_writing(fplog, cr, nfile, fnm, step, step_rel, t,
 	                                 ir, state, state_global, top_global, fr,
         	                         outf, mdebin, ekind, f, f_global,
@@ -2190,13 +2197,19 @@ ir->nstcalcenergy);
 		step_rel_tmp = step_rel;
 		}
 		
-
-		/*if(MASTER(cr)){
+	
+		if(MASTER(cr)){
                         for(nss =0; nss < dArgs->nss; nss++){
                                 dmsCGStep(DmsBase[nss], step);
+				updateDmsCoords(DmsBase[nss]);
 			}	
-		}*/
-
+		}
+		
+		if(MASTER(cr)){	
+			printf("**********************************\n");
+			printf("The potential energy for the last iteration is %f \n", enerd->term[F_EPOT]);
+			printf("**********************************\n");	
+		}
 
 		if(MASTER(cr)) {
 			for(nss =0; nss < dArgs->nss; nss++){
@@ -2205,6 +2218,13 @@ ir->nstcalcenergy);
 				//printf("checkconverge gives %d\n", checkconverge(DmsBase[nss], step));
 				if(checkconverge(DmsBase[nss], step)){
 					converge_cgF = TRUE;
+                                        /*int forceflags = Flags | MD_CONFOUT;
+					do_md_trajectory_writing(fplog, cr, nfile, fnm, step, step_rel, t,
+                                         ir, state, state_global, top_global, fr,
+                                         outf, mdebin, ekind, f, f_global,
+                                         wcycle, &nchkpt,
+                                         bCPT, bRerunMD, TRUE, forceflags,
+                                         bSumEkinhOld);*/
 				}
 				else {
 					converge_cgF = FALSE;
@@ -2214,14 +2234,14 @@ ir->nstcalcenergy);
 
 		MPI_Bcast(&converge_cgF, 1, MPI_INT, 0, MPI_COMM_WORLD);
 		
-		if(MASTER(cr)){
+		/*if(MASTER(cr)){
 			for(nss =0; nss < dArgs->nss; nss++){
 				dmsCGStep(DmsBase[nss], step);    
 			}
 		}
-		/*if(MASTER(cr)){
+		if(MASTER(cr)){
 			printf("***********************\n");
-			printf("converge var is %d\n", converge_cgF);
+			printf("Is the problem here?");
 			printf("***********************\n");
 		}*/
 
@@ -2229,8 +2249,13 @@ ir->nstcalcenergy);
 			dmsDistributeCoords(cr->dd, state_global->x, state->x);
 			dmsDistributeCoords(cr->dd, f_global, f);
 		} 
-
-            
+                /*if(MASTER(cr)){                                                                                                                                                                                                  	printf("***********************\n");
+		       printf("converge var is %d\n", converge_cgF);
+		       printf("***********************\n"); 
+		 }*/
+	      
+               //MPI_Bcast(&converge_cgF, 1, MPI_INT, 0, MPI_COMM_WORLD);  
+             
 		if(converge_cgF == TRUE){
             		//step = step_tmp;
             		//step_rel = step_rel_tmp;
@@ -2241,6 +2266,14 @@ ir->nstcalcenergy);
 				printf("The cg vars converge at step %d \n", backmap_step);
 				printf("***********************\n");
 			}
+
+		        int forceflags = Flags | MD_CONFOUT;
+                        do_md_trajectory_writing(fplog, cr, nfile, fnm, step, step_rel, t,
+                           ir, state, state_global, top_global, fr,
+                           outf, mdebin, ekind, f, f_global,
+                           wcycle, &nchkpt,
+                           bCPT, bRerunMD, TRUE, forceflags,
+                           bSumEkinhOld);
 	
 	    		dmsStep = 0;
             		bStartMS = FALSE;
